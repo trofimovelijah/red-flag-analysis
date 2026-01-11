@@ -8,6 +8,7 @@
     ```
     project-root/
     ├── docker-compose.yaml
+    ├── check_services.sh
     ├── data/
     │   ├── postgres/
     │   ├── redis/
@@ -41,84 +42,6 @@ QDRANT_API_KEY=qdrant_key
 
 REDIS_PASSWORD=your_redis_password
 ```
-
-## Основные команды
-
-### 1. Запуск всех сервисов
-
-```bash
-# Запуск в фоне (рекомендуется)
-docker-compose up -d
-
-# Запуск с выводом логов в консоль
-docker-compose up
-```
-
-### 2. Остановка сервисов
-
-```bash
-# Остановить контейнеры (данные сохраняются)
-docker-compose down
-
-# Остановить и удалить volumes (УДАЛИТ ВСЕ ДАННЫЕ!)
-docker-compose down -v
-
-# Остановить только (без удаления)
-docker-compose stop
-```
-
-### 3. Проверка статуса
-
-```bash
-# Статус всех контейнеров
-docker-compose ps
-
-# Логи всех сервисов
-docker-compose logs -f
-
-# Логи конкретного сервиса (например, Qdrant)
-docker-compose logs -f qdrant
-
-# Последние 100 строк логов
-docker-compose logs --tail=100 qdrant
-```
-
-### 4. Перезапуск сервисов
-
-```bash
-# Перезапустить все
-docker-compose restart
-
-# Перезапустить конкретный сервис
-docker-compose restart qdrant
-
-# Пересобрать и запустить (если изменился образ)
-docker-compose up -d --force-recreate
-```
-
-### 5. Входить в контейнер
-
-```bash
-# PostgreSQL
-docker exec -it postgres_db psql -U postgres -d база_данных
-
-# Redis
-docker exec -it redis_db redis-cli
-
-# Qdrant (bash)
-docker exec -it qdrant_db bash
-```
-
-### 6. Просмотр ресурсов
-
-```bash
-# Использование памяти и CPU
-docker stats
-
-# Информация об образах
-docker images
-```
-
 ---
 
 ## Проверка работоспособности
@@ -193,4 +116,86 @@ checkQdrant();
 ```bash
 chmod +x check_services.sh
 ./check_services.sh
+```
+
+---
+
+## Основные команды
+
+### 1. Запуск всех сервисов
+
+```bash
+# Запуск в фоне (рекомендуется)
+docker-compose up -d
+
+# Запуск с выводом логов в консоль
+docker-compose up
+```
+
+### 2. Остановка сервисов
+
+```bash
+# Остановить контейнеры (данные сохраняются)
+docker-compose down
+
+# Остановить и удалить volumes (УДАЛИТ ВСЕ ДАННЫЕ!)
+docker-compose down -v
+
+# Остановить только (без удаления)
+docker-compose stop
+```
+
+### 3. Проверка статуса
+
+Запустите скрипт `check_services.sh`
+
+Либо вручную выполните проверку статуса
+```bash
+# Статус всех контейнеров
+docker-compose ps
+
+# Логи всех сервисов
+docker-compose logs -f
+
+# Логи конкретного сервиса (например, Qdrant)
+docker-compose logs -f qdrant
+
+# Последние 100 строк логов
+docker-compose logs --tail=100 qdrant
+```
+
+### 4. Перезапуск сервисов
+
+```bash
+# Перезапустить все
+docker-compose restart
+
+# Перезапустить конкретный сервис
+docker-compose restart qdrant
+
+# Пересобрать и запустить (если изменился образ)
+docker-compose up -d --force-recreate
+```
+
+### 5. Входить в контейнер
+
+```bash
+# PostgreSQL
+docker exec -it postgres_db psql -U postgres -d база_данных
+
+# Redis
+docker exec -it redis_db redis-cli
+
+# Qdrant (bash)
+docker exec -it qdrant_db bash
+```
+
+### 6. Просмотр ресурсов
+
+```bash
+# Использование памяти и CPU
+docker stats
+
+# Информация об образах
+docker images
 ```
