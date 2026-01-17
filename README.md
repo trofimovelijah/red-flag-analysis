@@ -4,30 +4,15 @@
 Технический проект представлен в [GoogleDocs](https://docs.google.com/document/d/1s5n__p_HItBspoNvUpveP_-ZSwDBr2WYCdYvToondTg/edit?usp=sharing)
 
 ## Развёртывание решения
-1. Перед запуском создайте следующую структуру каталогов:
-    ```
-    project-root/
-    ├── docker-compose.yaml
-    ├── check_services.sh
-    ├── data/
-    │   ├── postgres/
-    │   ├── redis/
-    │   └── qdrant/
-    ├── postgres/
-    │   └── initdb.d/
-    │       └── init.sql (опционально)
-    ├── redis/
-    │   └── redis.conf
-    └── qdrant/
-        └── qdrant_config.yaml
-    ```
-### Создание структуры одной командой
-
+1. Склонируйте репозиторий 
 ```bash
-mkdir -p data/{postgres,redis,qdrant} postgres/initdb.d redis qdrant
+git clone git@github.com:trofimovelijah/red-flag-analysis.git
 ```
-### Создание файла окружения
-Создайте файл `.env` в одной директории с `docker-compose.yaml`
+2. Перейдите в директорию src/
+```bash
+cd src/
+```
+3. Создайте файл `.env` в одной директории с `docker-compose.yaml`
 
 ```
 cp .env.example .env
@@ -42,76 +27,11 @@ QDRANT_API_KEY=qdrant_key
 
 REDIS_PASSWORD=your_redis_password
 ```
----
-
-## Проверка работоспособности
-
-### Qdrant - простая проверка
-
-#### 1. Проверка health endpoint
-
+4. Запустите docker-compose.yaml
 ```bash
-curl http://localhost:6333/healthz
+docker compose up -d
 ```
-
-**Ожидаемый ответ:**
-```json
-{}
-```
-
-#### 2. Получение информации о сервере
-
-```bash
-curl http://localhost:6333/api/v1/telemetry \
-  -H "api-key: qdrant_api_key_123"
-```
-
-#### 3. Проверка через Python
-
-```python
-from qdrant_client import QdrantClient
-
-# Подключение
-client = QdrantClient(
-    url="http://localhost:6333",
-    api_key="qdrant_api_key_123"
-)
-
-# Проверка подключения
-try:
-    info = client.get_collections()
-    print("✅ Qdrant работает!")
-    print(f"Коллекции: {info}")
-except Exception as e:
-    print(f"❌ Ошибка: {e}")
-```
-
-#### 4. Проверка через Node.js
-
-```javascript
-const { QdrantClient } = require("@qdrant/js-client-rest");
-
-const client = new QdrantClient({
-  url: "http://localhost:6333",
-  apiKey: "qdrant_api_key_123",
-});
-
-async function checkQdrant() {
-  try {
-    const collections = await client.getCollections();
-    console.log("✅ Qdrant работает!");
-    console.log("Коллекции:", collections);
-  } catch (error) {
-    console.error("❌ Ошибка:", error);
-  }
-}
-
-checkQdrant();
-```
-
-#### 5. Проверка все сервисов одним скриптом
-
-Запустите скрипт
+5. Запустите скрипт проверки правильности развёртывания
 
 ```bash
 chmod +x check_services.sh
