@@ -1,0 +1,265 @@
+@startuml
+
+'!theme plain
+'hide the spot
+hide method
+hide circle
+
+left to right direction
+skinparam shadowing true    
+'skinparam roundcorner 8
+'skinparam linetype ortho
+skinparam nodesep 60
+skinparam ranksep 80
+
+
+!define primary_key(x) <b><color:#b8861b><&key></color> x</b>
+!define foreign_key(x) <color:#aaaaaa><&key></color> x
+
+    entity Users {
+        * primary_key(user_id): INTEGER
+        --
+        * foreign_key(tariff_id): INTEGER
+        --
+        telegram_id: BIGINT
+        subscription_start: DATE
+        subscription_end: DATE
+        is_active: BOOLEAN
+        email: VARCHAR
+        phone: VARCHAR
+        created_at: TIMESTAMP
+        upDATEd_at: TIMESTAMP
+        deleted_at: TIMESTAMP
+    }
+
+    entity Sessions {
+        * primary_key(session_id): UUID
+        --
+        * foreign_key(file_format_id): INTEGER 
+        * foreign_key(document_type_id): INTEGER
+        * foreign_key(user_id): INTEGER
+        * foreign_key(jurisdiction_id): INTEGER
+        --
+        file_name: VARCHAR
+        file_size_bytes: INTEGER
+        language_code: VARCHAR default 'RU'
+        upload_status: VARCHAR default 'PENDING'
+        processing_duration_ms: INTEGER
+        error_message: TEXT
+        created_at: TIMESTAMP
+        upload_at: TIMESTAMP
+    }
+
+    entity Chunks {
+        * primary_key(chunk_id): 
+        --
+        * foreign_key(session_id): UUID
+        * foreign_key(embedding_vector_id): VARCHAR
+        --
+        chunk_number: INTEGER
+        chunk_TEXT: TEXT
+        tsvector: TSVECTOR
+        created_at: TIMESTAMP
+        deleted_id: TIMESTAMP
+    }
+
+    entity Analysis_Results {
+        * primary_key(result_id): INTEGER
+        --
+        * foreign_key(session_id): UUID 
+        * foreign_key(risk_id): INTEGER
+        * foreign_key(analysis_type_id): INTEGER
+        * foreign_key(evidence_chunk_id): TEXT
+        --
+        found_severity: VARCHAR
+        confidence_score: INTEGER
+        evidence_TEXT: TEXT
+        recommendation: TEXT
+        created_at: TIMESTAMP
+    }
+
+    entity Analysis_Types #F5F5DC {
+        * primary_key(analysis_type_id): INTEGER
+        --
+        type_name: VARCHAR
+        token_multiplier: DECIMAL
+        cost_multiplier: DECIMAL
+    }
+
+    entity Risk_Definitions #F5F5DC {
+        * primary_key(risk_id): INTEGER
+        --
+        * foreign_key(risk_category_id): INTEGER
+        * foreign_key(jurisdiction_id): INTEGER
+        --
+        risk_name: VARCHAR
+        default_severity: VARCHAR
+        description: TEXT
+        recommendation: TEXT
+        version: INTEGER
+        is_active: BOOLEAN default true
+        created_at: TIMESTAMP
+        upDATEd_at: TIMESTAMP
+    }
+
+    entity Risk_Categories #F5F5DC {
+        * primary_key(category_id): 
+        --
+        category_name: VARCHAR
+        description: TEXT
+    }
+
+    entity Jurisdictions #F5F5DC {
+        * primary_key(jurisdiction_id): INTEGER
+        --
+        jurisdiction_code: VARCHAR
+        jurisdiction_name: VARCHAR
+        language_code: VARCHAR default 'RU'
+    }
+
+    entity Document_Types #F5F5DC {
+        * primary_key(document_type_id): INTEGER
+        --
+        type_name: VARCHAR
+        description: TEXT 
+        jurisdiction: VARCHAR
+        created_at: TIMESTAMP
+    }
+
+    entity Tariff {
+        * primary_key(tariff_id): UUID 
+        --
+        tariff_name: VARCHAR
+        tariff_price: DECIMAL
+        daily_limit: INTEGER 
+        monthly_limit: INTEGER
+        allows_deep_analysis: BOOLEAN
+        allows_batch_processing: BOOLEAN
+        priority_support: BOOLEAN
+        created_at: TIMESTAMP
+    }
+
+    entity File_Format #F5F5DC {
+        * primary_key(file_format_id): INTEGER
+        --
+        format_name: VARCHAR
+        mime_type: VARCHAR
+        requires_ocr: BOOLEAN default false
+    }
+
+    entity Payments {
+        * primary_key(payment_id): UUID
+        --
+        * foreign_key(user_id): INTEGER 
+        * foreign_key(payment_type_id): INTEGER 
+        * foreign_key(tariff_id): UUID
+        --
+        amount: DECIMAL
+        currency: VARCHAR default 'RUB'
+        payment_status: VARCHAR default 'PENDING'
+        transaction_id: VARCHAR
+        created_at: TIMESTAMP
+        completed_at: TIMESTAMP
+    }
+
+    entity Payments_Types #F5F5DC {
+        * primary_key(payment_type_id): INTEGER
+        --
+        type_name: VARCHAR
+    }
+
+    entity Rate_Limit_Log #FFF0F5 {
+        * primary_key(log_id): UUID
+        --
+        * foreign_key(user_id): INTEGER 
+        * foreign_key(tariff_id): UUID
+        --
+        analysis_DATE: DATE
+        analysis_count: INTEGER
+        limit_exceeded: BOOLEAN
+        TIMESTAMP: TIMESTAMP
+    }
+
+    entity Feedback #FFF0F5 {
+        * primary_key(feedback_id): UUID
+        --
+        * foreign_key(result_id): INTEGER
+        * foreign_key(user_id): INTEGER
+        * foreign_key(feedback_type_id): INTEGER 
+        --
+        comment: TEXT
+        created_at: TIMESTAMP
+    }
+
+    entity Feedback_Types #FFF0F5 {
+        * primary_key(feedback_type_id): INTEGER
+        --
+        type_name: VARCHAR
+    }
+
+    entity Audit_Log #FFF0F5 {
+        * primary_key(log_id): UUID
+        --
+        * foreign_key(user_id): INTEGER
+        --
+        action: VARCHAR
+        resource_type: VARCHAR
+        resource_id: VARCHAR
+        old_value: JSONB
+        new_value: JSONB
+        ip_address: INET
+        user_agent: TEXT
+        status: VARCHAR
+        error_message: TEXT
+        TIMESTAMP: TIMESTAMP
+    }
+
+    entity Analysis_Metric #FFF0F5 {
+        * primary_key(metric_id): UUID
+        --
+        * foreign_key(session_id): UUID
+        --
+        llm_tokens_used: INTEGER
+        search_latency_ms: INTEGER
+        embedding_latency_ms: INTEGER
+        total_duration_ms: INTEGER
+        chunk_count: INTEGER
+        result_count: INTEGER
+        confidence_avg: DECIMAL
+        TIMESTAMP: TIMESTAMP
+    }
+
+    entity Qdrant #IndianRed {
+        ** primary_key(embedding_vector_id): **
+    }
+
+' === Связи ===
+Payments_Types::payment_type_id ||--o{ Payments::payment_type_id
+Payments::user_id }o--|| Users::user_id
+Tariff::tariff_id ||--o{ Users::tariff_id
+Rate_Limit_Log::tariff_id }o--|| Tariff::tariff_id
+File_Format::file_format_id ||--|{ Sessions::file_format_id
+Users::user_id ||--o{ Feedback::user_id
+Feedback::feedback_type_id ||--o{ Feedback_Types::feedback_type_id
+Feedback::result_id ||..|| Analysis_Results::result_id
+Users::user_id ||--o{ Sessions::user_id
+Users::user_id ||--o{ Audit_Log::user_id
+
+Sessions::session_id ||--o{ Chunks::session_id
+'Sessions::session_id ||--o{ Analysis_Results::session_id
+Sessions::session_id ||--o{ Analysis_Metric::session_id
+
+Sessions::jurisdiction_id ||--|{ Jurisdictions::jurisdiction_id
+Chunks::chunk_id ||--o{ Analysis_Results::evidence_chunk_id
+Chunks::embedding_vector_id }o--|| Qdrant::embedding_vector_id
+Analysis_Results::analysis_type_id }|--|| Analysis_Types::analysis_type_id
+Risk_Definitions::risk_id ||--o{ Analysis_Results::risk_id
+Risk_Categories::category_id ||--o{ Risk_Definitions::risk_category_id
+Jurisdictions::jurisdiction_id ||--o{ Risk_Definitions::jurisdiction_id
+Document_Types::document_type_id }|--|| Sessions::document_type_id
+
+'Users::user_id ||--o{ Rate_Limit_Log::user_id
+'Tariff::tariff_id ||--o{ Payments::tariff_id
+
+
+@enduml
