@@ -1,0 +1,30 @@
+name: Embed PlantUML in Markdown
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'docs/dbms/**'  # опционально: только при изменениях в docs/dbms
+
+jobs:
+  embed-puml-markdown:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # важно для git history
+
+      - name: Embed PlantUML inside Markdown
+        uses: alessandro-marcantoni/puml-markdown@v0.1.1
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Update PlantUML diagrams in README.md"
+          file_pattern: "docs/dbms/**"  # коммитим только изменения в docs/dbms
+
