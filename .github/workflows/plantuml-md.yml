@@ -1,30 +1,30 @@
-name: Embed PlantUML in Markdown
+name: Generate PlantUML
 
 on:
   push:
     branches: [ main ]
-    paths:
-      - 'docs/dbms/**'  # опционально: только при изменениях в docs/dbms
 
 jobs:
-  embed-puml-markdown:
+  generate_plantuml:
     runs-on: ubuntu-latest
-
+    
     permissions:
       contents: write
 
     steps:
-      - name: Check out the repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # важно для git history
+          fetch-depth: 0
 
-      - name: Embed PlantUML inside Markdown
-        uses: alessandro-marcantoni/puml-markdown@v0.1.1
+      - name: Generate PlantUML diagrams
+        uses: grassedge/generate-plantuml-action@v1.5
+        with:
+          path: docs/dbms          # где лежат .puml файлы
+          format: svg              # или png, если нужен PNG
+          outputPath: docs/dbms    # где складывать .svg/.png (рядом с .puml)
 
-      - name: Commit changes
+      - name: Commit generated diagrams
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Update PlantUML diagrams in README.md"
-          file_pattern: "docs/dbms/**"  # коммитим только изменения в docs/dbms
-
+          commit_message: "Generate PlantUML diagrams"
+          file_pattern: "docs/dbms/*.svg docs/dbms/*.png"
