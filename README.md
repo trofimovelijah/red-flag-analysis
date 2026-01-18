@@ -5,17 +5,13 @@
 
 ## Развёртывание решения
 1. Склонируйте репозиторий 
-```bash
-git clone git@github.com:trofimovelijah/red-flag-analysis.git
-```
-2. Перейдите в директорию src/
-```bash
-cd src/
-```
-3. Создайте файл `.env` в одной директории с `docker-compose.yaml`
+  ```bash
+  git clone git@github.com:trofimovelijah/red-flag-analysis.git
+  ```
+2. Создайте файл `.env` в одной директории с `docker-compose.yaml`
 
-```
-cp .env.example .env
+```bash
+cp configuration/.env.example configuration/.env
 ```
 В результате в файле окружения должны присутствовать подобные переменные среды:
 ```bash
@@ -27,14 +23,20 @@ QDRANT_API_KEY=qdrant_key
 
 REDIS_PASSWORD=your_redis_password
 ```
-4. Запустите docker-compose.yaml
+3. Запустите `docker-compose.yaml` в директории configuration/
 ```bash
 docker compose up -d
 ```
-5. Запустите скрипт проверки правильности развёртывания
+4. Последовательно выполните скрипты развёртывания базы данных
+```bash
+psql -U postgres -f scripts/01_create_database.sql
+psql -U postgres -d red_flag_analysis -f scripts/02_init_schema.sql
+psql -U postgres -d red_flag_analysis -f scripts/03_seed_data.sql
+```
+5. Выполните скрипт проверки правильности развёртывания
 
 ```bash
-chmod +x check_services.sh
+chmod +x scripts/check_services.sh
 ./check_services.sh
 ```
 
