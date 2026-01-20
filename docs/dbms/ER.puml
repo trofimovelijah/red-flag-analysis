@@ -17,7 +17,7 @@ skinparam ranksep 80
 !define foreign_key(x) <color:#aaaaaa><&key></color> x
 
     entity Users {
-        * primary_key(user_id): INTEGER
+        * primary_key(user_id): BIGINT
         --
         * foreign_key(tariff_id): INTEGER
         --
@@ -25,15 +25,13 @@ skinparam ranksep 80
         subscription_start: DATE
         subscription_end: DATE
         is_active: BOOLEAN
-        email: VARCHAR
-        phone: VARCHAR
         created_at: TIMESTAMP
-        upDATEd_at: TIMESTAMP
+        updated_at: TIMESTAMP
         deleted_at: TIMESTAMP
     }
 
     entity Sessions {
-        * primary_key(session_id): UUID
+        * primary_key(session_id): BIGINT
         --
         * foreign_key(file_format_id): INTEGER 
         * foreign_key(document_type_id): INTEGER
@@ -51,29 +49,29 @@ skinparam ranksep 80
     }
 
     entity Chunks {
-        * primary_key(chunk_id): 
+        * primary_key(chunk_id): BIGINT
         --
-        * foreign_key(session_id): UUID
+        * foreign_key(session_id): BIGINT
         * foreign_key(embedding_vector_id): VARCHAR
         --
         chunk_number: INTEGER
-        chunk_TEXT: TEXT
+        chunk_text: TEXT
         tsvector: TSVECTOR
         created_at: TIMESTAMP
         deleted_id: TIMESTAMP
     }
 
     entity Analysis_Results {
-        * primary_key(result_id): INTEGER
+        * primary_key(result_id): BIGINT
         --
-        * foreign_key(session_id): UUID 
-        * foreign_key(risk_id): INTEGER
+        * foreign_key(session_id): BIGINT 
         * foreign_key(analysis_type_id): INTEGER
-        * foreign_key(evidence_chunk_id): TEXT
+        * foreign_key(evidence_chunk_id): BIGINT
+        * foreign_key(risk_id): INTEGER
         --
         found_severity: VARCHAR
         confidence_score: INTEGER
-        evidence_TEXT: TEXT
+        evidence_text: TEXT
         recommendation: TEXT
         created_at: TIMESTAMP
     }
@@ -97,9 +95,10 @@ skinparam ranksep 80
         description: TEXT
         recommendation: TEXT
         version: INTEGER
+        language_code: VARCHAR
         is_active: BOOLEAN default true
         created_at: TIMESTAMP
-        upDATEd_at: TIMESTAMP
+        updated_at: TIMESTAMP
     }
 
     entity Risk_Categories #F5F5DC {
@@ -122,12 +121,12 @@ skinparam ranksep 80
         --
         type_name: VARCHAR
         description: TEXT 
-        jurisdiction: VARCHAR
+        jurisdiction_name
         created_at: TIMESTAMP
     }
 
     entity Tariff {
-        * primary_key(tariff_id): UUID 
+        * primary_key(tariff_id): INTEGER 
         --
         tariff_name: VARCHAR
         tariff_price: DECIMAL
@@ -144,7 +143,7 @@ skinparam ranksep 80
         --
         format_name: VARCHAR
         mime_type: VARCHAR
-        requires_ocr: BOOLEAN default false
+        requires_ocr: BOOLEAN
     }
 
     entity Payments {
@@ -155,8 +154,8 @@ skinparam ranksep 80
         * foreign_key(tariff_id): UUID
         --
         amount: DECIMAL
-        currency: VARCHAR default 'RUB'
-        payment_status: VARCHAR default 'PENDING'
+        currency: VARCHAR
+        payment_status: VARCHAR
         transaction_id: VARCHAR
         created_at: TIMESTAMP
         completed_at: TIMESTAMP
@@ -169,22 +168,22 @@ skinparam ranksep 80
     }
 
     entity Rate_Limit_Log #FFF0F5 {
-        * primary_key(log_id): UUID
+        * primary_key(log_id): BIGINT
         --
-        * foreign_key(user_id): INTEGER 
-        * foreign_key(tariff_id): UUID
+        * foreign_key(user_id): BIGINT 
+        * foreign_key(tariff_id): INTEGER
         --
-        analysis_DATE: DATE
+        analysis_date: DATE
         analysis_count: INTEGER
         limit_exceeded: BOOLEAN
-        TIMESTAMP: TIMESTAMP
+        timestamp: TIMESTAMP
     }
 
     entity Feedback #FFF0F5 {
-        * primary_key(feedback_id): UUID
+        * primary_key(feedback_id): BIGINT
         --
-        * foreign_key(result_id): INTEGER
-        * foreign_key(user_id): INTEGER
+        * foreign_key(result_id): BIGINT
+        * foreign_key(user_id): BIGINT
         * foreign_key(feedback_type_id): INTEGER 
         --
         comment: TEXT
@@ -198,20 +197,26 @@ skinparam ranksep 80
     }
 
     entity Audit_Log #FFF0F5 {
-        * primary_key(log_id): UUID
+        * primary_key(log_id): BIGINT
         --
-        * foreign_key(user_id): INTEGER
+        * foreign_key(user_id): BIGINT
+        * foreign_key(resource_id): VARCHAR
         --
         action: VARCHAR
         resource_type: VARCHAR
-        resource_id: VARCHAR
         old_value: JSONB
         new_value: JSONB
         ip_address: INET
         user_agent: TEXT
         status: VARCHAR
         error_message: TEXT
-        TIMESTAMP: TIMESTAMP
+        timestamp: TIMESTAMP
+    }
+
+    entity Resource_Types #FFF0F5 {
+        * primary_key(resource_id): VARCHAR
+        --
+        resource_type: VARCHAR
     }
 
     entity Analysis_Metric #FFF0F5 {
@@ -226,7 +231,7 @@ skinparam ranksep 80
         chunk_count: INTEGER
         result_count: INTEGER
         confidence_avg: DECIMAL
-        TIMESTAMP: TIMESTAMP
+        timestamp: TIMESTAMP
     }
  
     entity Qdrant #IndianRed {
@@ -244,6 +249,7 @@ Feedback::feedback_type_id ||--o{ Feedback_Types::feedback_type_id
 Feedback::result_id ||..|| Analysis_Results::result_id
 Users::user_id ||--o{ Sessions::user_id
 Users::user_id ||--o{ Audit_Log::user_id
+Audit_Log::resource_id ||--o{ Resource_Types::resource_id
 
 Sessions::session_id ||--o{ Chunks::session_id
 'Sessions::session_id ||--o{ Analysis_Results::session_id
@@ -254,10 +260,9 @@ Chunks::chunk_id ||--o{ Analysis_Results::evidence_chunk_id
 Chunks::embedding_vector_id }o--|| Qdrant::embedding_vector_id
 Analysis_Results::analysis_type_id }|--|| Analysis_Types::analysis_type_id
 Risk_Definitions::risk_id ||--o{ Analysis_Results::risk_id
-Risk_Categories::category_id ||--o{ Risk_Definitions::risk_category_id
+Risk_Definitions::category_id }o--|| Risk_Categories::risk_category_id
 Jurisdictions::jurisdiction_id ||--o{ Risk_Definitions::jurisdiction_id
 Document_Types::document_type_id }|--|| Sessions::document_type_id
-
 'Users::user_id ||--o{ Rate_Limit_Log::user_id
 'Tariff::tariff_id ||--o{ Payments::tariff_id
 
