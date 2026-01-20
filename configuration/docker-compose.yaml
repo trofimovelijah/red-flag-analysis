@@ -3,7 +3,7 @@ version: '3.8'
 services:
   # PostgreSQL 16 - реляционная база данных
   postgres:
-    image: postgres:16
+    image: pgvector/pgvector:pg16
     container_name: postgres_db
     restart: unless-stopped
     environment:
