@@ -1,0 +1,29 @@
+@startuml C4_Context
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+hide method
+hide circle
+
+left to right direction
+
+!define PERSON_COLOR #LightGreen
+!define EXTERNAL_SYSTEM_COLOR #LightPink
+!define MAIN_SYSTEM_COLOR #FFFF00
+
+AddElementTag("person", $bgColor=PERSON_COLOR, $fontColor="black")
+AddElementTag("external", $bgColor=EXTERNAL_SYSTEM_COLOR, $fontColor="black")
+AddElementTag("system", $bgColor=MAIN_SYSTEM_COLOR, $fontColor="black")
+
+Person(users, "Пользователи", "Отправляют документы на анализ")
+Person(admin, "Администратор", "Управляет системой и анализирует результаты")
+
+System_Boundary(red_flags_boundary, "Система 'Красные флажки'", "Анализ документов на риски")
+
+System_Ext(payment_system, "Платёжная система", "Внешняя платёжная система")
+
+' Взаимодействия
+Rel(users, red_flags_boundary, "Отправляет документы", "REST API")
+Rel(red_flags_boundary, payment_system, "Выполняет платежи", "API")
+Rel(admin, red_flags_boundary, "Добавляет красные флажки", "Web UI")
+
+@enduml
