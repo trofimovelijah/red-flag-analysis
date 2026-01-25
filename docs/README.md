@@ -1,19 +1,27 @@
-# red-flag-analysis
+---
+title: red-flag-analysis
+---
+
 Инструмент (в виде чат-бота) определения "красных флажков", содержащихся в различных юридических документов, с которыми приходится иметь дело обычным пользователям в Сети.
 
 Технический проект представлен в [GoogleDocs](https://docs.google.com/document/d/1s5n__p_HItBspoNvUpveP_-ZSwDBr2WYCdYvToondTg/edit?usp=sharing)
 
 ## Развёртывание решения
-1. Склонируйте репозиторий 
-  ```bash
-  git clone git@github.com:trofimovelijah/red-flag-analysis.git
-  ```
+
+1. Склонируйте репозиторий
+
+```bash
+git clone git@github.com:trofimovelijah/red-flag-analysis.git
+```
+
 2. Создайте файл `.env` в одной директории с `docker-compose.yaml`
 
 ```bash
 cp configuration/.env.example configuration/.env
 ```
+
 В результате в файле окружения должны присутствовать подобные переменные среды:
+
 ```bash
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=your_secure_postgres_password
@@ -23,16 +31,21 @@ QDRANT_API_KEY=qdrant_key
 
 REDIS_PASSWORD=your_redis_password
 ```
+
 3. Запустите `docker-compose.yaml` в директории configuration/
+
 ```bash
 docker compose up -d
 ```
+
 4. Последовательно выполните скрипты развёртывания базы данных
+
 ```bash
 psql -U postgres -f scripts/01_create_database.sql
 psql -U postgres -d red_flag_analysis -f scripts/02_init_schema.sql
 psql -U postgres -d red_flag_analysis -f scripts/03_seed_data.sql
 ```
+
 5. Выполните скрипт проверки правильности развёртывания
 
 ```bash
@@ -44,7 +57,7 @@ chmod +x scripts/check_services.sh
 
 ## Основные команды
 
-### 1. Запуск всех сервисов
+### 1\. Запуск всех сервисов
 
 ```bash
 # Запуск в фоне (рекомендуется)
@@ -54,7 +67,7 @@ docker-compose up -d
 docker-compose up
 ```
 
-### 2. Остановка сервисов
+### 2\. Остановка сервисов
 
 ```bash
 # Остановить контейнеры (данные сохраняются)
@@ -67,11 +80,12 @@ docker-compose down -v
 docker-compose stop
 ```
 
-### 3. Проверка статуса
+### 3\. Проверка статуса
 
 Запустите скрипт `check_services.sh`
 
 Либо вручную выполните проверку статуса
+
 ```bash
 # Статус всех контейнеров
 docker-compose ps
@@ -86,7 +100,7 @@ docker-compose logs -f qdrant
 docker-compose logs --tail=100 qdrant
 ```
 
-### 4. Перезапуск сервисов
+### 4\. Перезапуск сервисов
 
 ```bash
 # Перезапустить все
@@ -99,7 +113,7 @@ docker-compose restart qdrant
 docker-compose up -d --force-recreate
 ```
 
-### 5. Входить в контейнер
+### 5\. Входить в контейнер
 
 ```bash
 # PostgreSQL
@@ -112,7 +126,7 @@ docker exec -it redis_db redis-cli
 docker exec -it qdrant_db bash
 ```
 
-### 6. Просмотр ресурсов
+### 6\. Просмотр ресурсов
 
 ```bash
 # Использование памяти и CPU
