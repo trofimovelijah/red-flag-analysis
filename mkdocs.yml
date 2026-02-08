@@ -1,0 +1,74 @@
+site_name: Красные флажки - Документация
+site_description: Документация проекта анализа рисков в договорах
+site_author: trofimovelijah
+repo_url: https://github.com/trofimovelijah/red-flag-analysis
+repo_name: red-flag-analysis
+
+theme:
+  name: material
+  language: ru
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+  palette:
+    # Светлая тема
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Переключить на тёмную тему
+    # Тёмная тема
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Переключить на светлую тему
+
+plugins:
+  - search:
+      lang: ru
+  - plantuml:
+      puml_url: https://www.plantuml.com/plantuml/
+      num_workers: 8
+
+markdown_extensions:
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.details
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+
+nav:
+  - Главная: README.md
+  - Идея: 01_Idea.md
+  - Введение: 02_Introduction.md
+  - Анализ: 03_Analysis.md
+  - Требования: 04_Requirements.md
+  - Роли: 05_Role.md
+  - Архитектура: 06_Architecture.md
+  - База данных: 07_Database.md
+  - СУБД:
+      - Обзор: dbms/README.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/trofimovelijah/red-flag-analysis

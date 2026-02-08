@@ -33,11 +33,11 @@ skinparam ranksep 80
     entity Sessions {
         * primary_key(session_id): BIGINT
         --
-        * foreign_key(file_format_id): INTEGER 
         * foreign_key(document_type_id): INTEGER
         * foreign_key(user_id): INTEGER
         * foreign_key(jurisdiction_id): INTEGER
         --
+        document_s3_key: VARCHAR
         file_name: VARCHAR
         file_size_bytes: INTEGER
         language_code: VARCHAR default 'RU'
@@ -138,14 +138,6 @@ skinparam ranksep 80
         created_at: TIMESTAMP
     }
 
-    entity File_Format #F5F5DC {
-        * primary_key(file_format_id): INTEGER
-        --
-        format_name: VARCHAR
-        mime_type: VARCHAR
-        requires_ocr: BOOLEAN
-    }
-
     entity Payments {
         * primary_key(payment_id): UUID
         --
@@ -243,7 +235,6 @@ Payments_Types::payment_type_id ||--o{ Payments::payment_type_id
 Payments::user_id }o--|| Users::user_id
 Tariff::tariff_id ||--o{ Users::tariff_id
 Rate_Limit_Log::tariff_id }o--|| Tariff::tariff_id
-File_Format::file_format_id ||--|{ Sessions::file_format_id
 Users::user_id ||--o{ Feedback::user_id
 Feedback::feedback_type_id ||--o{ Feedback_Types::feedback_type_id
 Feedback::result_id ||..|| Analysis_Results::result_id

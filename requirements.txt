@@ -1,0 +1,4 @@
+mkdocs>=1.5.3
+mkdocs-material>=9.5.3
+mkdocs-plantuml-plugin>=1.4.1
+Pillow>=10.1.0
