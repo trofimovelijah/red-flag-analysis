@@ -10,6 +10,11 @@ on:
       - 'mkdocs.yml'
       - 'requirements.txt'
       - '.github/workflows/deploy-docs.yml'
+  pull_request:
+    paths:
+      - 'docs/**'
+      - 'mkdocs.yml'
+      - 'requirements.txt'
   workflow_dispatch:
 
 permissions:
@@ -31,33 +36,29 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: 'pip'
-      
-      - name: Install Java (для PlantUML)
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
       
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install mkdocs mkdocs-material mkdocs-plantuml-plugin Pillow
       
-      - name: Download PlantUML
-        run: |
-          wget https://github.com/plantuml/plantuml/releases/download/v1.2024.0/plantuml-1.2024.0.jar -O plantuml.jar
-          echo "PLANTUML_JAR=$(pwd)/plantuml.jar" >> $GITHUB_ENV
+      - name: Setup PlantUML
+        uses: plantuml/setup-plantuml@v1
+        with:
+          java-version: 17
       
-      - name: Build documentation
+      - name: Build with verbose logging
+        env:
+          PLANTUML_JAR: /github/workspace/plantuml.jar
         run: |
           mkdocs build --verbose --strict
       
-      - name: Upload artifact
+      - name: Upload GitHub Pages artifact
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
         uses: actions/upload-pages-artifact@v3
         with:
           path: './site'
       
       - name: Deploy to GitHub Pages
-        id: deployment
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
         uses: actions/deploy-pages@v4
