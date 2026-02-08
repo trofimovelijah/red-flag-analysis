@@ -2,14 +2,11 @@ name: Deploy Documentation
 
 on:
   push:
-    branches:
-      - main
-      - master
+    branches: [ main, master ]
     paths:
       - 'docs/**'
       - 'mkdocs.yml'
       - 'requirements.txt'
-      - '.github/workflows/deploy-docs.yml'
   pull_request:
     paths:
       - 'docs/**'
@@ -17,48 +14,37 @@ on:
       - 'requirements.txt'
   workflow_dispatch:
 
-permissions:
-  contents: write
-  pages: write
-  id-token: write
-
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      
-      - name: Install dependencies
-        run: |
-          pip install --upgrade pip
-          pip install mkdocs mkdocs-material mkdocs-plantuml-plugin Pillow
-      
-      - name: Setup PlantUML
-        uses: plantuml/setup-plantuml@v1
-        with:
-          java-version: 17
-      
-      - name: Build with verbose logging
-        env:
-          PLANTUML_JAR: /github/workspace/plantuml.jar
-        run: |
-          mkdocs build --verbose --strict
-      
-      - name: Upload GitHub Pages artifact
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: './site'
-      
-      - name: Deploy to GitHub Pages
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
-        uses: actions/deploy-pages@v4
+    - uses: actions/checkout@v4
+    
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        pip install mkdocs mkdocs-material
+    
+    - name: Build docs
+      run: mkdocs build --verbose
+    
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: ./site
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
