@@ -1,46 +1,32 @@
 site_name: Красные флажки
-site_description: Анализ рисков в договорах
 site_url: https://trofimovelijah.github.io/red-flag-analysis
 
 theme:
   name: material
   language: ru
-  palette:
-    - scheme: default
-      primary: indigo
-      toggle:
-        icon: material/weather-night
-        name: Темная тема
-    - scheme: slate
-      primary: indigo
-      toggle:
-        icon: material/weather-sunny
-        name: Светлая тема
   features:
     - content.code.copy
     - navigation.tabs
     - navigation.sections
-    - navigation.indexes
-    - navigation.top
 
 nav:
-  - Главная: index.md
-  - Идея: 01_Idea.md
-  - Введение: 02_Introduction.md
-  - Анализ: 03_Analysis.md
-  - Требования: 04_Requirements.md
-  - Роли: 05_Role.md
-  - Архитектура: 06_Architecture.md
-  - База данных: 07_Database.md
+  - index.md
+  - 01_Idea.md
+  - 02_Introduction.md
+  - 03_Analysis.md
+  - 04_Requirements.md
+  - 05_Role.md
+  - 06_Architecture.md
+  - 07_Database.md
+
+plugins:
+  - search
+  - plantuml:
+      puml_url: https://www.plantuml.com/plantuml/
 
 markdown_extensions:
   - toc:
       permalink: true
   - tables
-  - attr_list
-  - pymdownx.details
+  - pymdownx.highlight
   - pymdownx.superfences
-  - admonition
-
-plugins:
-  - search

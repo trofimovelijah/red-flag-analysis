@@ -2,7 +2,7 @@
 
 ### 7.1 Физическая модель реляционной базы данных
 
-![3НФ структуры базы данных](docs/dbms/ER.puml)
+![3НФ структуры базы данных](dbms/ER.puml)
 
 Основные таблицы:
 
@@ -24,9 +24,10 @@
 
 ```plantuml
 @startuml
-!include docs/dbms/ER.puml
+!include dbms/ER.puml
+skinparam monochrome true
 @enduml
-`` `
+```
 
 
 Словарь содержит описание всех полей для следующих таблиц:
