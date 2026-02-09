@@ -4,14 +4,9 @@
 
 ## Быстрая навигация
 
-- [Идея проекта](01_Idea.md)
-- [Введение](02_Introduction.md)
-- [Анализ предметной области](03_Analysis.md)
-- [Спецификация требований](04_Requirements.md)
-- [Ролевая модель](05_Role.md)
-- [Архитектура системы](06_Architecture.md)
-- [Модель базы данных](07_Database.md)
+- [Технический проект](technical_project/README.md)
+- [Вопросы](qa/question.md)
 
 ## О проекте
 
-[Описание проекта...]
+{% include-markdown "technical_project/01_Idea.md" %}

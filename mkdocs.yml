@@ -10,17 +10,16 @@ theme:
     - navigation.sections
 
 nav:
-  - index.md
-  - 01_Idea.md
-  - 02_Introduction.md
-  - 03_Analysis.md
-  - 04_Requirements.md
-  - 05_Role.md
-  - 06_Architecture.md
-  - 07_Database.md
+  - Главная: index.md
+  - Технический проект: technical_project/README.md
+  - Вопросы: qa/question.md
+
 
 plugins:
   - search
+  - include-markdown:
+      heading_depth: -1  # Сдвигает заголовки на уровень вверх для единого уровня
+      rewrite_relative_urls: true
   - plantuml:
       puml_url: https://www.plantuml.com/plantuml/
 
