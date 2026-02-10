@@ -4,7 +4,7 @@
 }
 
 .md-content {
-  max-width: 1400px;  /* Было ~800px */
+  max-width: 1400px;
 }
 
 .md-content__inner {
@@ -17,27 +17,30 @@
   display: block;
   max-width: 100%;
   overflow-x: auto;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .md-typeset table:not([class]) th {
   background-color: var(--md-default-fg-color--lightest);
   min-width: 100px;
+  padding: 0.9rem 1rem;
 }
 
-/* Красный акцент для заголовков */
+.md-typeset table:not([class]) td {
+  padding: 0.7rem 1rem;
+}
+
+/* Заголовки (минималистичные) */
 .md-typeset h1 {
-  color: var(--md-primary-fg-color);
   font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .md-typeset h2 {
-  border-bottom: 2px solid var(--md-primary-fg-color);
+  border-bottom: 2px solid var(--md-default-fg-color--lightest);
   padding-bottom: 0.3em;
-}
-
-/* Красные флажки в списках */
-.md-typeset ul li::marker {
-  color: var(--md-primary-fg-color);
+  margin-top: 2rem;
 }
 
 /* Адаптивные изображения */
@@ -45,16 +48,43 @@
   max-width: 100%;
   height: auto;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .md-typeset img:hover {
-  transform: scale(1.02);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
 
 /* Код блоки */
 .md-typeset pre {
   border-left: 4px solid var(--md-primary-fg-color);
+  border-radius: 6px;
+}
+
+.md-typeset code {
+  background-color: var(--md-code-bg-color);
+  border-radius: 3px;
+  padding: 0.1em 0.4em;
+}
+
+/* Кастомная прокрутка для таблиц */
+.md-typeset table::-webkit-scrollbar {
+  height: 8px;
+}
+
+.md-typeset table::-webkit-scrollbar-track {
+  background: var(--md-default-bg-color);
+  border-radius: 4px;
+}
+
+.md-typeset table::-webkit-scrollbar-thumb {
+  background: var(--md-primary-fg-color--light);
+  border-radius: 4px;
+}
+
+.md-typeset table::-webkit-scrollbar-thumb:hover {
+  background: var(--md-primary-fg-color);
 }
