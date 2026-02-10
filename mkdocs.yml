@@ -18,7 +18,7 @@ nav:
 plugins:
   - search
   - include-markdown:
-      heading_depth: -1  # Сдвигает заголовки на уровень вверх для единого уровня
+      heading_offset: -1  # Сдвигает заголовки на уровень вверх для единого уровня
       rewrite_relative_urls: true
   - plantuml:
       puml_url: https://www.plantuml.com/plantuml/
