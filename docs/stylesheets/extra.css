@@ -1,0 +1,60 @@
+/* Расширение основного контента для таблиц */
+.md-main__inner {
+  max-width: none;
+}
+
+.md-content {
+  max-width: 1400px;  /* Было ~800px */
+}
+
+.md-content__inner {
+  margin: 0 1.2rem;
+}
+
+/* Адаптивные таблицы */
+.md-typeset table:not([class]) {
+  font-size: 0.85rem;
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.md-typeset table:not([class]) th {
+  background-color: var(--md-default-fg-color--lightest);
+  min-width: 100px;
+}
+
+/* Красный акцент для заголовков */
+.md-typeset h1 {
+  color: var(--md-primary-fg-color);
+  font-weight: 700;
+}
+
+.md-typeset h2 {
+  border-bottom: 2px solid var(--md-primary-fg-color);
+  padding-bottom: 0.3em;
+}
+
+/* Красные флажки в списках */
+.md-typeset ul li::marker {
+  color: var(--md-primary-fg-color);
+}
+
+/* Адаптивные изображения */
+.md-typeset img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.md-typeset img:hover {
+  transform: scale(1.02);
+}
+
+/* Код блоки */
+.md-typeset pre {
+  border-left: 4px solid var(--md-primary-fg-color);
+}
