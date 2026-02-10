@@ -9,4 +9,4 @@
 
 ## О проекте
 
-{% include-markdown "technical_project/01_Idea.md" heading-offset=-1 %}
+{% include-markdown "technical_project/01_Idea.md" %}
