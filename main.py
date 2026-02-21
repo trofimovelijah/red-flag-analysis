@@ -5,18 +5,23 @@ import requests
 REPO = "trofimovelijah/red-flag-analysis"
 API_BASE = f"https://api.github.com/repos/{REPO}/issues"
 
-# Значения, которые GitHub Issue Forms подставляет в пустые поля
 _EMPTY_MARKERS = {"_no response_", "no response", "n/a", ""}
+_cache = {}  # ← кеш на время одной сборки
 
 
 def _fetch_issue(number: int) -> dict:
+    if number in _cache:
+        return _cache[number]
+
     headers = {"Accept": "application/vnd.github+json"}
     token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
     if token:
         headers["Authorization"] = f"Bearer {token}"
     resp = requests.get(f"{API_BASE}/{number}", headers=headers, timeout=10)
     resp.raise_for_status()
-    return resp.json()
+
+    _cache[number] = resp.json()
+    return _cache[number]
 
 
 def _extract_section(body: str, header: str) -> str:
@@ -24,7 +29,6 @@ def _extract_section(body: str, header: str) -> str:
     match = re.search(pattern, body, re.DOTALL)
     if match:
         text = match.group(1).strip()
-        # Проверяем, что секция реально заполнена
         if text.lower() in _EMPTY_MARKERS:
             return ""
         return text
@@ -55,12 +59,15 @@ def define_env(env):
         lines = []
         lines.append(f"**{title}**")
         lines.append("")
-        lines.append(f"[:octicons-link-external-16: Issue #{issue_number}]({url}){{ .md-button .md-button--primary }}")
+        lines.append(
+            f"[:octicons-link-external-16: Issue #{issue_number}]"
+            f"({url}){{ .md-button .md-button--primary }}"
+        )
         lines.append("")
 
         for section_name in sections:
             content = _extract_section(body, section_name)
-            if content:  # ← пустые и "No response" секции пропускаются
+            if content:
                 lines.append(f"**{section_name}**")
                 lines.append("")
                 lines.append(content)
