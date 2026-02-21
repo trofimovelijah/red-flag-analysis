@@ -1,4 +1,4 @@
-name: Нефункциональное требование
+name: Non-functional Requirement
 description: "Нефункциональное требование (НФТ)"
 title: "[Requirement] НФТ-XX: Краткое название"
 labels: ["requirement", "non_functional_req"]

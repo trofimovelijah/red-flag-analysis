@@ -1,17 +1,8 @@
-name: Requirement
-description: "Функциональное или нефункциональное требование"
+name: Functional Requirement
+description: "Функциональное требование"
 title: "[Requirement] ФТ-XX: Краткое название требования"
 labels: ["requirement"]
 body:
-  - type: dropdown
-    id: req-type
-    attributes:
-      label: Тип требования
-      options:
-        - Функциональное
-        - Нефункциональное
-    validations:
-      required: true
 
   - type: textarea
     id: description
