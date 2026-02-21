@@ -1,0 +1,25 @@
+name: Нефункциональное требование
+description: "Нефункциональное требование (НФТ)"
+title: "[Requirement] НФТ-XX: Краткое название"
+labels: ["requirement", "non_functional_req"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Описание
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Критерии приёмки
+    validations:
+      required: false
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Примечания
+    validations:
+      required: false

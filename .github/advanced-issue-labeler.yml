@@ -1,9 +1,0 @@
-policy:
-  - template: ["requirement.yml"]
-    section:
-      - id: ["req-type"]
-        label:
-          - name: "functional_req"
-            keys: ["Функциональное"]
-          - name: "non_functional_req"
-            keys: ["Нефункциональное"]
