@@ -3,8 +3,10 @@ name: Deploy Documentation
 on:
   push:
     branches: [ main ]
-    paths-ignore:
-      - '*.md'
+#    paths-ignore:
+#      - '*.md'
+  issues:
+    types: [opened, edited, labeled]
   workflow_dispatch:
 
 jobs:
@@ -12,18 +14,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    
+      with:
+        fetch-depth: 0    # нужно для git-revision-date-localized
+
     - uses: actions/setup-python@v5
       with:
         python-version: '3.11'
         cache: 'pip'
-    
+
     - name: Install dependencies
       run: pip install -r requirements.txt
-    
+
     - name: Build documentation
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: mkdocs build --strict
-    
+
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
@@ -31,7 +37,7 @@ jobs:
 
   deploy:
     needs: build
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     permissions:
       pages: write

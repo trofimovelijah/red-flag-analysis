@@ -61,6 +61,8 @@ plugins:
   - search:
       lang: ru
       separator: '[\s\-,:!=\[\]()"/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+  - macros:
+      module_name: main
   - include-markdown:
       opening_tag: "{%"
       closing_tag: "%}"
