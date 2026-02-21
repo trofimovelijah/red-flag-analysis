@@ -8,7 +8,7 @@ body:
     attributes:
       label: Описание
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: acceptance
