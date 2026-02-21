@@ -1,0 +1,104 @@
+name: Requirement
+description: "Функциональное или нефункциональное требование"
+title: "[Requirement]: "
+labels: ["requirement"]
+body:
+  - type: input
+    id: req-id
+    attributes:
+      label: Идентификатор требования
+      description: "Например: ФТ-01, НФТ-03"
+      placeholder: "ФТ-01"
+    validations:
+      required: true
+
+  - type: input
+    id: req-title
+    attributes:
+      label: Краткое название
+      placeholder: "Пользователь может загружать файл для его анализа"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: req-type
+    attributes:
+      label: Тип требования
+      options:
+        - Функциональное
+        - Нефункциональное
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Описание
+      description: "Подробное описание требования"
+      placeholder: |
+        Пользователь может загружать один документ через тг-бот за один анализ.
+        Загрузка выполняется для файлов формата *.txt и *.pdf.
+        Максимальный размер файла -- 50 МБ.
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Критерии приёмки
+      description: "Список проверяемых условий (каждый с новой строки)"
+      placeholder: |
+        - Прикреплённый документ отображается в тг
+        - Активна кнопка "Выполнить анализ"
+        - Система отклоняет файлы размером > 50 МБ с сообщением об ошибке
+    validations:
+      required: true
+
+  - type: textarea
+    id: preconditions
+    attributes:
+      label: Предусловия
+      description: "Что должно быть выполнено до начала сценария"
+      placeholder: |
+        - Пользователь запустил тг-бот
+        - Активна кнопка добавления файла
+    validations:
+      required: false
+
+  - type: textarea
+    id: scenarios
+    attributes:
+      label: Сценарии (основной)
+      description: "Пронумерованные шаги основного сценария"
+      placeholder: |
+        1. Пользователь нажимает кнопку добавления документа
+        2. Открывается файловой менеджер ОС
+        3. Пользователь выбрал файл
+        4. Файл отображается в тг-боте
+    validations:
+      required: true
+
+  - type: textarea
+    id: alt-scenarios
+    attributes:
+      label: Альтернативные сценарии
+      description: "Ответвления от основного сценария (отмена, ошибки и т.д.)"
+      placeholder: |
+        Отмена выбора:
+        4а. Пользователь нажимает кнопку отмены
+        5а. Отображается кнопка добавления файла
+
+        Добавление файла размером более 50 Мб:
+        4г. Пользователь выбрал файл размером более 50 Мб
+        5г. Система отклоняет файл с сообщением об ошибке
+    validations:
+      required: false
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Примечания
+      description: "Дополнительная информация, ограничения, зависимости"
+      placeholder: "На платном тарифе число добавляемых документов не ограничено"
+    validations:
+      required: false
