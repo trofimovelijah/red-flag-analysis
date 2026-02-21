@@ -1,0 +1,17 @@
+name: Requirement
+description: New feature/requirement
+title: "[Requirement]: "
+labels: ["requirement"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+    validations:
+      required: true
