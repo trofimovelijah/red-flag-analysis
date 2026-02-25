@@ -17,7 +17,7 @@
 
 ### Функциональные требования
 
-{{ github_req(21) }}
+{{ github_req_full(21) }}
 
 ----
 
@@ -25,100 +25,100 @@
 
 ----
 
-{{ github_req(24) }}
+{{ github_req_full(24) }}
 
 ----
 
-{{ github_req(25) }}
+{{ github_req_full(25) }}
 
 ----
 
-{{ github_req(26) }}
+{{ github_req_full(26) }}
 
 ----
 
-{{ github_req(27) }}
+{{ github_req_full(27) }}
 
 ----
 
-{{ github_req(28) }}
+{{ github_req_full(28) }}
 
 ----
 
-{{ github_req(29) }}
+{{ github_req_full(29) }}
 
 ----
 
-{{ github_req(30) }}
+{{ github_req_full(30) }}
 
 ----
 
-{{ github_req(31) }}
+{{ github_req_full(31) }}
 
 ----
 
-{{ github_req(32) }}
+{{ github_req_full(32) }}
 
 ----
 
-{{ github_req(33) }}
+{{ github_req_full(33) }}
 
 ----
 
-{{ github_req(34) }}
+{{ github_req_full(34) }}
 
 ----
 
-{{ github_req(35) }}
+{{ github_req_full(35) }}
 
 ----
 
-{{ github_req(36) }}
+{{ github_req_full(36) }}
 
 ----
 
-{{ github_req(37) }}
+{{ github_req_full(37) }}
 
 ----
 
-{{ github_req(38) }}
+{{ github_req_full(38) }}
 
 ----
 
-{{ github_req(39) }}
+{{ github_req_full(39) }}
 
 ----
 
-{{ github_req(40) }}
+{{ github_req_full(40) }}
 
 ----
 
-{{ github_req(41) }}
+{{ github_req_full(41) }}
 
 ----
 
-{{ github_req(42) }}
+{{ github_req_full(42) }}
 
 ----
 
-{{ github_req(43) }}
+{{ github_req_full(43) }}
 
 ----
 
-{{ github_req(44) }}
+{{ github_req_full(44) }}
 
 ----
 
-{{ github_req(45) }}
+{{ github_req_full(45) }}
 
 ----
 
-{{ github_req(46) }}
+{{ github_req_full(46) }}
 
 ----
 
 
-{{ github_req(47) }}
+{{ github_req_full(47) }}
 
 ----
 
