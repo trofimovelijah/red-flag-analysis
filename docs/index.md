@@ -5,6 +5,7 @@
 ## Быстрая навигация
 
 - [Технический проект](technical_project/README.md)
+- [Особенности](qa/tech_conf.md)
 - [Вопросы](qa/question.md)
 
 ## О проекте

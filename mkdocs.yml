@@ -55,6 +55,7 @@ extra_css:
 nav:
   - 🏠 Главная: index.md
   - 📚 Технический проект: technical_project/README.md
+  - ⚙️ Особенности: qa/tech_conf.md
   - ❓ Вопросы: qa/question.md
 
 plugins:
