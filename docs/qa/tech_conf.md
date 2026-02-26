@@ -1,7 +1,7 @@
 # Особенности конфигурирования Платформы
 
 ## Проектирование базы ключ-значение
-
+### Назначение Redis в архитектуре
 `Redis` выполняет следующие ключевые возможности:
 
 | Возможности Redis | Описание | Требования |
@@ -10,6 +10,15 @@
 |Счётчик попыток на бесплатном тарифе| отслеживание количества использованных анализов (x/3) с TTL на сутки | - [ФТ-03](https://github.com/trofimovelijah/red-flag-analysis/issues/24),<br> - [ФТ-20](https://github.com/trofimovelijah/red-flag-analysis/issues/41),<br> - [ФТ-25](https://github.com/trofimovelijah/red-flag-analysis/issues/46) |
 |Кэширование промежуточных данных| временное хранение метаданных загружаемых файлов, статусов обработки и результатов для быстрого доступа `n8n`-нодами | - [ФТ-07](https://github.com/trofimovelijah/red-flag-analysis/issues/28),<br> - [ФТ-08](https://github.com/trofimovelijah/red-flag-analysis/issues/29),<br> - [ФТ-11](https://github.com/trofimovelijah/red-flag-analysis/issues/32),<br> - [ФТ-14](https://github.com/trofimovelijah/red-flag-analysis/issues/35),<br> - [ФТ-24](https://github.com/trofimovelijah/red-flag-analysis/issues/45) |
 
+### Распределение баз данных Redis
+
+| DB | Назначение |	Описание |
+|---|---|---|
+| db0	| Сессии пользователей (FSM) | Состояние пользователя в Telegram-боте: текущий шаг, загружен ли файл, ожидание анализа |
+| db1	| Счётчики лимитов | Количество использованных попыток анализа на бесплатном тарифе (`x/3`) |
+| db2	| Кэш метаданных | Временные данные: метаданные файла, статус обработки, промежуточные результаты для `n8n` |
+
+----
 ## Проектирование файлового хранилища
 
 `MinIO` выполняет функцию `S3`-совместимого объектного хранилища для временного размещения загруженных пользователем документов. Ключевое требование - транзитная обработка данных [ФТ-24](https://github.com/trofimovelijah/red-flag-analysis/issues/45) / [Без-1](https://github.com/trofimovelijah/red-flag-analysis/issues/61): документы должны обрабатываться и удаляться после завершения анализа. Основные возможности `MinIO`:
