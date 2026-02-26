@@ -22,7 +22,7 @@
 
 | Элемент данных | Описание | Тип данных | Длина | Значение |
 | ----- | ----- | ----- | ----- | ----- |
-| **Users (Пользователи)** | физическое лицо, достигшее 18 лет, имеющее доступ к телеграм-боту Платформы и выполняющее Анализ | PK: user\_id FK: tariff\_id |  |  |
+| **Users (Пользователи)** | физическое лицо, достигшее 18 лет, имеющее доступ к телеграм-боту Платформы и выполняющее Анализ | PK: user_id<br> FK: tariff\_id |  |  |
 | user\_id | Уникальный идентификатор пользователя в рамках Платформы | BIGINT | 10 |  |
 | tariff\_id | Идентификатор тарифа пользователя | INTEGER  | 20 |  |
 | telegram\_id | Идентификатор аккаунта Telegram | BIGINT | 20 |  |
@@ -32,7 +32,7 @@
 | created\_at | Дата и время создания аккаунта | TIMESTAMP | 19 | Не может быть позже текущей даты |
 | updated\_at | Дата и время последнего обновления | TIMESTAMP | 19 | Не может быть раньше created\_at |
 | deleted\_at |  | TIMESTAMP | 19 | Не может быть раньше created\_at |
-| **Sessions (Сессии пользователя)** | сессии пользователя Платформы, во время которых осуществляется выполнение Анализа | PK: session\_id FK: user\_id FK: file\_format\_id FK: jurisdiction\_id FK: document\_type\_id |  |  |
+| **Sessions (Сессии пользователя)** | сессии пользователя Платформы, во время которых осуществляется выполнение Анализа | PK: session\_id<br> FK: user\_id<br> FK: file\_format\_id<br> FK: jurisdiction\_id<br> FK: document\_type\_id |  |  |
 | session\_id | Уникальный идентификатор активной сессии пользователя | BIGINT | 20 |  |
 | user\_id | Ссылка на Users | BIGINT | 10 |  |
 | document\_s3\_key | Идентификатор документа в S3 хранилище \- временный объект | VARCHAR | 255 |  |
@@ -46,7 +46,7 @@
 | error\_message | Сообщение об ошибке | TEXT | \- |  |
 | created\_at |  | TIMESTAMP | 19 | DEFAULT CURRENT\_TIMESTAMP |
 | updated\_at |  | TIMESTAMP | 19 | DEFAULT CURRENT\_TIMESTAMP |
-| **Chunks (Чанки)** | Чанки для RAG и полнотекстового поиска | PK: chunk\_id FK: session\_id FK: embedding\_vector\_id |  |  |
+| **Chunks (Чанки)** | Чанки для RAG и полнотекстового поиска | PK: chunk\_id<br>  FK: session\_id<br>  FK: embedding\_vector\_id |  |  |
 | chunk\_id | Уникальный идентификатор чанка | BIGINT | 20 |  |
 | session\_id | Уникальный идентификатор активной сессии пользователя | BIGINT | 20 |  |
 | embedding\_vector\_id |  | VARCHAR | 100 |  Идентификатор в Qdrant |
@@ -55,7 +55,7 @@
 | tsvector |  | TSVECTOR | 10 | для BM25 полнотекстового поиска |
 | created\_at |  | TIMESTAMP | 19 | DEFAULT CURRENT\_TIMESTAMP |
 | deleted\_at |  | TIMESTAMP | 19 | soft delete |
-| **Analysis\_Results (Результаты Анализа)** | Результаты выполнения Анализа в рамках активной сессии пользователя | PK: result\_id FK: session\_id FK: risk\_id FK: analysis\_type\_id FK: evidence\_chunk\_id |  |  |
+| **Analysis\_Results (Результаты Анализа)** | Результаты выполнения Анализа в рамках активной сессии пользователя | PK: result\_id<br> FK: session\_id<br> FK: risk\_id<br> FK: analysis\_type\_id<br> FK: evidence\_chunk\_id |  |  |
 | result\_id | Уникальный идентификатор результата Анализа | BIGINT | 20 |  |
 | session\_id | Уникальный идентификатор активной сессии пользователя | BIGINT | 20 |  |
 | risk\_id | Идентификатор риска | INTEGER | 20 |  |
@@ -66,12 +66,12 @@
 | evidence\_text | Цитата из документа, где найден риск | TEXT | 200 |  |
 | recommendation | Специфичная рекомендация для документа | TEXT | 10000 |  |
 | created\_at |  | TIMESTAMP | 19 | DEFAULT CURRENT\_TIMESTAMP |
-| **Analysis\_Types (Типы Анализа)** | Справочник типов результатов Анализа | PK: analysis\_type\_id type\_name token\_multiplier cost\_multiplier |  |  |
+| **Analysis\_Types (Типы Анализа)** | Справочник типов результатов Анализа | PK: analysis\_type\_id<br> |  |  |
 | analysis\_type\_id | Уникальный идентификатор типа анализа | INTEGER | 20 |  |
 | type\_name | Наименование типа | VARCHAR | 50 | STANDARD (по-умолчанию) DEEP |
 | token\_multiplier |  | DECIMAL | 3, 1 | 1.0 \- для STANDARD 2.0 \- для DEEP |
 | cost\_multiplier | Для расчёта стоимости | DECIMAL | 3, 1 | 1.0 \- по умолчанию |
-| **Risk\_Definitions (Определение Рисков)** | Справочник определения рисков | PK: risk\_id FK: risk\_category\_id FK: jurisdiction\_id |  |  |
+| **Risk\_Definitions (Определение Рисков)** | Справочник определения рисков | PK: risk\_id<br> FK: risk\_category\_id<br> FK: jurisdiction\_id |  |  |
 | risk\_id | Идентификатор риска | INTEGER | 20 |  |
 | risk\_category\_id | Идентификатор категории рисков | INTEGER | 20 |  |
 | jurisdiction\_id | Идентификатор юрисдикции | INTEGER | 20 |  |
@@ -108,7 +108,7 @@
 | allows\_batch\_processing |  | BOOLEAN |  | False (Free) True (Pro, Pro+) |
 | priority\_support |  | BOOLEAN |  | False (Free, Pro) True (Pro+) |
 | created\_at |  | TIMESTAMP | 19 | DEFAULT CURRENT\_TIMESTAMP |
-| **Payments (Платежи)** | Платежи | PK: payment\_id FK: user\_id FK: payment\_type\_id FK: tariff\_id |  |  |
+| **Payments (Платежи)** | Платежи | PK: payment\_id<br> FK: user\_id<br> FK: payment\_type\_id<br> FK: tariff\_id |  |  |
 | payment\_id | Уникальный идентификатор платежа | BIGINT |  |  |
 | user\_id | Ссылка на Users | BIGINT | 10 |  |
 | payment\_type\_id | Идентификатор типа платежа | INTEGER |  |  |
@@ -122,7 +122,7 @@
 | **Payments\_Types (Типы платежей)** | Типы платежей | PK: payment\_type\_id |  |  |
 | payment\_type\_id | Идентификатор типа платежа | INTEGER |  |  |
 | type\_name | Наименование типа платежа | VARCHAR | 100 | SUBSCRIPTION ONE\_TIME TOP\_UP |
-| **Rate\_Limit\_Log (Отслеживание лимитов)** | Таблица для отслеживания лимитов на текущем тарифе пользователя | PK: log\_id FK: user\_id FK: tariff\_id |  |  |
+| **Rate\_Limit\_Log (Отслеживание лимитов)** | Таблица для отслеживания лимитов на текущем тарифе пользователя | PK: log\_id<br> FK: user\_id<br> FK: tariff\_id |  |  |
 | log\_id | Идентификатор лога | BIGINT |  |  |
 | user\_id | Ссылка на Users | BIGINT | 10 |  |
 | tariff\_id | Идентификатор тарифа пользователя | INTEGER | 20 |  |
@@ -130,7 +130,7 @@
 | analysis\_count |  | INTEGER |  | по-умолчанию 0 |
 | limit\_exceeded |  | BOOLEAN |  | False \- по-умолчанию |
 | timestamp |  | TIMESTAMP | 19 | DEFAULT CURRENT\_TIMESTAMP |
-| **Feedback (Обратная связь)** | Обратная связь от пользователя по результату выполнения Анализа | PK: feedback\_id FK: result\_id FK: user\_id FK: feedback\_type\_id |  |  |
+| **Feedback (Обратная связь)** | Обратная связь от пользователя по результату выполнения Анализа | PK: feedback\_id<br> FK: result\_id<br> FK: user\_id<br> FK: feedback\_type\_id |  |  |
 | feedback\_id | Идентификатор обратной связи | BIGINT | 20 |  |
 | result\_id | Уникальный идентификатор результата Анализа | BIGINT | 20 |  |
 | user\_id | Ссылка на Users | BIGINT | 10 |  |
@@ -140,7 +140,7 @@
 | **Feedback\_Types** |  | PK: feedback\_type\_id |  |  |
 | feedback\_type\_id | Идентификатор типа обратной связи | INTEGER | 10 |  |
 | type\_name | Уникальное наименование типа обратной связи | VARCHAR | 50 | HELPFUL NOT\_HELPFUL NEEDS\_CLARIFICATION |
-| **Audit\_Log** | Аудит и логирование | PK: log\_id FK: user\_id FK: resource\_id |  |  |
+| **Audit\_Log** | Аудит и логирование | PK: log\_id<br> FK: user\_id<br> FK: resource\_id |  |  |
 | log\_id | Идентификатор лога аудита | BIGINT | 20 |  |
 | user\_id | Ссылка на Users | BIGINT | 10 |  |
 | resource\_id | Идентификатор логируемого ресурса | VARCHAR | 100 |  |
@@ -155,7 +155,7 @@
 | **Resource\_Types (Типы ресурсов)** | Типы ресурсов, выявленных в ходе логирования | PK: resource\_id |  |  |
 | resource\_id | Идентификатор логируемого ресурса | VARCHAR | 100 |  |
 | resource\_type | Тип логируемого ресурса | VARCHAR | 100 | SESSION RESULT USER CHUNK |
-| **Analysis\_Metric** | Метрики производительности | PK: metric\_id FK: session\_id |  |  |
+| **Analysis\_Metric** | Метрики производительности | PK: metric\_id<br> FK: session\_id |  |  |
 | metric\_id | Идентификатор метрики | BIGINT | 20 |  |
 | session\_id | Уникальный идентификатор активной сессии пользователя | BIGINT | 20 |  |
 | llm\_tokens\_used |  | INTEGER |  |  |
@@ -206,6 +206,8 @@
 
 {{ github_req_full(84) }}
 
+----
+
 #### Выбор стратегии индексирования
 После создания чанков в реляционной БД необходимо выполнять индексирование. Это связано с процессом загрузки данных. Процесс выглядит следующим образом:
 
@@ -225,11 +227,10 @@
 
 #### Расчёт ёмкости и ресурсов
 
-
 1. Расчёт рекомендуемой RAM для Qdrant:
 
-*память \= количество\_векторов × размерность × размер одного вектора в float32*  
-*4096 Мб \= 1000000 × 1024 × 4 байта*
+   *память \= количество\_векторов × размерность × размер одного вектора в float32*  
+   *4096 Мб \= 1000000 × 1024 × 4 байта*
 
 2. С индексом HSWF:
 
@@ -248,16 +249,16 @@
 
 Типичная схема векторного хранилища состоит из компонентов:
 
-* первичный ключ  
-* скалярные поля  
-* формат метаданных  
-* тип векторов
+- первичный ключ,
+- скалярные поля,
+- формат метаданных,
+- тип векторов.
 
 Реализация представлена в таблице
 
 | Элемент данных | Описание | Тип данных | Длина | Значение | Связь с таблицей реляционной БД |
 | ----- | ----- | ----- | ----- | ----- | ----- |
-| **Vector\_documents** | Таблица “красных флажков” в векторном хранилище | PK: document\_vector\_id FK: chunk\_id FK: session\_id FK: user\_id |  |  |  |
+| **ru_vector_documents** | Таблица “красных флажков” в векторном хранилище | PK: document\_vector\_id<br> FK: chunk\_id<br> FK: session\_id<br> FK: user\_id |  |  |  |
 | document\_vector\_id |  | UUID |  |  |  |
 | chunk\_id |  | INTEGER |  |  | chunks.chunk\_id |
 | session\_id |  | INTEGER |  |  | sessions.session\_id |
@@ -289,7 +290,7 @@
 | is\_active | актуальность для поиска   | BOOLEAN |  |  |  |
 | created\_at |  | TIMESTAMP | 19 |  |  |
 | updated\_at |  | TIMESTAMP | 19 |  |  |
-| **Vector\_search\_log** | Таблица поисковых запросов в векторном хранилище | PK: search\_id FK: session\_id FK: user\_id FK: result\_id |  |  |  |
+| **Vector\_search\_log** | Таблица поисковых запросов в векторном хранилище | PK: search\_id<br> FK: session\_id<br> FK: user\_id<br> FK: result\_id |  |  |  |
 | search\_id |  |  |  |  |  |
 | session\_id |  |  |  |  |  |
 | user\_id |  |  |  |  |  |
@@ -312,7 +313,7 @@
 
 Общая информация о коллекции:
 
-* Название: documents\_embeddings  
-* Назначение: Хранение эмбеддингов документов для RAG  
+* Название: ru_documents_embeddings  
+* Назначение: хранение эмбеддингов документов для RAG  
 * Объем: 1M текущих, 5M через год  
 * TTL: 90 дней
