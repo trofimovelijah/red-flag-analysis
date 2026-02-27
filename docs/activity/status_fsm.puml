@@ -1,0 +1,42 @@
+' статусы описывают жизненный цикл пользовательской сессии в тг-боте
+' статусы используются как значение ключа session:{telegram_id}:state в db0 Redis
+@@startuml
+start
+-> Пользователь\nоткрыл тг-бот;
+:IDLE;
+
+fork
+-> Пользователь\nзагрузил файл;
+:FILE_UPLOADED;
+fork again;
+-> Пользователь вставил\nтекст договора;
+:TEXT_ENTERED;
+fork again;
+-> Пользователь указал\nссылку на GoogleDocs;
+:LINK_ENTERED;
+end fork
+
+-> Выполняется\nАнализ договора;
+:ANALYZING;
+
+if (Анализ выполнен\nуспешно?)
+    -> Да;
+    :RESULT_READY;
+    note left
+    Результат выполнения 
+    Анализа готов и
+    представлен пользователю
+    end note
+    -> Ожидание обратной\nсвязи от пользователя;
+    :AWAITING_FEEDBACK;
+else (нет)
+    -> Нет;
+    :FAILED;
+    note right
+    Ошибка в ходе
+    выполнения Анализа
+    end note
+endif
+
+end
+@@enduml
