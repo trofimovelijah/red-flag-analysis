@@ -29,7 +29,7 @@ services:
   # Redis 7.2 - хранилище данных в памяти (кэш/сессии)
   redis:
     image: redis:7.2-alpine
-    container_name: redis_db
+    container_name: redflag-redis
     restart: unless-stopped
     ports:
       - "6379:6379"
@@ -48,7 +48,7 @@ services:
       retries: 5
       start_period: 10s
     networks:
-      - app-network
+      - redflag-network
     user: "999:999"
     depends_on:
       - postgres
@@ -86,6 +86,35 @@ services:
           cpus: '1'
           memory: 1G
 
+  # MinIO - объектное S3-хранилище
+  minio:
+    image: minio/minio:latest
+    container_name: redflag-minio
+    restart: unless-stopped
+    ports:
+      - "9000:9000"   # API-порт (S3-совместимый)
+      - "9001:9001"   # Веб-консоль MinIO (для администрирования)
+    environment:
+      # Логин и пароль для root-доступа.
+      # ОБЯЗАТЕЛЬНО замените на свои значения!
+      MINIO_ROOT_USER: redflag_admin
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+
+      # Регион (для S3-совместимости)
+      MINIO_REGION: ru-central1
+    volumes:
+      # Том для хранения данных. /data — стандартный путь внутри контейнера.
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - redflag-network
+
+
 # Именованные volumes для персистентности данных
 volumes:
   postgres_data:
@@ -106,6 +135,8 @@ volumes:
       type: none
       o: bind
       device: ${PWD}/data/qdrant
+  minio_data:
+    driver: local
 
 # Сеть для коммуникации между контейнерами
 networks:

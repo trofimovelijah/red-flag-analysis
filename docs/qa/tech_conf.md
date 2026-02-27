@@ -80,4 +80,139 @@
 - буфер между загрузкой и обработкой - тг-бот принимает файл, сохраняет его в S3, в дальнейшем пайплайн (n8n-пайплайн) подхватывает его асинхронно,
 - изоляция файлов по сессиям - каждый файл привязан к `session_id`, что исключает пересечения данных между пользователями,
 - автоматическое удаление в соответствии с [ФТ-24](https://github.com/trofimovelijah/red-flag-analysis/issues/45) по TTL,
-- единый интерфейс S3 API - n8n имеет встроенную ноду
+- единый интерфейс S3 API - n8n имеет встроенную ноду.
+
+### Структура бакетов
+
+| Бакет | Назначение | Lifecycle (TTL) | Доступ |
+|---|---|---|---|
+| `user-uploads` | Загруженные пользователями файлы (*.pdf, *.txt, изображения) | 24 часа — автоматическое удаление | Запись: тг-бот; Чтение: n8n парсер |
+| `analysis-reports` | Сгенерированные `PDF`/`TXT` отчёты для выгрузки пользователем | 7 дней — автоматическое удаление | Запись: n8n генератор отчётов; Чтение: тг-бот |
+
+### Именование объектов
+
+Объекты внутри бакетов именуются по единому шаблону для однозначной идентификации:
+```json
+{bucket}/{user_id}/{session_id}/{timestamp}_{original_filename}
+```
+Пример использования:
+```json
+user-uploads/42/sess_abc123/20260225_143000_contract.pdf
+user-uploads/42/sess_abc123/20260225_143000_screenshot.png
+analysis-reports/123456789/sess_abc123/20260225_143500_report.pdf
+```
+
+### Первоначальная настройка
+
+После первого запуска [docker-compose.yaml](../../configuration/docker-compose.yaml) необходимо создать бакеты и настроить lifecycle-правила. Это делается через утилиту `mc` (MinIO Client).
+
+**Шаг 1. Установка mc (на хост-машине или внутри контейнера)**
+
+```bash
+# Вариант А: скачать mc на хост-машину
+wget https://dl.min.io/client/mc/release/linux-amd64/mc
+chmod +x mc
+sudo mv mc /usr/local/bin/
+
+# Вариант Б: выполнить команды внутри контейнера
+docker exec -it redflag-minio bash
+```
+
+**Шаг 2. Регистрация подключения к серверу**
+
+```bash
+# «redflag» — произвольное имя alias для нашего MinIO-сервера
+mc alias set redflag http://localhost:9000 redflag_admin YOUR_STRONG_MINIO_PASSWORD
+```
+
+**Шаг 3. Создание бакетов**
+
+```bash
+mc mb redflag/user-uploads
+mc mb redflag/analysis-reports
+```
+
+**Шаг 4. Настройка lifecycle-правил (автоудаление файлов)**
+Создайте файлы с правилами жизненного цикла:
+
+```json
+// lifecycle-uploads.json — удаление через 1 день
+{
+  "Rules": [
+    {
+      "ID": "AutoDeleteUploads",
+      "Status": "Enabled",
+      "Expiration": {
+        "Days": 1
+      }
+    }
+  ]
+}
+```
+
+```json
+// lifecycle-uploads.json — удаление через 7 дней
+{
+  "Rules": [
+    {
+      "ID": "AutoDeleteUploads",
+      "Status": "Enabled",
+      "Expiration": {
+        "Days": 7
+      }
+    }
+  ]
+}
+```
+
+Применение правил:
+```bash
+mc ilm import redflag/user-uploads < lifecycle-uploads.json
+mc ilm import redflag/analysis-reports < lifecycle-reports.json
+```
+
+**Шаг 5. Проверка настройки**
+```bash
+# Проверить список бакетов
+mc ls redflag
+
+# Проверить lifecycle-правила
+mc ilm ls redflag/user-uploads
+mc ilm ls redflag/analysis-reports
+```
+
+### Создание сервисного аккаунта для `n8n`
+
+Для безопасной работы `n8n` с `MinIO` создаётся отдельный аккаунт с ограниченными правами (не `root`).
+
+1. Через веб-консоль MinIO (http://localhost:9001) войти с root-логином (redflag_admin)
+2. Перейти в Identity → Users → Create User.
+3. Указать значения параметров:
+   - Access Key: n8n_service
+   - Secret Key: YOUR_N8N_SERVICE_PASSWORD
+4. Назначить политику: создать кастомную политику `n8n-policy`
+5. Указать кастомную политику в виде файла JSON:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject",
+        "s3:GetObject",
+        "s3:DeleteObject",
+        "s3:ListBucket"
+      ],
+      "Resource": [
+        "arn:aws:s3:::user-uploads/*",
+        "arn:aws:s3:::user-uploads",
+        "arn:aws:s3:::analysis-reports/*",
+        "arn:aws:s3:::analysis-reports"
+      ]
+    }
+  ]
+}
+```
+6. Эта политика разрешает n8n работать с бакетами `user-uploads` и `analysis-reports`.
