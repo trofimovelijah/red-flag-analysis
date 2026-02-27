@@ -104,7 +104,7 @@ analysis-reports/123456789/sess_abc123/20260225_143500_report.pdf
 
 ### Первоначальная настройка
 
-После первого запуска [docker-compose.yaml](../../configuration/docker-compose.yaml) необходимо создать бакеты и настроить lifecycle-правила. Это делается через утилиту `mc` (MinIO Client).
+После первого запуска [docker-compose.yaml](configuration/docker-compose.yaml) необходимо создать бакеты и настроить lifecycle-правила. Это делается через утилиту `mc` (MinIO Client).
 
 **Шаг 1. Установка mc (на хост-машине или внутри контейнера)**
 
