@@ -104,7 +104,13 @@ analysis-reports/123456789/sess_abc123/20260225_143500_report.pdf
 
 ### Первоначальная настройка
 
-После первого запуска [docker-compose.yaml](https://github.com/trofimovelijah/red-flag-analysis/blob/main/docker-compose.yaml) необходимо создать бакеты и настроить lifecycle-правила. Это делается через утилиту `mc` (MinIO Client).
+После первого запуска [docker-compose.yaml](https://github.com/trofimovelijah/red-flag-analysis/blob/main/configuration/docker-compose.yaml) необходимо создать бакеты и настроить lifecycle-правила. Это делается через утилиту `mc` (MinIO Client).
+
+**Шаг 0. Пароль**
+Придумать пароль и прописать его в `.env`:
+```bash
+MINIO_ROOT_PASSWORD=YOUR_STRONG_MINIO_PASSWORD
+```
 
 **Шаг 1. Установка mc (на хост-машине или внутри контейнера)**
 
@@ -117,6 +123,7 @@ sudo mv mc /usr/local/bin/
 # Вариант Б: выполнить команды внутри контейнера
 docker exec -it redflag-minio bash
 ```
+Обратите внимание, что `mc` может быть уже присутствовать в качестве установленной как `Midnight Commander`. В этом случае запуск команд из оболочки ОС (не внутри контейнера) происходит через указание относительного пути. Пример: `./mc`
 
 **Шаг 2. Регистрация подключения к серверу**
 
@@ -135,8 +142,8 @@ mc mb redflag/analysis-reports
 **Шаг 4. Настройка lifecycle-правил (автоудаление файлов)**
 Создайте файлы с правилами жизненного цикла:
 
+`lifecycle-uploads.json` — удаление через 1 день
 ```json
-// lifecycle-uploads.json — удаление через 1 день
 {
   "Rules": [
     {
@@ -150,8 +157,8 @@ mc mb redflag/analysis-reports
 }
 ```
 
+`lifecycle-uploads.json` — удаление через 7 дней
 ```json
-// lifecycle-uploads.json — удаление через 7 дней
 {
   "Rules": [
     {
@@ -176,22 +183,40 @@ mc ilm import redflag/analysis-reports < lifecycle-reports.json
 # Проверить список бакетов
 mc ls redflag
 
+[2026-03-02 13:45:29 UTC]     0B analysis-reports/
+[2026-03-02 13:45:19 UTC]     0B user-uploads/
+
 # Проверить lifecycle-правила
 mc ilm ls redflag/user-uploads
+┌────────────────────────────────────────────────────────────────────────────────────┐
+│ Expiration for latest version (Expiration)                                         │
+├───────────────────┬─────────┬────────┬──────┬────────────────┬─────────────────────┤
+│ ID                │ STATUS  │ PREFIX │ TAGS │ DAYS TO EXPIRE │ EXPIRE DELETEMARKER │
+├───────────────────┼─────────┼────────┼──────┼────────────────┼─────────────────────┤
+│ AutoDeleteUploads │ Enabled │ -      │ -    │              1 │ false               │
+└───────────────────┴─────────┴────────┴──────┴────────────────┴─────────────────────┘
+
 mc ilm ls redflag/analysis-reports
+┌────────────────────────────────────────────────────────────────────────────────────┐
+│ Expiration for latest version (Expiration)                                         │
+├───────────────────┬─────────┬────────┬──────┬────────────────┬─────────────────────┤
+│ ID                │ STATUS  │ PREFIX │ TAGS │ DAYS TO EXPIRE │ EXPIRE DELETEMARKER │
+├───────────────────┼─────────┼────────┼──────┼────────────────┼─────────────────────┤
+│ AutoDeleteUploads │ Enabled │ -      │ -    │              7 │ false               │
+└───────────────────┴─────────┴────────┴──────┴────────────────┴─────────────────────┘
 ```
 
 ### Создание сервисного аккаунта для `n8n`
 
-Для безопасной работы `n8n` с `MinIO` создаётся отдельный аккаунт с ограниченными правами (не `root`).
+**Шаг 1. Создание пользователя**
 
-1. Через веб-консоль MinIO (http://localhost:9001) войти с root-логином (redflag_admin)
-2. Перейти в Identity → Users → Create User.
-3. Указать значения параметров:
-   - Access Key: n8n_service
-   - Secret Key: YOUR_N8N_SERVICE_PASSWORD
-4. Назначить политику: создать кастомную политику `n8n-policy`
-5. Указать кастомную политику в виде файла JSON:
+```bash
+mc admin user add redflag n8n_service YOUR_N8N_SERVICE_PASSWORD
+```
+
+**Шаг 2. Создать файл политики**
+
+Создать кастомную политику `n8n-policy.json`
 
 ```json
 {
@@ -215,4 +240,28 @@ mc ilm ls redflag/analysis-reports
   ]
 }
 ```
-6. Эта политика разрешает n8n работать с бакетами `user-uploads` и `analysis-reports`.
+
+**Шаг 3. Выполнить действия с политикой**
+
+Загрузить политику:
+
+```bash
+mc admin policy create redflag n8n-policy n8n-policy.json
+```
+
+Назначить политику пользователю:
+
+```bash
+mc admin policy attach redflag n8n-policy --user n8n_service
+```
+
+**Шаг 4. Выполнить проверку**
+
+```bash
+mc admin user info redflag n8n_service
+
+AccessKey: n8n_service
+Status: enabled
+PolicyName: n8n-policy
+MemberOf: []
+```
