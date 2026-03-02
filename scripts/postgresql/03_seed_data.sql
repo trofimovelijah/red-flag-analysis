@@ -4,6 +4,9 @@
 -- Этот скрипт запускается в БД red_flag_analysis
 -- Выполнить: psql -U postgres -d red_flag_analysis -f scripts/03_seed_data.sql
 
+-- Установка схемы для текущей сессии (все INSERT будут в red_flag)
+SET search_path TO red_flag, public;
+
 -- ==================== СПРАВОЧНИКИ ====================
 
 -- Тарифы
@@ -154,7 +157,7 @@ ON CONFLICT (risk_name, jurisdiction_id) DO NOTHING;
 
 -- ==================== ПРОВЕРКА ====================
 
-\echo '✅ Справочные данные успешно загружены!'
+\echo '✅ Справочные данные успешно загружены в схему red_flag!'
 
 -- Проверка количества записей
 SELECT '--- СТАТИСТИКА ЗАГРУЖЕННЫХ ДАННЫХ ---' as info;

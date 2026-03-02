@@ -4,6 +4,9 @@
 -- Этот скрипт запускается в БД red_flag_analysis
 -- Выполнить: psql -U postgres -d red_flag_analysis -f scripts/02_init_schema.sql
 
+-- Установка схемы для текущей сессии (все таблицы будут созданы в red_flag)
+SET search_path TO red_flag, public;
+
 -- ==================== ТАБЛИЦЫ СПРАВОЧНИКОВ ====================
 
 -- Тарифы
@@ -316,6 +319,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-\echo '✅ Схема таблиц успешно создана!'
+\echo '✅ Схема таблиц успешно создана в red_flag!'
 \echo 'Следующий шаг: psql -U postgres -d red_flag_analysis -f scripts/03_seed_data.sql'
 
