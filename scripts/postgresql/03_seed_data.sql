@@ -7,6 +7,9 @@
 -- Явное подключение к БД проекта (защита от запуска в неверной БД)
 \c red_flag_analysis
 
+-- Добавление схемы (если ещё не создана)
+CREATE SCHEMA IF NOT EXISTS red_flag;
+
 -- Установка схемы для текущей сессии (все INSERT будут в red_flag)
 SET search_path TO red_flag, public;
 
