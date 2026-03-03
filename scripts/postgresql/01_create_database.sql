@@ -2,16 +2,16 @@
 -- Скрипт 1: Создание базы данных и расширений
 -- ============================================================
 -- Этот скрипт запускается от суперпользователя (postgres)
--- Выполнить: psql -U postgres -f scripts/01_create_database.sql
+-- Выполнить: psql -U postgres -h localhost -f scripts/postgresql/01_create_database.sql
 
--- Удалить старую БД если существует (осторожно!)
--- DROP DATABASE IF EXISTS red_flag_analysis;
+-- Удалить старую БД если существует (для чистой пересоздания)
+DROP DATABASE IF EXISTS red_flag_analysis;
 
 -- Создание базы данных
+-- LC_COLLATE и LC_CTYPE намеренно не указаны: используется локаль сервера по умолчанию.
+-- Указание 'ru_RU.UTF-8' вызывает ошибку на серверах без этой локали.
 CREATE DATABASE red_flag_analysis
   ENCODING 'UTF8'
-  LC_COLLATE 'ru_RU.UTF-8'
-  LC_CTYPE 'ru_RU.UTF-8'
   TEMPLATE template0;
 
 -- Подключиться к новой БД
@@ -59,4 +59,4 @@ SELECT schema_name FROM information_schema.schemata WHERE schema_name = 'red_fla
 
 \echo '✅ БД red_flag_analysis успешно создана!'
 \echo '✅ Схема red_flag создана и настроена для изоляции данных проекта'
-\echo 'Следующий шаг: psql -U postgres -d red_flag_analysis -f scripts/02_init_schema.sql'
+\echo 'Следующий шаг: psql -U postgres -h localhost -d red_flag_analysis -f scripts/postgresql/02_init_schema.sql'

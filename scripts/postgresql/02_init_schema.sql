@@ -2,7 +2,10 @@
 -- Скрипт 2: Создание схемы таблиц и индексов
 -- ============================================================
 -- Этот скрипт запускается в БД red_flag_analysis
--- Выполнить: psql -U postgres -d red_flag_analysis -f scripts/02_init_schema.sql
+-- Выполнить: psql -U postgres -h localhost -d red_flag_analysis -f scripts/postgresql/02_init_schema.sql
+
+-- Явное подключение к БД проекта (защита от запуска в неверной БД)
+\c red_flag_analysis
 
 -- Установка схемы для текущей сессии (все таблицы будут созданы в red_flag)
 SET search_path TO red_flag, public;
@@ -129,13 +132,14 @@ CREATE TABLE IF NOT EXISTS sessions (
 );
 
 -- Chunks (части документа)
+-- embedding: размерность 768 соответствует используемой модели эмбеддингов
 CREATE TABLE IF NOT EXISTS chunks (
   chunk_id SERIAL PRIMARY KEY,
   session_id INT NOT NULL REFERENCES sessions(session_id),
   chunk_number INT NOT NULL,
   chunk_text TEXT NOT NULL,
   chunk_length INT,
-  embedding VECTOR(1536),
+  embedding VECTOR(768),
   tsvector TSVECTOR,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   deleted_at TIMESTAMP
@@ -221,6 +225,9 @@ CREATE INDEX IF NOT EXISTS idx_audit_logs_timestamp ON audit_logs(timestamp);
 
 -- Полнотекстовый поиск
 CREATE INDEX IF NOT EXISTS idx_chunks_tsvector ON chunks USING GIN(tsvector);
+
+-- Векторный поиск (для поиска по эмбеддингам)
+CREATE INDEX IF NOT EXISTS idx_chunks_embedding ON chunks USING ivfflat (embedding vector_cosine_ops);
 
 -- ==================== ПРЕДСТАВЛЕНИЯ (VIEWS) ====================
 
@@ -320,5 +327,4 @@ END;
 $$ LANGUAGE plpgsql;
 
 \echo '✅ Схема таблиц успешно создана в red_flag!'
-\echo 'Следующий шаг: psql -U postgres -d red_flag_analysis -f scripts/03_seed_data.sql'
-
+\echo 'Следующий шаг: psql -U postgres -h localhost -d red_flag_analysis -f scripts/postgresql/03_seed_data.sql'

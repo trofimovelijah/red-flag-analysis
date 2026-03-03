@@ -2,7 +2,10 @@
 -- Скрипт 3: Наполнение справочными данными
 -- ============================================================
 -- Этот скрипт запускается в БД red_flag_analysis
--- Выполнить: psql -U postgres -d red_flag_analysis -f scripts/03_seed_data.sql
+-- Выполнить: psql -U postgres -h localhost -d red_flag_analysis -f scripts/postgresql/03_seed_data.sql
+
+-- Явное подключение к БД проекта (защита от запуска в неверной БД)
+\c red_flag_analysis
 
 -- Установка схемы для текущей сессии (все INSERT будут в red_flag)
 SET search_path TO red_flag, public;
@@ -169,4 +172,3 @@ SELECT (SELECT COUNT(*) FROM risk_categories) as категории_рисков
 
 \echo '✅ БД полностью готова к использованию!'
 \echo 'Следующий шаг: Проверка установки (см. README.md)'
-
