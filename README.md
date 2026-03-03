@@ -61,8 +61,8 @@ POSTGRES_PASSWORD=your_secure_postgres_password
 POSTGRES_DB=red_flag_analysis
 
 QDRANT_API_KEY=qdrant_key
-
 REDIS_PASSWORD=your_redis_password
+MINIO_ROOT_PASSWORD=your_minio_password
 ```
 
 ### 3. Запуск сервисов
