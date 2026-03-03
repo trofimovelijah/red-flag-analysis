@@ -27,11 +27,11 @@ REDIS_PASSWORD=your_redis_password
 ```bash
 docker compose up -d
 ```
-4. Последовательно выполните скрипты развёртывания базы данных
+4. Последовательно выполните скрипты развёртывания базы данных. Вместо `{ipaddr}` укажите адрес сервера, где развёрнута СУБД (и иные сервисы из состава Платформы).
 ```bash
-psql -U postgres -f scripts/01_create_database.sql
-psql -U postgres -d red_flag_analysis -f scripts/02_init_schema.sql
-psql -U postgres -d red_flag_analysis -f scripts/03_seed_data.sql
+psql -U postgres -h {ipaddr} -f scripts/postgresql/01_create_database.sql
+psql -U postgres -h {ipaddr} -d red_flag_analysis -f scripts/postgresql/02_init_schema.sql
+psql -U postgres -h {ipaddr} -d red_flag_analysis -f scripts/postgresql/03_seed_data.sql
 ```
 5. Выполните скрипт проверки правильности развёртывания
 
