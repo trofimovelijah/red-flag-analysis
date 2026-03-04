@@ -6,14 +6,25 @@ start
 :IDLE;
 
 fork
+-> Пользователь выбрал\nзагрузку файла;
+:AWAITING_FILE;
 -> Пользователь\nзагрузил файл;
 :FILE_UPLOADED;
 fork again;
+-> Пользователь выбрал\nввод текста;
+:AWAITING_TEXT;
 -> Пользователь вставил\nтекст договора;
 :TEXT_ENTERED;
 fork again;
+-> Пользователь выбрал\nприкрепление ссылки;
+:AWAITING_LINK;
 -> Пользователь указал\nссылку на GoogleDocs;
 :LINK_ENTERED;
+fork again;
+-> Пользователь выбрал\nзагрузку изображения;
+:AWAITING_IMAGE;
+-> Пользователь\nзагрузил изображение;
+:IMAGE_UPLOADED;
 end fork
 
 -> Выполняется\nАнализ договора;
@@ -21,7 +32,7 @@ end fork
 
 if (Анализ выполнен\nуспешно?)
     -> Да;
-    :RESULT_READY;
+    :COMPLETED;
     note left
     Результат выполнения 
     Анализа готов и
@@ -31,7 +42,7 @@ if (Анализ выполнен\nуспешно?)
     :AWAITING_FEEDBACK;
 else (нет)
     -> Нет;
-    :FAILED;
+    :ERROR;
     note right
     Ошибка в ходе
     выполнения Анализа
