@@ -36,6 +36,7 @@
 | `analysis:{session_id}:status` | STRING | 300 | Статус выполнения анализа (для прогресс-бара) | см. *Таблицу статусов анализа* |
 | `analysis:{session_id}:progress` | HASH | 300 | Прогресс анализа в процентах | percent: 45, stage: SEARCHING, elapsed_sec: 12 |
 | `analysis:{session_id}:result` | STRING (JSON) | 1800 | Кэш результата анализа для выгрузки/повторного просмотра | JSON структурированного отчёта |
+| `analysis:{{session_id}}:input`   | STRING | 600  | Файл договора в формате pdf/txt | пример.pdf |
 | `input:{session_id}:text`   | STRING | 600  | Текст договора, введённый вручную | «Договор аренды от...»   |
 
 ### Статусы FSM

@@ -45,7 +45,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2,
       "position": [
-        5568,
+        5776,
         480
       ],
       "id": "1132c71f-30ca-4e45-bb75-7aa169e49f2a",
@@ -77,7 +77,7 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        5104,
+        5312,
         192
       ],
       "typeVersion": 1,
@@ -92,7 +92,7 @@
       "type": "@n8n/n8n-nodes-langchain.embeddingsHuggingFaceInference",
       "typeVersion": 1,
       "position": [
-        5520,
+        5728,
         976
       ],
       "id": "507a1d65-078c-48ab-b1e1-a4bda4d7af52",
@@ -113,7 +113,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
       "typeVersion": 1,
       "position": [
-        5424,
+        5632,
         816
       ],
       "id": "a32bdd80-3d62-489b-be00-dd51c3c82e0d",
@@ -176,7 +176,7 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        2288,
+        2496,
         1152
       ],
       "typeVersion": 1,
@@ -186,14 +186,14 @@
     {
       "parameters": {
         "content": "### 📄 Client Document Parser\n\nОбработка документов",
-        "height": 592,
-        "width": 912,
+        "height": 448,
+        "width": 1520,
         "color": 4
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        4032,
-        528
+        3680,
+        672
       ],
       "typeVersion": 1,
       "id": "e4bfff7b-6e00-4018-97de-f133f3e977d4",
@@ -202,13 +202,13 @@
     {
       "parameters": {
         "content": "### 🐘 Data Persistence (PostgreSQL)\n\nРеляционная СУБД",
-        "height": 480,
+        "height": 624,
         "width": 816,
         "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        4688,
+        4896,
         1184
       ],
       "typeVersion": 1,
@@ -224,7 +224,7 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        7728,
+        7936,
         384
       ],
       "typeVersion": 1,
@@ -351,7 +351,7 @@
                 },
                 "conditions": [
                   {
-                    "leftValue": "={{ $json.has_document }}",
+                    "leftValue": "=$json.db0 == \"FILE_UPLOADED\"",
                     "rightValue": "",
                     "operator": {
                       "type": "string",
@@ -377,7 +377,7 @@
                 "conditions": [
                   {
                     "id": "91f39a66-7c9a-4033-81e8-d1e639f8e362",
-                    "leftValue": "={{ $json.text }}",
+                    "leftValue": "=$json.db0 == \"TEXT_ENTERED\"",
                     "rightValue": "",
                     "operator": {
                       "type": "string",
@@ -398,8 +398,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        3680,
-        1296
+        3616,
+        1328
       ],
       "id": "b22c2445-65a2-42e2-be05-02abb258741e",
       "name": "Input Type Router"
@@ -469,7 +469,7 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        2464,
+        2672,
         1424
       ],
       "id": "e4f83b8c-ce13-4585-946f-cfae92575139",
@@ -492,8 +492,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        4080,
-        1280
+        4288,
+        1344
       ],
       "id": "02835df5-7929-4507-951f-521b07cab57e",
       "name": "Redis Cache Analysis Status",
@@ -515,7 +515,7 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        8352,
+        8560,
         624
       ],
       "id": "ecff19f6-c360-4d5d-a61b-57a63b11517a",
@@ -554,19 +554,6 @@
     },
     {
       "parameters": {
-        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.myNewField = 1;\n}\n\nreturn $input.all();"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        4464,
-        704
-      ],
-      "id": "bb7b5ee5-6308-454c-b2b5-e5bdc55b2101",
-      "name": "Document Cleaner & Chunker"
-    },
-    {
-      "parameters": {
         "chatId": "={{ $('Extract Message Fields').first().json.chat_id }}",
         "text": "={{ $('Format S3 Upload Response').first().json.clean_html }}",
         "additionalFields": {
@@ -577,7 +564,7 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        8112,
+        8320,
         624
       ],
       "id": "5aaccfbb-cd00-496a-b5a4-d0039d548cd3",
@@ -633,7 +620,8 @@
           "value": {
             "session_id": "={{ $('Select Session ID').item.json.session_id }}",
             "chunk_text": "={{ $json.text }}",
-            "chunk_number": 1
+            "chunk_number": 1,
+            "chunk_length": 0
           },
           "matchingColumns": [],
           "schema": [
@@ -728,7 +716,7 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        4912,
+        5120,
         1408
       ],
       "id": "2a00fb85-dca4-4b13-aed1-74b5c8479910",
@@ -755,7 +743,7 @@
       "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
       "typeVersion": 1.3,
       "position": [
-        5600,
+        5808,
         800
       ],
       "id": "91a210f2-9171-4a6f-aa28-50e9ed32ebe1",
@@ -906,7 +894,7 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        7056,
+        7264,
         688
       ],
       "id": "0b10bdaa-b909-4be2-9d22-982befe2779a",
@@ -1046,7 +1034,7 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        7248,
+        7456,
         832
       ],
       "id": "701efeed-1237-476c-b0e5-3c2c414c459f",
@@ -1068,8 +1056,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        2704,
-        1424
+        3392,
+        1328
       ],
       "id": "46b1e019-7e32-498a-aa37-ac31ae543e0a",
       "name": "Redis Get FSM State",
@@ -1326,30 +1314,6 @@
       ],
       "id": "008d1d40-439a-446a-a0b9-313d9482f32a",
       "name": "Redis Get FSM State1",
-      "retryOnFail": false,
-      "executeOnce": false,
-      "credentials": {
-        "redis": {
-          "id": "k3rZiJXMKohxs4tn",
-          "name": "Redis beget 47"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "get",
-        "propertyName": "db0",
-        "key": "=session:{{ $('Extract Message Fields').item.json.telegram_id }}:state",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.redis",
-      "typeVersion": 1,
-      "position": [
-        -320,
-        2320
-      ],
-      "id": "7d7765a4-f299-4312-aa19-7afedf2b17c7",
-      "name": "Redis Get FSM State2",
       "retryOnFail": false,
       "executeOnce": false,
       "credentials": {
@@ -1718,7 +1682,7 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        80,
+        288,
         1888
       ],
       "id": "d1df608e-b7ab-4651-bd0d-ea968fe28ae3",
@@ -1733,16 +1697,16 @@
     {
       "parameters": {
         "operation": "set",
-        "key": "=upload:{{ $json.session_id }}:meta",
-        "value": "={{ $('Telegram Get File').item.json.result.file_path }}",
+        "key": "=analysis:{{ $('Extract Message Fields').first().json.telegram_id }}:input",
+        "value": "={{ $('Format S3 Upload User Response').first().json.s3key }}",
         "expire": true,
         "ttl": 600
       },
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        400,
-        2320
+        528,
+        2272
       ],
       "id": "96c7baf3-9a22-48a2-a564-8789335325f1",
       "name": "Redis Cache User File",
@@ -1846,7 +1810,7 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        304,
+        512,
         1888
       ],
       "id": "af875449-6ae8-476b-b7cd-7630474011ed",
@@ -1928,8 +1892,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1024,
-        2320
+        1152,
+        2272
       ],
       "id": "0f83c873-9e83-4994-acf8-d19403a22a3c",
       "name": "Telegram Send File Ready",
@@ -1978,7 +1942,7 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        80,
+        288,
         1648
       ],
       "id": "6177f5c4-89bc-432d-9bea-1de0b977a317",
@@ -2027,8 +1991,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        608,
-        2320
+        736,
+        2272
       ],
       "id": "2145d4b6-61b1-4b01-8196-dec46a947176",
       "name": "Redis Set FSM State File Uploaded",
@@ -2045,15 +2009,15 @@
       "parameters": {
         "operation": "set",
         "key": "=upload:{{ $json.session_id }}:meta",
-        "value": "=s3_key",
+        "value": "={{ $('Format S3 Upload User Response').item.json.s3key }}",
         "expire": true,
         "ttl": 600
       },
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        800,
-        2320
+        928,
+        2272
       ],
       "id": "70c16e40-424f-4045-8e97-4594cf5f83dd",
       "name": "Redis Set Upload Meta",
@@ -2333,28 +2297,6 @@
     },
     {
       "parameters": {
-        "operation": "get",
-        "propertyName": "text",
-        "key": "=input:{{ $json.session_id }}:text",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.redis",
-      "typeVersion": 1,
-      "position": [
-        3376,
-        1328
-      ],
-      "id": "58bb75b6-d79a-4c20-8af6-6d6c2049576f",
-      "name": "Redis Get Input Text",
-      "credentials": {
-        "redis": {
-          "id": "k3rZiJXMKohxs4tn",
-          "name": "Redis beget 47"
-        }
-      }
-    },
-    {
-      "parameters": {
         "operation": "select",
         "schema": {
           "__rl": true,
@@ -2390,7 +2332,7 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        3136,
+        3184,
         1328
       ],
       "id": "90799022-45f3-4dbd-a154-deff162276dd",
@@ -2409,7 +2351,7 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        5952,
+        6160,
         816
       ],
       "id": "8198698c-8012-4455-870b-07b27ef3f48f",
@@ -2446,7 +2388,7 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        6096,
+        6304,
         480
       ],
       "id": "5acf83ce-7c24-4131-8b06-337feaae852d",
@@ -2465,7 +2407,7 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        6576,
+        6784,
         464
       ],
       "id": "1077fdad-af44-45be-98f1-59a497689954",
@@ -2482,7 +2424,7 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        6832,
+        7040,
         576
       ],
       "id": "de67bd10-3202-44b0-a03a-6bc340d85388",
@@ -2501,7 +2443,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        5920,
+        6128,
         480
       ],
       "id": "cc346a1e-9513-40e3-b979-52e269ea3ca0",
@@ -2588,7 +2530,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        6272,
+        6480,
         480
       ],
       "id": "67bb747f-3003-4c51-8242-3687685f1b72",
@@ -2605,7 +2547,7 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        7872,
+        8080,
         624
       ],
       "id": "702b55e0-322a-4084-b705-b1b5f4f44007",
@@ -2625,7 +2567,7 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        2848,
+        2832,
         976
       ],
       "typeVersion": 1,
@@ -2639,7 +2581,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        6816,
+        7024,
         336
       ],
       "id": "2e1d4878-1d26-419f-b2c6-2aeb27e96eb6",
@@ -2652,7 +2594,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        7024,
+        7232,
         336
       ],
       "id": "8fc8aed7-5d93-49f2-872d-79d62f73cc13",
@@ -2691,7 +2633,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        7232,
+        7440,
         336
       ],
       "id": "eb688086-84e6-493d-a22c-630eec3f49c4",
@@ -2705,7 +2647,7 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        6944,
+        7152,
         -144
       ],
       "typeVersion": 1,
@@ -2719,7 +2661,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        7440,
+        7648,
         336
       ],
       "id": "55bb036e-6180-445d-a5ca-ebfa43ed9b62",
@@ -2732,7 +2674,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        8752,
+        8960,
         624
       ],
       "id": "38a30e28-51c2-4b73-99d4-4ae76a4a70a6",
@@ -2802,7 +2744,7 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        8976,
+        9184,
         624
       ],
       "id": "a295516c-ec47-4433-8eeb-10dd4e7e2496",
@@ -2826,7 +2768,7 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        8544,
+        8752,
         624
       ],
       "id": "1fa88fd6-4cd4-4c3d-96e1-1a985e9e9fa7",
@@ -3029,8 +2971,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        240,
-        2320
+        368,
+        2272
       ],
       "id": "deeb4085-1667-48b8-9dfd-283e3f4db92d",
       "name": "Postgres Create Session2",
@@ -3069,8 +3011,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        80,
-        2320
+        208,
+        2272
       ],
       "id": "1ee33fac-d036-4984-a126-f6e402ae5dde",
       "name": "Select User ID1",
@@ -3083,25 +3025,104 @@
     },
     {
       "parameters": {
-        "resource": "file",
-        "fileId": "={{ $('Telegram Trigger').item.json.message.document.file_id }}",
-        "additionalFields": {}
+        "jsCode": "const crypto = require('crypto');\n\nconst accessKey = 'n8n_service';\nconst secretKey = 'P@ssw0rd_RedFlag_2026!';\nconst region = 'us-east-1';\nconst host = '84.54.28.193:9000';\nconst bucket = 'user-uploads';\n\n// Бинарь берём из тригера — Set-ноды его не пробрасывают\nconst triggerItem = $('Telegram Trigger').first();\nif (!triggerItem.binary) {\n  throw new Error('No binary data in Telegram Trigger. Check that \"Download\" is enabled.');\n}\n\nconst binaryKey = Object.keys(triggerItem.binary)[0];\nconst bin = triggerItem.binary[binaryKey];\n\nconst buffer = Buffer.from(bin.data, 'base64');\nconst mimeType = bin.mimeType || 'application/octet-stream';\nconst telegramId = $input.first().json.telegram_id\n\nconst ts = new Date();\nconst dateStamp = ts.toISOString().slice(0,10).replace(/-/g,'');\nconst amzDate = ts.toISOString().replace(/[-:]/g,'').slice(0,15) + 'Z';\nconst originalName = bin.fileName || 'upload.pdf';\nconst fileName = `${telegramId}/${dateStamp}-${originalName}`;\n\nconst payloadHash = crypto.createHash('sha256').update(buffer).digest('hex');\nconst canonicalHeaders = `content-type:${mimeType}\\nhost:${host}\\nx-amz-content-sha256:${payloadHash}\\nx-amz-date:${amzDate}\\n`;\nconst signedHeaders = 'content-type;host;x-amz-content-sha256;x-amz-date';\nconst canonicalRequest = ['PUT', `/${bucket}/${fileName}`, '', canonicalHeaders, signedHeaders, payloadHash].join('\\n');\nconst credentialScope = `${dateStamp}/${region}/s3/aws4_request`;\nconst stringToSign = ['AWS4-HMAC-SHA256', amzDate, credentialScope,\n  crypto.createHash('sha256').update(canonicalRequest).digest('hex')].join('\\n');\nconst hmac = (key, data, enc) => crypto.createHmac('sha256', key).update(data).digest(enc);\nconst signingKey = hmac(hmac(hmac(hmac('AWS4' + secretKey, dateStamp), region), 's3'), 'aws4_request');\nconst signature = hmac(signingKey, stringToSign, 'hex');\nconst authHeader = `AWS4-HMAC-SHA256 Credential=${accessKey}/${credentialScope}, SignedHeaders=${signedHeaders}, Signature=${signature}`;\n\nreturn [{\n  json: { uploadUrl: `http://${host}/${bucket}/${fileName}`, authHeader, amzDate, payloadHash, fileName, mimeType, binaryKey },\n  binary: triggerItem.binary\n}];"
       },
-      "type": "n8n-nodes-base.telegram",
-      "typeVersion": 1.2,
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
       "position": [
-        -112,
-        2320
+        -576,
+        1728
       ],
-      "id": "7a006fef-b285-41e6-b687-58ee4617f252",
-      "name": "Telegram Get File",
-      "webhookId": "01cef329-18f2-426d-b519-73f39409322f",
+      "id": "d1702cfc-15cd-4fde-983b-1b1b4bb7c09c",
+      "name": "Build S3 Signature User Upload"
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first();\n\n// Из предыдущего узла (Build S3 Signature) берём fileName напрямую\n// HTTP Request мог вернуть пустой body (MinIO возвращает 200 без тела на PUT)\nconst fileName = $('Build S3 Signature User Upload').first().json.fileName;\nconst uploadUrl = $('Build S3 Signature User Upload').first().json.uploadUrl;\n\n// s3key = всё что после /user-uploads/\nconst s3key = fileName;\n\nreturn [{\n  json: {\n    s3key,\n    fileName: fileName.split('/').pop(),  // только имя файла без пути\n    uploadUrl,\n    s3message: `✅ Файл сохранён: ${s3key}`\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -128,
+        1952
+      ],
+      "id": "41fb2607-8a4a-4f17-82d4-28e8b964d6b3",
+      "name": "Format S3 Upload User Response"
+    },
+    {
+      "parameters": {
+        "jsCode": "const http = require('http');\nconst urlModule = require('url');\n\nconst sig = $input.first().json;\nconst triggerItem = $('Telegram Trigger').first();\nconst binaryKey = sig.binaryKey;\nconst bin = triggerItem.binary[binaryKey];\nconst buffer = Buffer.from(bin.data, 'base64');\n\nconst parsed = urlModule.parse(sig.uploadUrl);\n\nconst options = {\n  hostname: parsed.hostname,\n  port: parseInt(parsed.port) || 9000,\n  path: parsed.path,\n  method: 'PUT',\n  headers: {\n    'Authorization': sig.authHeader,\n    'x-amz-date': sig.amzDate,\n    'x-amz-content-sha256': sig.payloadHash,\n    'Content-Type': sig.mimeType,\n    'Content-Length': buffer.length\n  }\n};\n\nconst statusCode = await new Promise((resolve, reject) => {\n  const req = http.request(options, (res) => {\n    res.resume();\n    res.on('end', () => resolve(res.statusCode));\n  });\n  req.on('error', reject);\n  req.write(buffer);\n  req.end();\n});\n\nif (statusCode !== 200) {\n  throw new Error(`MinIO returned HTTP ${statusCode}`);\n}\n\nreturn [{\n  json: {\n    uploadStatus: 'ok',\n    statusCode,\n    fileName: sig.fileName,\n    s3key: sig.fileName,\n    uploadUrl: sig.uploadUrl\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -352,
+        1824
+      ],
+      "id": "777e76b7-dd1c-428c-af6d-a1f6b6d33d25",
+      "name": "S3 Upload User Document Code"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "s3key",
+        "key": "=analysis:{{ $('Extract Message Fields').first().json.telegram_id }}:input",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        3872,
+        816
+      ],
+      "id": "d9d53d94-cabc-4463-9718-06d1bc6fc592",
+      "name": "Redis Get S3 Key",
       "credentials": {
-        "telegramApi": {
-          "id": "ofJWfQOJnrvkEwK1",
-          "name": "redFlags"
+        "redis": {
+          "id": "k3rZiJXMKohxs4tn",
+          "name": "Redis beget 47"
         }
       }
+    },
+    {
+      "parameters": {
+        "jsCode": "const http = require('http');\nconst urlModule = require('url');\n\nconst s3key = $input.first().json.s3key;\nif (!s3key) {\n  throw new Error(`s3key is null. Redis key: analysis:${$('Extract Message Fields').first().json.telegramid}:input not found or expired.`);\n}\n\nconst host = '84.54.28.193';\nconst port = 9000;\nconst bucket = 'user-uploads';\n\nconst buffer = await new Promise((resolve, reject) => {\n  const req = http.get(`http://${host}:${port}/${bucket}/${s3key}`, (res) => {\n    const chunks = [];\n    res.on('data', chunk => chunks.push(chunk));\n    res.on('end', () => resolve(Buffer.concat(chunks)));\n    res.on('error', reject);\n  });\n  req.on('error', reject);\n});\n\nconst fileName = s3key.split('/').pop();\nconst mimeType = fileName.endsWith('.pdf') ? 'application/pdf' : 'text/plain';\n\nreturn [{\n  json: { s3key, fileName },\n  binary: {\n    data: {\n      data: buffer.toString('base64'),\n      mimeType,\n      fileName,\n      fileExtension: fileName.split('.').pop()\n    }\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4080,
+        816
+      ],
+      "id": "9a1918dd-3eba-4e64-b94f-bcc8da729385",
+      "name": "S3 Download User Document"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        4576,
+        816
+      ],
+      "id": "4c1a0662-0436-420d-ba87-e0bcee2a711e",
+      "name": "Extract from PDF"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst results = [];\n\nconst CHUNK_SIZE = 1000;\nconst OVERLAP   = 150;\n\nfor (const item of items) {\n  let text = item.json.text || '';\n\n  // Чистка\n  text = text\n    .replace(/\\r\\n/g, '\\n')\n    .replace(/\\n{3,}/g, '\\n\\n')\n    .replace(/[ \\t]+/g, ' ')\n    .trim();\n\n  if (!text) throw new Error('Extracted text is empty');\n\n  // Нарезка с перекрытием\n  let start = 0;\n  let chunkIndex = 0;\n\n  while (start < text.length) {\n    const end = Math.min(start + CHUNK_SIZE, text.length);\n    const chunkText = text.slice(start, end).trim();\n\n    if (chunkText.length > 0) {\n      results.push({\n        json: {\n          ...item.json,\n          chunk_text:  chunkText,\n          chunk_index: chunkIndex\n        }\n      });\n      chunkIndex++;\n    }\n\n    if (end === text.length) break;\n    start = end - OVERLAP;\n  }\n}\n\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4800,
+        816
+      ],
+      "id": "bb7b5ee5-6308-454c-b2b5-e5bdc55b2101",
+      "name": "Document Chunker"
     }
   ],
   "pinData": {},
@@ -3187,7 +3208,7 @@
       "main": [
         [
           {
-            "node": "Redis Cache Analysis Status",
+            "node": "Redis Get S3 Key",
             "type": "main",
             "index": 0
           }
@@ -3234,7 +3255,7 @@
       "main": [
         [
           {
-            "node": "Redis Get FSM State",
+            "node": "Rate Limit Check",
             "type": "main",
             "index": 0
           }
@@ -3245,18 +3266,7 @@
       "main": [
         [
           {
-            "node": "Document Cleaner & Chunker",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Document Cleaner & Chunker": {
-      "main": [
-        [
-          {
-            "node": "Postgres Save Chunks",
+            "node": "Extract from PDF",
             "type": "main",
             "index": 0
           }
@@ -3351,17 +3361,6 @@
         ]
       ]
     },
-    "Redis Get FSM State2": {
-      "main": [
-        [
-          {
-            "node": "Telegram Get File",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Event Type Router": {
       "main": [
         [
@@ -3380,7 +3379,7 @@
         ],
         [
           {
-            "node": "Redis Get FSM State2",
+            "node": "Build S3 Signature User Upload",
             "type": "main",
             "index": 0
           }
@@ -3548,7 +3547,7 @@
       "main": [
         [
           {
-            "node": "Rate Limit Check",
+            "node": "Input Type Router",
             "type": "main",
             "index": 0
           }
@@ -3588,22 +3587,11 @@
         ]
       ]
     },
-    "Redis Get Input Text": {
-      "main": [
-        [
-          {
-            "node": "Input Type Router",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Select Session ID": {
       "main": [
         [
           {
-            "node": "Redis Get Input Text",
+            "node": "Redis Get FSM State",
             "type": "main",
             "index": 0
           }
@@ -3809,11 +3797,77 @@
         ]
       ]
     },
-    "Telegram Get File": {
+    "Build S3 Signature User Upload": {
+      "main": [
+        [
+          {
+            "node": "S3 Upload User Document Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format S3 Upload User Response": {
       "main": [
         [
           {
             "node": "Select User ID1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "S3 Upload User Document Code": {
+      "main": [
+        [
+          {
+            "node": "Format S3 Upload User Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Get S3 Key": {
+      "main": [
+        [
+          {
+            "node": "S3 Download User Document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "S3 Download User Document": {
+      "main": [
+        [
+          {
+            "node": "Redis Cache Analysis Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from PDF": {
+      "main": [
+        [
+          {
+            "node": "Document Chunker",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Document Chunker": {
+      "main": [
+        [
+          {
+            "node": "Postgres Save Chunks",
             "type": "main",
             "index": 0
           }
@@ -3826,7 +3880,7 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "834d0965-6527-4816-9528-3e701895203f",
+  "versionId": "53932a23-ec55-4918-98c6-968be23b223f",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "f4300700b5a89163b88ad6a908ff9e3076c705e8b03a3f40f03ff2f29f7e4289"
