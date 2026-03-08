@@ -323,6 +323,12 @@
               "name": "callback_data",
               "value": "={{ $json.callback_query?.data || \"\" }}",
               "type": "string"
+            },
+            {
+              "id": "51dceec2-c270-49c6-b5cc-0ed4d14c1344",
+              "name": "event_type",
+              "value": "={{\n  $json.message?.text === '/start'\n    ? 'START'\n    : $json.callback_query?.data\n      ? 'CALLBACK'\n      : $json.message?.document?.file_id\n        ? 'FILE_UPLOAD'\n        : 'TEXT_INPUT'\n}}",
+              "type": "string"
             }
           ]
         },
@@ -1337,121 +1343,6 @@
                 },
                 "conditions": [
                   {
-                    "leftValue": "={{ $json.text }}",
-                    "rightValue": "/start",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals"
-                    },
-                    "id": "948cc865-8a77-474c-a0a1-298d5bffd3d0"
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "start"
-            },
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 3
-                },
-                "conditions": [
-                  {
-                    "id": "ebf02bf5-430d-4f34-9f09-d9d04eb5bddf",
-                    "leftValue": "={{ $json.callback_data }}",
-                    "rightValue": "",
-                    "operator": {
-                      "type": "string",
-                      "operation": "notEmpty",
-                      "singleValue": true
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "Callback"
-            },
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 3
-                },
-                "conditions": [
-                  {
-                    "id": "51212385-9edf-476a-830e-6e8a63928ee6",
-                    "leftValue": "={{ $json.has_document }}",
-                    "rightValue": "",
-                    "operator": {
-                      "type": "string",
-                      "operation": "exists",
-                      "singleValue": true
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "File Upload"
-            },
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 3
-                },
-                "conditions": [
-                  {
-                    "id": "d6ecb255-50e6-429a-8695-1fe3896fb06d",
-                    "leftValue": "={{ $json.text }}",
-                    "rightValue": "/start",
-                    "operator": {
-                      "type": "string",
-                      "operation": "notStartsWith"
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "Text Input"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.switch",
-      "typeVersion": 3.4,
-      "position": [
-        -96,
-        1440
-      ],
-      "id": "f55c59a4-acf2-44ee-8fb3-2b1f9d23891d",
-      "name": "Event Type Router"
-    },
-    {
-      "parameters": {
-        "rules": {
-          "values": [
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 3
-                },
-                "conditions": [
-                  {
                     "leftValue": "={{ $json.callback_data }}",
                     "rightValue": "btn_add_text",
                     "operator": {
@@ -1573,8 +1464,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        496,
-        1040
+        512,
+        1024
       ],
       "id": "e90b3f97-dd5f-4cf1-9c22-715c15f8c775",
       "name": "Callback Action Router"
@@ -3242,6 +3133,119 @@
       ],
       "id": "e284c26d-a60d-4e9f-aa6f-ced1dceb77dd",
       "name": "Filter"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.event_type }}",
+                    "rightValue": "START",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "948cc865-8a77-474c-a0a1-298d5bffd3d0"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "start"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "ebf02bf5-430d-4f34-9f09-d9d04eb5bddf",
+                    "leftValue": "={{ $json.event_type }}",
+                    "rightValue": "CALLBACK",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Callback"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "51212385-9edf-476a-830e-6e8a63928ee6",
+                    "leftValue": "={{ $json.event_type }}",
+                    "rightValue": "FILE_UPLOAD",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "File Upload"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "d6ecb255-50e6-429a-8695-1fe3896fb06d",
+                    "leftValue": "={{ $json.event_type }}",
+                    "rightValue": "TEXT_INPUT",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Text Input"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -16,
+        1440
+      ],
+      "id": "51c3a20a-f46b-483c-9ce0-951243fc32e2",
+      "name": "Event Type Router"
     }
   ],
   "pinData": {},
@@ -3474,38 +3478,6 @@
         [
           {
             "node": "FSM Check AWAITING_TEXT",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Event Type Router": {
-      "main": [
-        [
-          {
-            "node": "Postgres Upsert User",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Callback Action Router",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Telegram Get File",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Redis Get FSM State1",
             "type": "main",
             "index": 0
           }
@@ -4025,6 +3997,38 @@
           }
         ]
       ]
+    },
+    "Event Type Router": {
+      "main": [
+        [
+          {
+            "node": "Postgres Upsert User",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Callback Action Router",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram Get File",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Redis Get FSM State1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
@@ -4032,7 +4036,7 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "91cdfa85-3d2a-4820-a97a-f405835deb6f",
+  "versionId": "626c82c2-c219-4ea9-9a92-6c29eee3c738",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "f4300700b5a89163b88ad6a908ff9e3076c705e8b03a3f40f03ff2f29f7e4289"
