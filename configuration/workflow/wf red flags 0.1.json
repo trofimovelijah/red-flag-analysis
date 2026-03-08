@@ -3025,39 +3025,26 @@
     },
     {
       "parameters": {
-        "jsCode": "const crypto = require('crypto');\n\nconst accessKey = 'n8n_service';\nconst secretKey = 'P@ssw0rd_RedFlag_2026!';\nconst region = 'us-east-1';\nconst host = '84.54.28.193:9000';\nconst bucket = 'user-uploads';\n\n// Бинарь берём из тригера — Set-ноды его не пробрасывают\nconst triggerItem = $('Telegram Trigger').first();\nif (!triggerItem.binary) {\n  throw new Error('No binary data in Telegram Trigger. Check that \"Download\" is enabled.');\n}\n\nconst binaryKey = Object.keys(triggerItem.binary)[0];\nconst bin = triggerItem.binary[binaryKey];\n\nconst buffer = Buffer.from(bin.data, 'base64');\nconst mimeType = bin.mimeType || 'application/octet-stream';\nconst telegramId = $input.first().json.telegram_id\n\nconst ts = new Date();\nconst dateStamp = ts.toISOString().slice(0,10).replace(/-/g,'');\nconst amzDate = ts.toISOString().replace(/[-:]/g,'').slice(0,15) + 'Z';\nconst originalName = bin.fileName || 'upload.pdf';\nconst fileName = `${telegramId}/${dateStamp}-${originalName}`;\n\nconst payloadHash = crypto.createHash('sha256').update(buffer).digest('hex');\nconst canonicalHeaders = `content-type:${mimeType}\\nhost:${host}\\nx-amz-content-sha256:${payloadHash}\\nx-amz-date:${amzDate}\\n`;\nconst signedHeaders = 'content-type;host;x-amz-content-sha256;x-amz-date';\nconst canonicalRequest = ['PUT', `/${bucket}/${fileName}`, '', canonicalHeaders, signedHeaders, payloadHash].join('\\n');\nconst credentialScope = `${dateStamp}/${region}/s3/aws4_request`;\nconst stringToSign = ['AWS4-HMAC-SHA256', amzDate, credentialScope,\n  crypto.createHash('sha256').update(canonicalRequest).digest('hex')].join('\\n');\nconst hmac = (key, data, enc) => crypto.createHmac('sha256', key).update(data).digest(enc);\nconst signingKey = hmac(hmac(hmac(hmac('AWS4' + secretKey, dateStamp), region), 's3'), 'aws4_request');\nconst signature = hmac(signingKey, stringToSign, 'hex');\nconst authHeader = `AWS4-HMAC-SHA256 Credential=${accessKey}/${credentialScope}, SignedHeaders=${signedHeaders}, Signature=${signature}`;\n\nreturn [{\n  json: { uploadUrl: `http://${host}/${bucket}/${fileName}`, authHeader, amzDate, payloadHash, fileName, mimeType, binaryKey },\n  binary: triggerItem.binary\n}];"
+        "jsCode": "const item = $input.first();\n\n// Из предыдущего узла (Build S3 Signature) берём fileName напрямую\n// HTTP Request мог вернуть пустой body (MinIO возвращает 200 без тела на PUT)\nconst fileName = $input.first().json.fileName\nconst uploadUrl = $input.first().json.uploadUrl\n\n// s3key = всё что после /user-uploads/\nconst s3key = fileName;\n\nreturn [{\n  json: {\n    s3key,\n    fileName: fileName.split('/').pop(),  // только имя файла без пути\n    uploadUrl,\n    s3message: `✅ Файл сохранён: ${s3key}`\n  }\n}];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -576,
-        1728
-      ],
-      "id": "d1702cfc-15cd-4fde-983b-1b1b4bb7c09c",
-      "name": "Build S3 Signature User Upload"
-    },
-    {
-      "parameters": {
-        "jsCode": "const item = $input.first();\n\n// Из предыдущего узла (Build S3 Signature) берём fileName напрямую\n// HTTP Request мог вернуть пустой body (MinIO возвращает 200 без тела на PUT)\nconst fileName = $('Build S3 Signature User Upload').first().json.fileName;\nconst uploadUrl = $('Build S3 Signature User Upload').first().json.uploadUrl;\n\n// s3key = всё что после /user-uploads/\nconst s3key = fileName;\n\nreturn [{\n  json: {\n    s3key,\n    fileName: fileName.split('/').pop(),  // только имя файла без пути\n    uploadUrl,\n    s3message: `✅ Файл сохранён: ${s3key}`\n  }\n}];"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        -128,
-        1952
+        -32,
+        2112
       ],
       "id": "41fb2607-8a4a-4f17-82d4-28e8b964d6b3",
       "name": "Format S3 Upload User Response"
     },
     {
       "parameters": {
-        "jsCode": "const http = require('http');\nconst urlModule = require('url');\n\nconst sig = $input.first().json;\nconst triggerItem = $('Telegram Trigger').first();\nconst binaryKey = sig.binaryKey;\nconst bin = triggerItem.binary[binaryKey];\nconst buffer = Buffer.from(bin.data, 'base64');\n\nconst parsed = urlModule.parse(sig.uploadUrl);\n\nconst options = {\n  hostname: parsed.hostname,\n  port: parseInt(parsed.port) || 9000,\n  path: parsed.path,\n  method: 'PUT',\n  headers: {\n    'Authorization': sig.authHeader,\n    'x-amz-date': sig.amzDate,\n    'x-amz-content-sha256': sig.payloadHash,\n    'Content-Type': sig.mimeType,\n    'Content-Length': buffer.length\n  }\n};\n\nconst statusCode = await new Promise((resolve, reject) => {\n  const req = http.request(options, (res) => {\n    res.resume();\n    res.on('end', () => resolve(res.statusCode));\n  });\n  req.on('error', reject);\n  req.write(buffer);\n  req.end();\n});\n\nif (statusCode !== 200) {\n  throw new Error(`MinIO returned HTTP ${statusCode}`);\n}\n\nreturn [{\n  json: {\n    uploadStatus: 'ok',\n    statusCode,\n    fileName: sig.fileName,\n    s3key: sig.fileName,\n    uploadUrl: sig.uploadUrl\n  }\n}];"
+        "jsCode": "const http    = require('http');\nconst crypto  = require('crypto');\nconst urlModule = require('url');\n\nconst accessKey = 'n8n_service';\nconst secretKey = 'P@ssw0rd_RedFlag_2026!';\nconst region    = 'us-east-1';\nconst host      = '84.54.28.193:9000';\nconst bucket    = 'user-uploads';\n\n// ─── Берём файл из Telegram Get File ──────────────────────\nconst telegramFile = $('Telegram Get File').first();\nconst binaryKey    = Object.keys(telegramFile.binary)[0];\nconst bin          = telegramFile.binary[binaryKey];\nconst buffer       = Buffer.from(bin.data, 'base64');\n\nif (!buffer || buffer.length === 0) {\n  throw new Error('Telegram Get File вернул пустой файл');\n}\n\n// ─── Строим путь в MinIO ───────────────────────────────────\nconst telegramId   = $('Extract Message Fields').first().json.telegram_id;\nconst ts           = new Date();\nconst dateStamp    = ts.toISOString().slice(0,10).replace(/-/g,'');\nconst amzDate      = ts.toISOString().replace(/[-:]/g,'').slice(0,15) + 'Z';\nconst originalName = bin.fileName || 'upload.pdf';\nconst fileName     = `${telegramId}/${dateStamp}-${originalName}`;\nconst mimeType     = bin.mimeType || 'application/octet-stream';\n\n// ─── AWS4 подпись ─────────────────────────────────────────\nconst payloadHash = crypto.createHash('sha256').update(buffer).digest('hex');\nconst canonicalHeaders =\n  `content-type:${mimeType}\\n` +\n  `host:${host}\\n` +\n  `x-amz-content-sha256:${payloadHash}\\n` +\n  `x-amz-date:${amzDate}\\n`;\nconst signedHeaders = 'content-type;host;x-amz-content-sha256;x-amz-date';\nconst canonicalRequest = [\n  'PUT', `/${bucket}/${fileName}`, '',\n  canonicalHeaders, signedHeaders, payloadHash\n].join('\\n');\nconst credentialScope = `${dateStamp}/${region}/s3/aws4_request`;\nconst stringToSign = [\n  'AWS4-HMAC-SHA256', amzDate, credentialScope,\n  crypto.createHash('sha256').update(canonicalRequest).digest('hex')\n].join('\\n');\nconst hmac = (key, data, enc) =>\n  crypto.createHmac('sha256', key).update(data).digest(enc);\nconst signingKey = hmac(hmac(hmac(hmac('AWS4' + secretKey, dateStamp), region), 's3'), 'aws4_request');\nconst signature  = hmac(signingKey, stringToSign, 'hex');\nconst authHeader = `AWS4-HMAC-SHA256 Credential=${accessKey}/${credentialScope}, SignedHeaders=${signedHeaders}, Signature=${signature}`;\n\n// ─── PUT в MinIO ───────────────────────────────────────────\nconst uploadUrl = `http://${host}/${bucket}/${fileName}`;\nconst parsed    = urlModule.parse(uploadUrl);\n\nconst statusCode = await new Promise((resolve, reject) => {\n  const req = http.request({\n    hostname: parsed.hostname,\n    port: parseInt(parsed.port) || 9000,\n    path: parsed.path,\n    method: 'PUT',\n    headers: {\n      'Authorization':          authHeader,\n      'x-amz-date':             amzDate,\n      'x-amz-content-sha256':   payloadHash,\n      'Content-Type':           mimeType,\n      'Content-Length':         buffer.length\n    }\n  }, (res) => {\n    res.resume();\n    res.on('end', () => resolve(res.statusCode));\n  });\n  req.on('error', reject);\n  req.write(buffer);\n  req.end();\n});\n\nif (statusCode !== 200) {\n  throw new Error(`MinIO returned HTTP ${statusCode}`);\n}\n\nreturn [{\n  json: {\n    uploadStatus: 'ok',\n    statusCode,\n    fileName,\n    s3key: fileName,\n    uploadUrl,\n    fileSize: buffer.length\n  }\n}];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -352,
-        1824
+        -256,
+        1952
       ],
       "id": "777e76b7-dd1c-428c-af6d-a1f6b6d33d25",
       "name": "S3 Upload User Document Code"
@@ -3123,6 +3110,28 @@
       ],
       "id": "bb7b5ee5-6308-454c-b2b5-e5bdc55b2101",
       "name": "Document Chunker"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $('Extract Message Fields').first().json.has_document }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -464,
+        1856
+      ],
+      "id": "40a58450-86ed-44fa-bc31-afae385a7b40",
+      "name": "Telegram Get File",
+      "webhookId": "bdbccd6b-6574-4a5f-98fa-c5c05fb781d5",
+      "credentials": {
+        "telegramApi": {
+          "id": "ofJWfQOJnrvkEwK1",
+          "name": "redFlags"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -3379,7 +3388,7 @@
         ],
         [
           {
-            "node": "Build S3 Signature User Upload",
+            "node": "Telegram Get File",
             "type": "main",
             "index": 0
           }
@@ -3797,17 +3806,6 @@
         ]
       ]
     },
-    "Build S3 Signature User Upload": {
-      "main": [
-        [
-          {
-            "node": "S3 Upload User Document Code",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Format S3 Upload User Response": {
       "main": [
         [
@@ -3873,6 +3871,17 @@
           }
         ]
       ]
+    },
+    "Telegram Get File": {
+      "main": [
+        [
+          {
+            "node": "S3 Upload User Document Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
@@ -3880,7 +3889,7 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "53932a23-ec55-4918-98c6-968be23b223f",
+  "versionId": "7c0a51c7-614e-4dc6-bc09-3cf66abd397f",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "f4300700b5a89163b88ad6a908ff9e3076c705e8b03a3f40f03ff2f29f7e4289"
