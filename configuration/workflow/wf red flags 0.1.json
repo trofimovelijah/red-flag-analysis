@@ -138,8 +138,8 @@
       "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1.2,
       "position": [
-        -1312,
-        1696
+        -528,
+        1472
       ],
       "id": "a14fcc41-8c1c-4039-90b0-f3f636f71f5e",
       "name": "Telegram Trigger",
@@ -154,14 +154,14 @@
     {
       "parameters": {
         "content": "### 📱 Telegram Bot Gateway\n\nТочка входа пользователя",
-        "height": 2096,
+        "height": 2224,
         "width": 3232,
         "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -1408,
-        3312
+        -848,
+        368
       ],
       "typeVersion": 1,
       "id": "9cf9e2e9-1d00-4987-a19d-7a1f01bcc72a",
@@ -208,7 +208,7 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        4896,
+        4816,
         1184
       ],
       "typeVersion": 1,
@@ -224,8 +224,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        7936,
-        384
+        8320,
+        352
       ],
       "typeVersion": 1,
       "id": "7592b0af-b3d1-43bc-89bc-0c8691814088",
@@ -331,8 +331,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -1072,
-        1696
+        -288,
+        1472
       ],
       "id": "0d105e9a-9efc-45d6-88f7-7f16713ef6cf",
       "name": "Extract Message Fields"
@@ -447,8 +447,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        -16,
-        672
+        768,
+        448
       ],
       "id": "45bed0e4-48b0-40ea-9120-6ff4ac5d8a67",
       "name": "Redis Check Daily Limit",
@@ -492,7 +492,7 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        4288,
+        4448,
         1344
       ],
       "id": "02835df5-7929-4507-951f-521b07cab57e",
@@ -515,8 +515,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        8560,
-        624
+        8944,
+        592
       ],
       "id": "ecff19f6-c360-4d5d-a61b-57a63b11517a",
       "name": "Redis Cache Analysis Result",
@@ -538,7 +538,7 @@
       "type": "n8n-nodes-base.s3",
       "typeVersion": 1,
       "position": [
-        7120,
+        7568,
         112
       ],
       "id": "72ee48ac-0053-475a-a384-45407d42117e",
@@ -564,8 +564,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        8320,
-        624
+        8704,
+        592
       ],
       "id": "5aaccfbb-cd00-496a-b5a4-d0039d548cd3",
       "name": "Telegram Send Result",
@@ -772,14 +772,14 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "session_id": "={{ $('Set Merge Analysis Types + Answer').item.json.session_id }}",
+            "session_id": "={{ $('Loop Over Items').item.json.session_id }}",
             "risk_id": "={{ $json.risk_id }}",
             "analysis_type_id": "={{ $('Loop Over Items').item.json.analysis_type_id }}",
-            "evidence_chunk_id": "={{ $('Postgres Save Chunks').item.json.chunk_id }}",
-            "evidence_text": "={{ $('Set Merge Analysis Types + Answer').item.json.evidence_text }}",
-            "found_severity": "={{ $('Set Merge Analysis Types + Answer').item.json.severity }}",
-            "recommendation": "={{ $('Set Merge Analysis Types + Answer').item.json.recommendation }}",
-            "confidence_score": "={{ $('Set Merge Analysis Types + Answer').item.json.confidence_score }}"
+            "evidence_chunk_id": "={{ $('Loop Over Items').item.json.chunk_id }}",
+            "evidence_text": "={{ $('Loop Over Items').item.json.evidence_text }}",
+            "found_severity": "={{ $('Loop Over Items').item.json.severity }}",
+            "recommendation": "={{ $('Loop Over Items').item.json.recommendation }}",
+            "confidence_score": "={{ $('Loop Over Items').item.json.confidence_score }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -894,8 +894,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        7264,
-        688
+        7360,
+        672
       ],
       "id": "0b10bdaa-b909-4be2-9d22-982befe2779a",
       "name": "Postgres Save Analysis Results",
@@ -927,7 +927,7 @@
             "resource_type": "analysis_result",
             "resource_id": "={{ $json.result_id }}",
             "status": "SUCCESS",
-            "user_id": "={{ $('Select Session ID').item.json.user_id }}"
+            "user_id": "={{ $('Select Session ID').first().json.user_id }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -1034,8 +1034,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        7456,
-        832
+        7568,
+        768
       ],
       "id": "701efeed-1237-476c-b0e5-3c2c414c459f",
       "name": "Postgres Log Audit",
@@ -1126,8 +1126,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        240,
-        672
+        1024,
+        448
       ],
       "id": "b20d0a90-e055-419b-8f46-f54ee2898ae3",
       "name": "Send a start message",
@@ -1287,8 +1287,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -224,
-        672
+        560,
+        448
       ],
       "id": "f6b36c3e-ecad-4a08-8ccb-ec69cd3145ed",
       "name": "Postgres Upsert User",
@@ -1309,8 +1309,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        -304,
-        2720
+        480,
+        2160
       ],
       "id": "008d1d40-439a-446a-a0b9-313d9482f32a",
       "name": "Redis Get FSM State1",
@@ -1432,8 +1432,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        -880,
-        1664
+        -96,
+        1440
       ],
       "id": "f55c59a4-acf2-44ee-8fb3-2b1f9d23891d",
       "name": "Event Type Router"
@@ -1573,8 +1573,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        -304,
-        1424
+        496,
+        1040
       ],
       "id": "e90b3f97-dd5f-4cf1-9c22-715c15f8c775",
       "name": "Callback Action Router"
@@ -1590,8 +1590,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        464,
-        672
+        1248,
+        448
       ],
       "id": "8b8c3200-c333-495c-8dcd-e6a2d1617568",
       "name": "Redis Set State IDLE",
@@ -1613,8 +1613,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        736,
-        2608
+        1392,
+        2048
       ],
       "id": "9792b797-b353-483a-a22f-5761599581b6",
       "name": "Redis Cache User Text",
@@ -1636,8 +1636,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        80,
-        1120
+        880,
+        736
       ],
       "id": "2c2784f0-d4f9-4c4e-a967-830584500e1d",
       "name": "Redis Set State Awaiting Text",
@@ -1659,8 +1659,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        80,
-        1312
+        880,
+        928
       ],
       "id": "c66a5a97-400a-4fc5-8e92-c33f78cc14d2",
       "name": "Redis Set State Awaiting File",
@@ -1682,8 +1682,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        288,
-        1888
+        1088,
+        1504
       ],
       "id": "d1df608e-b7ab-4651-bd0d-ea968fe28ae3",
       "name": "Redis Set State Analyzing",
@@ -1705,8 +1705,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        528,
-        2272
+        1504,
+        1744
       ],
       "id": "96c7baf3-9a22-48a2-a564-8789335325f1",
       "name": "Redis Cache User File",
@@ -1745,8 +1745,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -96,
-        2720
+        688,
+        2160
       ],
       "id": "98500f46-fdb0-4265-b81e-381465162600",
       "name": "FSM Check AWAITING_TEXT"
@@ -1762,8 +1762,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        368,
-        1120
+        1168,
+        736
       ],
       "id": "5b79566c-cc7f-4023-ab79-cf8ce8b483c6",
       "name": "Telegram Prompt Enter Text",
@@ -1786,8 +1786,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        368,
-        1312
+        1168,
+        928
       ],
       "id": "f4c0c952-8616-49c0-8859-9a19abbf10b0",
       "name": "Telegram Prompt Upload File",
@@ -1810,8 +1810,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        512,
-        1888
+        1312,
+        1504
       ],
       "id": "af875449-6ae8-476b-b7cd-7630474011ed",
       "name": "Telegram Send Analyzing Status",
@@ -1851,8 +1851,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1408,
-        2608
+        1760,
+        2048
       ],
       "id": "09bedcb0-7396-4099-bcb7-3fbe3669b921",
       "name": "Telegram Send Text Ready",
@@ -1892,8 +1892,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1152,
-        2272
+        2096,
+        1744
       ],
       "id": "0f83c873-9e83-4994-acf8-d19403a22a3c",
       "name": "Telegram Send File Ready",
@@ -1917,8 +1917,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        80,
-        1472
+        880,
+        1088
       ],
       "id": "a5dd79c6-9f7b-4018-95c9-bf8f75c766c9",
       "name": "Telegram Alert Analyze Locked",
@@ -1942,8 +1942,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        288,
-        1648
+        1088,
+        1264
       ],
       "id": "6177f5c4-89bc-432d-9bea-1de0b977a317",
       "name": "Telegram Alert Image WIP",
@@ -1966,8 +1966,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        960,
-        2608
+        1584,
+        2048
       ],
       "id": "6ba7f0e4-ddcc-4783-b084-118b09e38b39",
       "name": "Redis Set FSM State Text Entered",
@@ -1991,8 +1991,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        736,
-        2272
+        1712,
+        1744
       ],
       "id": "2145d4b6-61b1-4b01-8196-dec46a947176",
       "name": "Redis Set FSM State File Uploaded",
@@ -2016,8 +2016,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        928,
-        2272
+        1904,
+        1744
       ],
       "id": "70c16e40-424f-4045-8e97-4594cf5f83dd",
       "name": "Redis Set Upload Meta",
@@ -2219,8 +2219,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        512,
-        2608
+        1200,
+        2048
       ],
       "id": "d4f936d0-1bc1-4af6-8773-48ab27db82b0",
       "name": "Postgres Create Session1",
@@ -2242,8 +2242,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        208,
-        2848
+        992,
+        2288
       ],
       "id": "8002289d-07d3-40f6-9a3f-67feb677749b",
       "name": "Send a Awaiting Text",
@@ -2283,8 +2283,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        208,
-        2608
+        992,
+        2048
       ],
       "id": "f7e0dc46-c037-48fe-90c0-cbfe60414d90",
       "name": "Select User ID",
@@ -2407,8 +2407,8 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        6784,
-        464
+        6896,
+        480
       ],
       "id": "1077fdad-af44-45be-98f1-59a497689954",
       "name": "Loop Over Items"
@@ -2424,8 +2424,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        7040,
-        576
+        7136,
+        592
       ],
       "id": "de67bd10-3202-44b0-a03a-6bc340d85388",
       "name": "Postgres lookup risk_id",
@@ -2438,7 +2438,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const item = $input.first();\nlet parsed;\n\nconst raw = item.json.output;\nif (typeof raw === 'string') {\n  try {\n    parsed = JSON.parse(raw);\n  } catch (e) {\n    const match = raw.match(/```(?:json)?\\s*([\\s\\S]*?)\\s*```/);\n    if (match) {\n      parsed = JSON.parse(match[1]);\n    } else {\n      throw new Error('Не удалось разобрать ответ агента: ' + raw.slice(0, 300));\n    }\n  }\n} else {\n  parsed = raw;\n}\n\nconst sessionId = $('Select Session ID').first().json.session_id;\nconst chunkId   = $('Postgres Save Chunks').first().json.chunk_id;\n\nconst summaryHtml  = parsed.summary_html  || '<b>Анализ завершён</b>';\nconst documentType = parsed.document_type || 'Не определён';\nconst jurisdiction = parsed.jurisdiction  || 'Россия';\nconst risks        = Array.isArray(parsed.risks) ? parsed.risks : [];\n\n// Нормализация confidence_score: агент может вернуть 0–1 или 0–100\nfunction normalizeScore(raw) {\n  const num = typeof raw === 'number' ? raw : parseFloat(raw);\n  if (isNaN(num)) return 50; // fallback\n  // Если агент вернул 0–1 → конвертируем в 0–100 для INTEGER в БД\n  // Если агент вернул 0–100 → оставляем как есть\n  const normalized = num > 1 ? num : num * 100;\n  return Math.round(Math.min(100, Math.max(0, normalized)));\n}\n\nif (risks.length === 0) {\n  return [{\n    json: {\n      session_id:       sessionId,\n      chunk_id:         chunkId,\n      summary_html:     summaryHtml,\n      document_type:    documentType,\n      jurisdiction:     jurisdiction,\n      risk_name:        null,\n      severity:         null,\n      confidence_score: null,\n      evidence_text:    'Красных флажков не обнаружено',\n      recommendation:   null,\n      is_empty:         true\n    }\n  }];\n}\n\nconst htmlBuffer = Buffer.from(summaryHtml, 'utf-8');\nconst binaryData = {\n  htmlReport: {\n    data:     htmlBuffer.toString('base64'),\n    mimeType: 'text/html',\n    fileName: `report_${sessionId}_${new Date().toISOString()}.html`\n  }\n};\n\nreturn risks.map(risk => ({\n  json: {\n    session_id:       sessionId,\n    chunk_id:         chunkId,\n    summary_html:     summaryHtml,\n    document_type:    documentType,\n    jurisdiction:     jurisdiction,\n    risk_name:        risk.risk_name        || null,\n    severity:         (risk.severity || 'LOW').toUpperCase(),\n    confidence_score: normalizeScore(risk.confidence_score),\n    evidence_text:    risk.evidence_text    || null,\n    recommendation:   risk.recommendation  || null,\n    is_empty:         false\n  },\n  binary: binaryData\n}));"
+        "jsCode": "const items = $input.all();\nconst sessionId = $('Select Session ID').first().json.session_id;\nconst chunks    = $('Postgres Save Chunks').all();\n\nconst htmlBuffer = Buffer.from(\n  items.find(i => i.json.output?.summary_html)?.json.output?.summary_html || '<b>Анализ завершён</b>',\n  'utf-8'\n);\nconst binaryData = {\n  htmlReport: {\n    data:     htmlBuffer.toString('base64'),\n    mimeType: 'text/html',\n    fileName: `report_${sessionId}_${new Date().toISOString()}.html`\n  }\n};\n\nconst result = [];\n\nitems.forEach((item, index) => {\n  const output   = item.json.output || {};\n  const chunkId  = chunks[index]?.json?.chunk_id ?? null;\n  const risks    = Array.isArray(output.risks) ? output.risks : [];\n  const summaryHtml  = output.summary_html  || '<b>Анализ завершён</b>';\n  const documentType = output.document_type || 'Не определён';\n  const jurisdiction = output.jurisdiction  || 'Россия';\n\n  if (risks.length === 0) {\n    result.push({\n      json: {\n        session_id: sessionId, chunk_id: chunkId,\n        summary_html: summaryHtml, document_type: documentType, jurisdiction,\n        risk_name: null, severity: null, confidence_score: null,\n        evidence_text: 'Красных флажков не обнаружено', recommendation: null,\n        is_empty: true\n      },\n      binary: binaryData\n    });\n  } else {\n    risks.forEach(risk => {\n      let conf = typeof risk.confidence_score === 'number' ? risk.confidence_score : parseFloat(risk.confidence_score);\n      if (isNaN(conf)) conf = 0.5;\n      conf = Math.round(Math.min(100, Math.max(0, conf > 1 ? conf : conf * 100)));\n\n      result.push({\n        json: {\n          session_id: sessionId, chunk_id: chunkId,\n          summary_html: summaryHtml, document_type: documentType, jurisdiction,\n          risk_name:        risk.risk_name      || null,\n          severity:         (risk.severity || 'LOW').toUpperCase(),\n          confidence_score: conf,\n          evidence_text:    risk.evidence_text  || null,\n          recommendation:   risk.recommendation || null,\n          is_empty: false\n        },\n        binary: binaryData\n      });\n    });\n  }\n});\n\nreturn result;"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2547,8 +2547,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        8080,
-        624
+        8464,
+        592
       ],
       "id": "702b55e0-322a-4084-b705-b1b5f4f44007",
       "name": "Update Sessions",
@@ -2581,8 +2581,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        7024,
-        336
+        7136,
+        352
       ],
       "id": "2e1d4878-1d26-419f-b2c6-2aeb27e96eb6",
       "name": "Prepare Report Binary"
@@ -2594,8 +2594,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        7232,
-        336
+        7376,
+        352
       ],
       "id": "8fc8aed7-5d93-49f2-872d-79d62f73cc13",
       "name": "Build S3 Signature"
@@ -2633,8 +2633,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        7440,
-        336
+        7584,
+        352
       ],
       "id": "eb688086-84e6-493d-a22c-630eec3f49c4",
       "name": "S3 Upload Analysis Report (HTTP Request)"
@@ -2647,8 +2647,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        7152,
-        -144
+        7328,
+        -128
       ],
       "typeVersion": 1,
       "id": "063ec059-933a-4cac-9385-61872a6785ad",
@@ -2661,8 +2661,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        7648,
-        336
+        7792,
+        352
       ],
       "id": "55bb036e-6180-445d-a5ca-ebfa43ed9b62",
       "name": "Format S3 Upload Response"
@@ -2674,8 +2674,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        8960,
-        624
+        9344,
+        592
       ],
       "id": "38a30e28-51c2-4b73-99d4-4ae76a4a70a6",
       "name": "Build Post-Analysis Status"
@@ -2744,8 +2744,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        9184,
-        624
+        9568,
+        592
       ],
       "id": "a295516c-ec47-4433-8eeb-10dd4e7e2496",
       "name": "Telegram Send Post-Analysis Menu",
@@ -2768,8 +2768,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        8752,
-        624
+        9136,
+        592
       ],
       "id": "1fa88fd6-4cd4-4c3d-96e1-1a985e9e9fa7",
       "name": "Redis",
@@ -2971,8 +2971,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        368,
-        2272
+        1344,
+        1744
       ],
       "id": "deeb4085-1667-48b8-9dfd-283e3f4db92d",
       "name": "Postgres Create Session2",
@@ -3011,8 +3011,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        208,
-        2272
+        1184,
+        1744
       ],
       "id": "1ee33fac-d036-4984-a126-f6e402ae5dde",
       "name": "Select User ID1",
@@ -3025,29 +3025,16 @@
     },
     {
       "parameters": {
-        "jsCode": "const item = $input.first();\n\n// Из предыдущего узла (Build S3 Signature) берём fileName напрямую\n// HTTP Request мог вернуть пустой body (MinIO возвращает 200 без тела на PUT)\nconst fileName = $input.first().json.fileName\nconst uploadUrl = $input.first().json.uploadUrl\n\n// s3key = всё что после /user-uploads/\nconst s3key = fileName;\n\nreturn [{\n  json: {\n    s3key,\n    fileName: fileName.split('/').pop(),  // только имя файла без пути\n    uploadUrl,\n    s3message: `✅ Файл сохранён: ${s3key}`\n  }\n}];"
+        "jsCode": "const item = $input.first();\n\n// Из предыдущего узла (Build S3 Signature) берём fileName напрямую\n// HTTP Request мог вернуть пустой body (MinIO возвращает 200 без тела на PUT)\nconst fileName = $('Build S3 Signature User Upload').first().json.fileName\nconst uploadUrl = $('Build S3 Signature User Upload').first().json.uploadUrl\n\n// s3key = всё что после /user-uploads/\nconst s3key = fileName;\n\nreturn [{\n  json: {\n    s3key,\n    fileName: fileName.split('/').pop(),  // только имя файла без пути\n    uploadUrl,\n    s3message: `✅ Файл сохранён: ${s3key}`\n  }\n}];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -32,
-        2112
+        1024,
+        1744
       ],
       "id": "41fb2607-8a4a-4f17-82d4-28e8b964d6b3",
       "name": "Format S3 Upload User Response"
-    },
-    {
-      "parameters": {
-        "jsCode": "const http    = require('http');\nconst crypto  = require('crypto');\nconst urlModule = require('url');\n\nconst accessKey = 'n8n_service';\nconst secretKey = 'P@ssw0rd_RedFlag_2026!';\nconst region    = 'us-east-1';\nconst host      = '84.54.28.193:9000';\nconst bucket    = 'user-uploads';\n\n// ─── Берём файл из Telegram Get File ──────────────────────\nconst telegramFile = $('Telegram Get File').first();\nconst binaryKey    = Object.keys(telegramFile.binary)[0];\nconst bin          = telegramFile.binary[binaryKey];\nconst buffer       = Buffer.from(bin.data, 'base64');\n\nif (!buffer || buffer.length === 0) {\n  throw new Error('Telegram Get File вернул пустой файл');\n}\n\n// ─── Строим путь в MinIO ───────────────────────────────────\nconst telegramId   = $('Extract Message Fields').first().json.telegram_id;\nconst ts           = new Date();\nconst dateStamp    = ts.toISOString().slice(0,10).replace(/-/g,'');\nconst amzDate      = ts.toISOString().replace(/[-:]/g,'').slice(0,15) + 'Z';\nconst originalName = bin.fileName || 'upload.pdf';\nconst fileName     = `${telegramId}/${dateStamp}-${originalName}`;\nconst mimeType     = bin.mimeType || 'application/octet-stream';\n\n// ─── AWS4 подпись ─────────────────────────────────────────\nconst payloadHash = crypto.createHash('sha256').update(buffer).digest('hex');\nconst canonicalHeaders =\n  `content-type:${mimeType}\\n` +\n  `host:${host}\\n` +\n  `x-amz-content-sha256:${payloadHash}\\n` +\n  `x-amz-date:${amzDate}\\n`;\nconst signedHeaders = 'content-type;host;x-amz-content-sha256;x-amz-date';\nconst canonicalRequest = [\n  'PUT', `/${bucket}/${fileName}`, '',\n  canonicalHeaders, signedHeaders, payloadHash\n].join('\\n');\nconst credentialScope = `${dateStamp}/${region}/s3/aws4_request`;\nconst stringToSign = [\n  'AWS4-HMAC-SHA256', amzDate, credentialScope,\n  crypto.createHash('sha256').update(canonicalRequest).digest('hex')\n].join('\\n');\nconst hmac = (key, data, enc) =>\n  crypto.createHmac('sha256', key).update(data).digest(enc);\nconst signingKey = hmac(hmac(hmac(hmac('AWS4' + secretKey, dateStamp), region), 's3'), 'aws4_request');\nconst signature  = hmac(signingKey, stringToSign, 'hex');\nconst authHeader = `AWS4-HMAC-SHA256 Credential=${accessKey}/${credentialScope}, SignedHeaders=${signedHeaders}, Signature=${signature}`;\n\n// ─── PUT в MinIO ───────────────────────────────────────────\nconst uploadUrl = `http://${host}/${bucket}/${fileName}`;\nconst parsed    = urlModule.parse(uploadUrl);\n\nconst statusCode = await new Promise((resolve, reject) => {\n  const req = http.request({\n    hostname: parsed.hostname,\n    port: parseInt(parsed.port) || 9000,\n    path: parsed.path,\n    method: 'PUT',\n    headers: {\n      'Authorization':          authHeader,\n      'x-amz-date':             amzDate,\n      'x-amz-content-sha256':   payloadHash,\n      'Content-Type':           mimeType,\n      'Content-Length':         buffer.length\n    }\n  }, (res) => {\n    res.resume();\n    res.on('end', () => resolve(res.statusCode));\n  });\n  req.on('error', reject);\n  req.write(buffer);\n  req.end();\n});\n\nif (statusCode !== 200) {\n  throw new Error(`MinIO returned HTTP ${statusCode}`);\n}\n\nreturn [{\n  json: {\n    uploadStatus: 'ok',\n    statusCode,\n    fileName,\n    s3key: fileName,\n    uploadUrl,\n    fileSize: buffer.length\n  }\n}];"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        -256,
-        1952
-      ],
-      "id": "777e76b7-dd1c-428c-af6d-a1f6b6d33d25",
-      "name": "S3 Upload User Document Code"
     },
     {
       "parameters": {
@@ -3073,26 +3060,13 @@
     },
     {
       "parameters": {
-        "jsCode": "const http = require('http');\nconst urlModule = require('url');\n\nconst s3key = $input.first().json.s3key;\nif (!s3key) {\n  throw new Error(`s3key is null. Redis key: analysis:${$('Extract Message Fields').first().json.telegramid}:input not found or expired.`);\n}\n\nconst host = '84.54.28.193';\nconst port = 9000;\nconst bucket = 'user-uploads';\n\nconst buffer = await new Promise((resolve, reject) => {\n  const req = http.get(`http://${host}:${port}/${bucket}/${s3key}`, (res) => {\n    const chunks = [];\n    res.on('data', chunk => chunks.push(chunk));\n    res.on('end', () => resolve(Buffer.concat(chunks)));\n    res.on('error', reject);\n  });\n  req.on('error', reject);\n});\n\nconst fileName = s3key.split('/').pop();\nconst mimeType = fileName.endsWith('.pdf') ? 'application/pdf' : 'text/plain';\n\nreturn [{\n  json: { s3key, fileName },\n  binary: {\n    data: {\n      data: buffer.toString('base64'),\n      mimeType,\n      fileName,\n      fileExtension: fileName.split('.').pop()\n    }\n  }\n}];"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        4080,
-        816
-      ],
-      "id": "9a1918dd-3eba-4e64-b94f-bcc8da729385",
-      "name": "S3 Download User Document"
-    },
-    {
-      "parameters": {
         "operation": "pdf",
         "options": {}
       },
       "type": "n8n-nodes-base.extractFromFile",
       "typeVersion": 1.1,
       "position": [
-        4576,
+        4688,
         816
       ],
       "id": "4c1a0662-0436-420d-ba87-e0bcee2a711e",
@@ -3105,7 +3079,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        4800,
+        4896,
         816
       ],
       "id": "bb7b5ee5-6308-454c-b2b5-e5bdc55b2101",
@@ -3120,8 +3094,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        -464,
-        1856
+        528,
+        1744
       ],
       "id": "40a58450-86ed-44fa-bc31-afae385a7b40",
       "name": "Telegram Get File",
@@ -3132,6 +3106,142 @@
           "name": "redFlags"
         }
       }
+    },
+    {
+      "parameters": {
+        "jsCode": "const crypto = require('crypto');\n\nconst accessKey = 'n8n_service';\nconst secretKey = 'P@ssw0rd_RedFlag_2026!';\nconst region = 'us-east-1';\nconst host = '84.54.28.193:9000';\nconst bucket = 'user-uploads';\n\n// 1. Правильное извлечение бинарника через хелпер n8n\nconst item = $input.first();\nconst binaryKey = Object.keys(item.binary)[0]; // обычно 'data'\nconst bin = item.binary[binaryKey];\nconst buffer = await this.helpers.getBinaryDataBuffer(0, binaryKey);\n\n// 2. Параметры даты и пути\nconst telegramId = $('Extract Message Fields').first().json.telegram_id;\nconst ts = new Date();\nconst dateStamp = ts.toISOString().slice(0, 10).replace(/-/g, '');\nconst amzDate = ts.toISOString().replace(/[:-]/g, '').split('.')[0] + 'Z';\n\nconst originalName = bin.fileName || 'upload.pdf';\nconst fileName = `${telegramId}/${dateStamp}-${originalName}`;\nconst mimeType = bin.mimeType || 'application/octet-stream';\n\n// 3. Формирование AWS4 подписи\nconst payloadHash = crypto.createHash('sha256').update(buffer).digest('hex');\n\nconst canonicalHeaders =\n  `content-type:${mimeType}\\n` +\n  `host:${host}\\n` +\n  `x-amz-content-sha256:${payloadHash}\\n` +\n  `x-amz-date:${amzDate}\\n`;\n\nconst signedHeaders = 'content-type;host;x-amz-content-sha256;x-amz-date';\n\nconst canonicalRequest = [\n  'PUT',\n  `/${bucket}/${fileName}`,\n  '',\n  canonicalHeaders,\n  signedHeaders,\n  payloadHash\n].join('\\n');\n\nconst credentialScope = `${dateStamp}/${region}/s3/aws4_request`;\nconst stringToSign = [\n  'AWS4-HMAC-SHA256',\n  amzDate,\n  credentialScope,\n  crypto.createHash('sha256').update(canonicalRequest).digest('hex')\n].join('\\n');\n\nfunction hmac(key, data, enc) {\n  return crypto.createHmac('sha256', key).update(data).digest(enc || undefined);\n}\n\nconst signingKey = hmac(hmac(hmac(hmac(\n  Buffer.from('AWS4' + secretKey), dateStamp), region), 's3'), 'aws4_request');\nconst signature = hmac(signingKey, stringToSign, 'hex');\n\nconst authHeader = `AWS4-HMAC-SHA256 Credential=${accessKey}/${credentialScope}, SignedHeaders=${signedHeaders}, Signature=${signature}`;\n\n// Передаём данные в HTTP Request вместе с оригинальным бинарником\nreturn [{\n  json: {\n    uploadUrl: `http://${host}/${bucket}/${fileName}`,\n    authHeader,\n    amzDate,\n    payloadHash,\n    fileName,\n    mimeType,\n    binaryKey\n  },\n  binary: item.binary\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        688,
+        1744
+      ],
+      "id": "777e76b7-dd1c-428c-af6d-a1f6b6d33d25",
+      "name": "Build S3 Signature User Upload"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.downloadUrl }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ $json.authHeader }}"
+            },
+            {
+              "name": "x-amz-date",
+              "value": "={{ $json.amzDate }}"
+            },
+            {
+              "name": "x-amz-content-sha256",
+              "value": "={{ $json.payloadHash }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        4208,
+        816
+      ],
+      "id": "7aad6438-3afe-48e0-8c7a-20df65a19986",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "={{ $json.uploadUrl }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ $json.authHeader }}"
+            },
+            {
+              "name": "x-amz-date",
+              "value": "={{ $json.amzDate }}"
+            },
+            {
+              "name": "x-amz-content-sha256",
+              "value": "={{ $json.payloadHash }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "={{ $json.mimeType }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "={{ $json.binaryKey }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        864,
+        1744
+      ],
+      "id": "1dc57983-66fa-4651-b139-e4255ceb54fb",
+      "name": "Upload User Document HTTP"
+    },
+    {
+      "parameters": {
+        "jsCode": "const crypto = require('crypto');\n\nconst accessKey = 'n8n_service';\nconst secretKey = 'P@ssw0rd_RedFlag_2026!';\nconst region = 'us-east-1';\nconst host = '84.54.28.193:9000';\nconst bucket = 'user-uploads';\n\nconst s3key = $input.first().json.s3key;\nif (!s3key) throw new Error(\"No s3key found in input\");\n\nconst ts = new Date();\nconst dateStamp = ts.toISOString().slice(0, 10).replace(/-/g, '');\nconst amzDate = ts.toISOString().replace(/[:-]/g, '').split('.')[0] + 'Z';\n\n// Для GET-запроса тело пустое\nconst payloadHash = crypto.createHash('sha256').update('').digest('hex');\n\n// Кодируем путь для AWS (на случай пробелов или кириллицы)\nconst encodedKey = s3key.split('/').map(encodeURIComponent).join('/');\n\nconst canonicalHeaders =\n  `host:${host}\\n` +\n  `x-amz-content-sha256:${payloadHash}\\n` +\n  `x-amz-date:${amzDate}\\n`;\n\nconst signedHeaders = 'host;x-amz-content-sha256;x-amz-date';\n\nconst canonicalRequest = [\n  'GET',\n  `/${bucket}/${encodedKey}`,\n  '', // Query parameters (пусто)\n  canonicalHeaders,\n  signedHeaders,\n  payloadHash\n].join('\\n');\n\nconst credentialScope = `${dateStamp}/${region}/s3/aws4_request`;\nconst stringToSign = [\n  'AWS4-HMAC-SHA256',\n  amzDate,\n  credentialScope,\n  crypto.createHash('sha256').update(canonicalRequest).digest('hex')\n].join('\\n');\n\nfunction hmac(key, data, enc) {\n  return crypto.createHmac('sha256', key).update(data).digest(enc || undefined);\n}\n\nconst signingKey = hmac(hmac(hmac(hmac(\n  Buffer.from('AWS4' + secretKey), dateStamp), region), 's3'), 'aws4_request');\nconst signature = hmac(signingKey, stringToSign, 'hex');\n\nconst authHeader = `AWS4-HMAC-SHA256 Credential=${accessKey}/${credentialScope}, SignedHeaders=${signedHeaders}, Signature=${signature}`;\n\nreturn [{\n  json: {\n    s3key,\n    downloadUrl: `http://${host}/${bucket}/${encodedKey}`,\n    authHeader,\n    amzDate,\n    payloadHash\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4048,
+        816
+      ],
+      "id": "544a6c51-670a-4f9a-8363-2d8674a4d22f",
+      "name": "Build S3 Download Signature"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "384120b9-1da3-47bd-9306-a14b0453a1a6",
+              "leftValue": "={{ $json.severity }}",
+              "rightValue": false,
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        6688,
+        480
+      ],
+      "id": "e284c26d-a60d-4e9f-aa6f-ced1dceb77dd",
+      "name": "Filter"
     }
   ],
   "pinData": {},
@@ -3689,7 +3799,7 @@
       "main": [
         [
           {
-            "node": "Loop Over Items",
+            "node": "Filter",
             "type": "main",
             "index": 0
           }
@@ -3817,33 +3927,11 @@
         ]
       ]
     },
-    "S3 Upload User Document Code": {
-      "main": [
-        [
-          {
-            "node": "Format S3 Upload User Response",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Redis Get S3 Key": {
       "main": [
         [
           {
-            "node": "S3 Download User Document",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "S3 Download User Document": {
-      "main": [
-        [
-          {
-            "node": "Redis Cache Analysis Status",
+            "node": "Build S3 Download Signature",
             "type": "main",
             "index": 0
           }
@@ -3876,7 +3964,62 @@
       "main": [
         [
           {
-            "node": "S3 Upload User Document Code",
+            "node": "Build S3 Signature User Upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build S3 Signature User Upload": {
+      "main": [
+        [
+          {
+            "node": "Upload User Document HTTP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload User Document HTTP": {
+      "main": [
+        [
+          {
+            "node": "Format S3 Upload User Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build S3 Download Signature": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Redis Cache Analysis Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
             "type": "main",
             "index": 0
           }
@@ -3889,7 +4032,7 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "7c0a51c7-614e-4dc6-bc09-3cf66abd397f",
+  "versionId": "91cdfa85-3d2a-4820-a97a-f405835deb6f",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "f4300700b5a89163b88ad6a908ff9e3076c705e8b03a3f40f03ff2f29f7e4289"
