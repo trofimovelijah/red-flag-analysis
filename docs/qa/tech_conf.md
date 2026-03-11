@@ -81,6 +81,24 @@
 | COMPLETED | 100 | Анализ завершён, результат готов |
 | FAILED | | Ошибка на любом этапе |
 
+### Команды для отладки и тестирования `Redis`
+
+```bash
+# удаление всех ключей только из текущей выбранной БД
+redis-cli FLUSHDB
+```
+
+```bash
+# удаление всех ключей только из текущей выбранной БД внутри docker-compose
+docker compose exec -e REDISCLI_AUTH='твой пароль' redis redis-cli FLUSHDB
+# или чисто через docker без compose
+docker exec -e REDISCLI_AUTH='твой пароль' -it redis_db redis-cli FLUSHDB
+```
+
+```bash
+# удаление ключей из всех существующих баз, а не только из текущей
+redis-cli FLUSHALL
+```
 
 ## Проектирование файлового хранилища
 

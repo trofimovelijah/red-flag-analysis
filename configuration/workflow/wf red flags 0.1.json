@@ -138,8 +138,8 @@
       "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1.2,
       "position": [
-        -528,
-        1472
+        -736,
+        1488
       ],
       "id": "a14fcc41-8c1c-4039-90b0-f3f636f71f5e",
       "name": "Telegram Trigger",
@@ -155,13 +155,13 @@
       "parameters": {
         "content": "### 📱 Telegram Bot Gateway\n\nТочка входа пользователя",
         "height": 2224,
-        "width": 3232,
+        "width": 3376,
         "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -848,
-        368
+        -1056,
+        384
       ],
       "typeVersion": 1,
       "id": "9cf9e2e9-1d00-4987-a19d-7a1f01bcc72a",
@@ -176,8 +176,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        2496,
-        1152
+        2480,
+        1168
       ],
       "typeVersion": 1,
       "id": "524edfad-9e0a-4089-bd4e-f5bbc82e2d67",
@@ -208,8 +208,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        4816,
-        1184
+        4768,
+        1168
       ],
       "typeVersion": 1,
       "id": "a0dbcd66-281f-4982-aa04-d0b90e61b13e",
@@ -337,8 +337,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -288,
-        1472
+        -496,
+        1488
       ],
       "id": "0d105e9a-9efc-45d6-88f7-7f16713ef6cf",
       "name": "Extract Message Fields"
@@ -357,12 +357,11 @@
                 },
                 "conditions": [
                   {
-                    "leftValue": "=$json.db0 == \"FILE_UPLOADED\"",
-                    "rightValue": "",
+                    "leftValue": "={{ $json.input_type }}",
+                    "rightValue": "FILE",
                     "operator": {
                       "type": "string",
-                      "operation": "notEmpty",
-                      "singleValue": true
+                      "operation": "equals"
                     },
                     "id": "a79746cc-f019-4dbf-9d45-7ac648faf94a"
                   }
@@ -383,12 +382,11 @@
                 "conditions": [
                   {
                     "id": "91f39a66-7c9a-4033-81e8-d1e639f8e362",
-                    "leftValue": "=$json.db0 == \"TEXT_ENTERED\"",
-                    "rightValue": "",
+                    "leftValue": "={{ $json.input_type }}",
+                    "rightValue": "TEXT",
                     "operator": {
                       "type": "string",
-                      "operation": "notEmpty",
-                      "singleValue": true
+                      "operation": "equals"
                     }
                   }
                 ],
@@ -404,7 +402,7 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        3616,
+        3872,
         1328
       ],
       "id": "b22c2445-65a2-42e2-be05-02abb258741e",
@@ -423,10 +421,10 @@
             {
               "id": "e32a3b60-b99f-45b6-a61a-89b00497072e",
               "leftValue": "={{ $('Redis Increment Daily Counter').item.json['limit:154080553:daily'] }}",
-              "rightValue": 30,
+              "rightValue": 3,
               "operator": {
                 "type": "number",
-                "operation": "lt"
+                "operation": "lte"
               }
             }
           ],
@@ -453,8 +451,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        768,
-        448
+        560,
+        464
       ],
       "id": "45bed0e4-48b0-40ea-9120-6ff4ac5d8a67",
       "name": "Redis Check Daily Limit",
@@ -498,8 +496,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        4448,
-        1344
+        3600,
+        1328
       ],
       "id": "02835df5-7929-4507-951f-521b07cab57e",
       "name": "Redis Cache Analysis Status",
@@ -737,7 +735,6 @@
     {
       "parameters": {
         "mode": "retrieve-as-tool",
-        "toolDescription": "d",
         "qdrantCollection": {
           "__rl": true,
           "value": "ru_documents_embeddings",
@@ -1055,8 +1052,8 @@
     {
       "parameters": {
         "operation": "get",
-        "propertyName": "db0",
-        "key": "=session:{{ $('Extract Message Fields').item.json.telegram_id }}:state",
+        "propertyName": "input_type",
+        "key": "=session:{{ $('Extract Message Fields').item.json.telegram_id }}:input_type",
         "options": {}
       },
       "type": "n8n-nodes-base.redis",
@@ -1132,8 +1129,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1024,
-        448
+        816,
+        464
       ],
       "id": "b20d0a90-e055-419b-8f46-f54ee2898ae3",
       "name": "Send a start message",
@@ -1293,8 +1290,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        560,
-        448
+        352,
+        464
       ],
       "id": "f6b36c3e-ecad-4a08-8ccb-ec69cd3145ed",
       "name": "Postgres Upsert User",
@@ -1315,8 +1312,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        480,
-        2160
+        272,
+        2176
       ],
       "id": "008d1d40-439a-446a-a0b9-313d9482f32a",
       "name": "Redis Get FSM State1",
@@ -1464,8 +1461,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        512,
-        1024
+        304,
+        1040
       ],
       "id": "e90b3f97-dd5f-4cf1-9c22-715c15f8c775",
       "name": "Callback Action Router"
@@ -1481,8 +1478,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        1248,
-        448
+        1040,
+        464
       ],
       "id": "8b8c3200-c333-495c-8dcd-e6a2d1617568",
       "name": "Redis Set State IDLE",
@@ -1504,8 +1501,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        1392,
-        2048
+        1184,
+        2064
       ],
       "id": "9792b797-b353-483a-a22f-5761599581b6",
       "name": "Redis Cache User Text",
@@ -1527,8 +1524,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        880,
-        736
+        672,
+        752
       ],
       "id": "2c2784f0-d4f9-4c4e-a967-830584500e1d",
       "name": "Redis Set State Awaiting Text",
@@ -1550,8 +1547,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        880,
-        928
+        672,
+        944
       ],
       "id": "c66a5a97-400a-4fc5-8e92-c33f78cc14d2",
       "name": "Redis Set State Awaiting File",
@@ -1573,8 +1570,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        1088,
-        1504
+        880,
+        1520
       ],
       "id": "d1df608e-b7ab-4651-bd0d-ea968fe28ae3",
       "name": "Redis Set State Analyzing",
@@ -1596,8 +1593,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        1504,
-        1744
+        1296,
+        1760
       ],
       "id": "96c7baf3-9a22-48a2-a564-8789335325f1",
       "name": "Redis Cache User File",
@@ -1636,8 +1633,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        688,
-        2160
+        480,
+        2176
       ],
       "id": "98500f46-fdb0-4265-b81e-381465162600",
       "name": "FSM Check AWAITING_TEXT"
@@ -1653,8 +1650,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1168,
-        736
+        960,
+        752
       ],
       "id": "5b79566c-cc7f-4023-ab79-cf8ce8b483c6",
       "name": "Telegram Prompt Enter Text",
@@ -1677,8 +1674,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1168,
-        928
+        960,
+        944
       ],
       "id": "f4c0c952-8616-49c0-8859-9a19abbf10b0",
       "name": "Telegram Prompt Upload File",
@@ -1701,8 +1698,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1312,
-        1504
+        1104,
+        1520
       ],
       "id": "af875449-6ae8-476b-b7cd-7630474011ed",
       "name": "Telegram Send Analyzing Status",
@@ -1743,7 +1740,7 @@
       "typeVersion": 1.2,
       "position": [
         1760,
-        2048
+        2064
       ],
       "id": "09bedcb0-7396-4099-bcb7-3fbe3669b921",
       "name": "Telegram Send Text Ready",
@@ -1784,7 +1781,7 @@
       "typeVersion": 1.2,
       "position": [
         2096,
-        1744
+        1760
       ],
       "id": "0f83c873-9e83-4994-acf8-d19403a22a3c",
       "name": "Telegram Send File Ready",
@@ -1808,8 +1805,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        880,
-        1088
+        672,
+        1104
       ],
       "id": "a5dd79c6-9f7b-4018-95c9-bf8f75c766c9",
       "name": "Telegram Alert Analyze Locked",
@@ -1833,8 +1830,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1088,
-        1264
+        880,
+        1280
       ],
       "id": "6177f5c4-89bc-432d-9bea-1de0b977a317",
       "name": "Telegram Alert Image WIP",
@@ -1857,8 +1854,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        1584,
-        2048
+        1376,
+        2064
       ],
       "id": "6ba7f0e4-ddcc-4783-b084-118b09e38b39",
       "name": "Redis Set FSM State Text Entered",
@@ -1882,8 +1879,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        1712,
-        1744
+        1504,
+        1760
       ],
       "id": "2145d4b6-61b1-4b01-8196-dec46a947176",
       "name": "Redis Set FSM State File Uploaded",
@@ -1908,7 +1905,7 @@
       "typeVersion": 1,
       "position": [
         1904,
-        1744
+        1760
       ],
       "id": "70c16e40-424f-4045-8e97-4594cf5f83dd",
       "name": "Redis Set Upload Meta",
@@ -2110,8 +2107,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1200,
-        2048
+        992,
+        2064
       ],
       "id": "d4f936d0-1bc1-4af6-8773-48ab27db82b0",
       "name": "Postgres Create Session1",
@@ -2133,8 +2130,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        992,
-        2288
+        784,
+        2304
       ],
       "id": "8002289d-07d3-40f6-9a3f-67feb677749b",
       "name": "Send a Awaiting Text",
@@ -2174,8 +2171,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        992,
-        2048
+        784,
+        2064
       ],
       "id": "f7e0dc46-c037-48fe-90c0-cbfe60414d90",
       "name": "Select User ID",
@@ -2458,7 +2455,7 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        2832,
+        3088,
         976
       ],
       "typeVersion": 1,
@@ -2862,8 +2859,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1344,
-        1744
+        1136,
+        1760
       ],
       "id": "deeb4085-1667-48b8-9dfd-283e3f4db92d",
       "name": "Postgres Create Session2",
@@ -2902,8 +2899,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1184,
-        1744
+        976,
+        1760
       ],
       "id": "1ee33fac-d036-4984-a126-f6e402ae5dde",
       "name": "Select User ID1",
@@ -2921,8 +2918,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1024,
-        1744
+        816,
+        1760
       ],
       "id": "41fb2607-8a4a-4f17-82d4-28e8b964d6b3",
       "name": "Format S3 Upload User Response"
@@ -2937,7 +2934,7 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        3872,
+        4128,
         816
       ],
       "id": "d9d53d94-cabc-4463-9718-06d1bc6fc592",
@@ -2957,7 +2954,7 @@
       "type": "n8n-nodes-base.extractFromFile",
       "typeVersion": 1.1,
       "position": [
-        4688,
+        4624,
         816
       ],
       "id": "4c1a0662-0436-420d-ba87-e0bcee2a711e",
@@ -2985,8 +2982,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        528,
-        1744
+        320,
+        1760
       ],
       "id": "40a58450-86ed-44fa-bc31-afae385a7b40",
       "name": "Telegram Get File",
@@ -3005,8 +3002,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        688,
-        1744
+        480,
+        1760
       ],
       "id": "777e76b7-dd1c-428c-af6d-a1f6b6d33d25",
       "name": "Build S3 Signature User Upload"
@@ -3042,7 +3039,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        4208,
+        4464,
         816
       ],
       "id": "7aad6438-3afe-48e0-8c7a-20df65a19986",
@@ -3081,8 +3078,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        864,
-        1744
+        656,
+        1760
       ],
       "id": "1dc57983-66fa-4651-b139-e4255ceb54fb",
       "name": "Upload User Document HTTP"
@@ -3094,7 +3091,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        4048,
+        4304,
         816
       ],
       "id": "544a6c51-670a-4f9a-8363-2d8674a4d22f",
@@ -3241,11 +3238,108 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        -16,
-        1440
+        -224,
+        1456
       ],
       "id": "51c3a20a-f46b-483c-9ce0-951243fc32e2",
       "name": "Event Type Router"
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "=session:{{ $('Extract Message Fields').item.json.telegram_id }}:input_type",
+        "value": "TEXT",
+        "expire": true,
+        "ttl": 86400
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1584,
+        2064
+      ],
+      "id": "a90edc3f-53df-428e-bdd0-afb907e0dc4d",
+      "name": "Redis Set Input Type TEXT",
+      "credentials": {
+        "redis": {
+          "id": "k3rZiJXMKohxs4tn",
+          "name": "Redis beget 47"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "=session:{{ $('Extract Message Fields').item.json.telegram_id }}:input_type",
+        "value": "FILE",
+        "expire": true,
+        "ttl": 86400
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1712,
+        1760
+      ],
+      "id": "3aba9f68-02c4-4f61-9386-93a7a544968f",
+      "name": "Redis Set Input Type FILE",
+      "credentials": {
+        "redis": {
+          "id": "k3rZiJXMKohxs4tn",
+          "name": "Redis beget 47"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "text",
+        "key": "=input:{{ $('Select Session ID').first().json.session_id }}:text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        4144,
+        1344
+      ],
+      "id": "334f8922-dd4a-4e0f-b9e9-ed86e960889a",
+      "name": "Redis Get Input Text",
+      "credentials": {
+        "redis": {
+          "id": "k3rZiJXMKohxs4tn",
+          "name": "Redis beget 47"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bfe4c35f-43fb-469f-afbd-ac5444bcac17",
+              "name": "text",
+              "value": "={{ $json.text || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "8b0be7e8-5f7e-4985-a0cf-a7f09316cbd9",
+              "name": "input_type",
+              "value": "=TEXT_INPUT",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4352,
+        1344
+      ],
+      "id": "2d7ac842-e452-4e00-8750-ebe83e8a0b1d",
+      "name": "Set Text Payload For Chunker"
     }
   ],
   "pinData": {},
@@ -3338,7 +3432,7 @@
         ],
         [
           {
-            "node": "Redis Cache Analysis Status",
+            "node": "Redis Get Input Text",
             "type": "main",
             "index": 0
           }
@@ -3389,7 +3483,7 @@
       "main": [
         [
           {
-            "node": "Extract from PDF",
+            "node": "Input Type Router",
             "type": "main",
             "index": 0
           }
@@ -3600,7 +3694,7 @@
       "main": [
         [
           {
-            "node": "Telegram Send Text Ready",
+            "node": "Redis Set Input Type TEXT",
             "type": "main",
             "index": 0
           }
@@ -3611,7 +3705,7 @@
       "main": [
         [
           {
-            "node": "Redis Set Upload Meta",
+            "node": "Redis Set Input Type FILE",
             "type": "main",
             "index": 0
           }
@@ -3638,7 +3732,7 @@
       "main": [
         [
           {
-            "node": "Input Type Router",
+            "node": "Redis Cache Analysis Status",
             "type": "main",
             "index": 0
           }
@@ -3980,7 +4074,7 @@
       "main": [
         [
           {
-            "node": "Redis Cache Analysis Status",
+            "node": "Extract from PDF",
             "type": "main",
             "index": 0
           }
@@ -4029,6 +4123,50 @@
           }
         ]
       ]
+    },
+    "Redis Set Input Type TEXT": {
+      "main": [
+        [
+          {
+            "node": "Telegram Send Text Ready",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Set Input Type FILE": {
+      "main": [
+        [
+          {
+            "node": "Redis Set Upload Meta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Get Input Text": {
+      "main": [
+        [
+          {
+            "node": "Set Text Payload For Chunker",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Text Payload For Chunker": {
+      "main": [
+        [
+          {
+            "node": "Document Chunker",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
@@ -4036,7 +4174,7 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "626c82c2-c219-4ea9-9a92-6c29eee3c738",
+  "versionId": "bc6e827e-5d4e-47b0-a1fd-0fa36b9e10c2",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "f4300700b5a89163b88ad6a908ff9e3076c705e8b03a3f40f03ff2f29f7e4289"
