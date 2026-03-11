@@ -2557,7 +2557,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const telegramId = $('Extract Message Fields').first().json.telegramid;\nconst dailyUsed = $('Redis Increment Daily Counter').first().json.value ?? 1;\nconst dailyLimit = 3; // Free тариф\nconst remaining = Math.max(0, dailyLimit - dailyUsed);\n\nconst emoji = remaining === 0 ? '🔴' : remaining === 1 ? '🟡' : '🟢';\n\nreturn [{\n  json: {\n    chat_id: $('Extract Message Fields').first().json.chatid,\n    used: dailyUsed,\n    remaining: remaining,\n    status_text: `${emoji} Использовано запросов сегодня: ${dailyUsed} из ${dailyLimit}\\nОсталось: ${remaining}\\n\\nЧто делаем дальше?`\n  }\n}];"
+        "jsCode": "const telegramId = $('Extract Message Fields').first().json.telegram_id;\nconst redisKey = `limit:${telegramId}:daily`;\nconst dailyUsed = $('Redis Increment Daily Counter').first().json[redisKey] ?? 1;\n\nconst dailyLimit = 3;\nconst remaining = Math.max(0, dailyLimit - dailyUsed);\n\nconst emoji = remaining === 0 ? '🔴' : remaining === 1 ? '🟡' : '🟢';\n\nreturn [{\n  json: {\n    chat_id: $('Extract Message Fields').first().json.chatid,\n    used: dailyUsed,\n    remaining: remaining,\n    status_text: `${emoji} Использовано запросов сегодня: ${dailyUsed} из ${dailyLimit}\\nОсталось: ${remaining}\\n\\nЧто делаем дальше?`\n  }\n}];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -4174,7 +4174,7 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "bc6e827e-5d4e-47b0-a1fd-0fa36b9e10c2",
+  "versionId": "a78bdc0c-be21-486a-a8fe-cd1990260ab3",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "f4300700b5a89163b88ad6a908ff9e3076c705e8b03a3f40f03ff2f29f7e4289"
