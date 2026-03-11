@@ -218,8 +218,8 @@
     {
       "parameters": {
         "content": "### 📤 Response Delivery\n\nОтветы пользователю",
-        "height": 608,
-        "width": 1520,
+        "height": 640,
+        "width": 1856,
         "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
@@ -1796,7 +1796,7 @@
     {
       "parameters": {
         "resource": "callback",
-        "queryId": "={{ $json.callback_query.id }}",
+        "queryId": "={{ $json.callback.d }}",
         "additionalFields": {
           "show_alert": true,
           "text": "Сначала добавьте текст или прикрепите файл!"
@@ -2632,8 +2632,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        9568,
-        592
+        9856,
+        720
       ],
       "id": "a295516c-ec47-4433-8eeb-10dd4e7e2496",
       "name": "Telegram Send Post-Analysis Menu",
@@ -3340,6 +3340,111 @@
       ],
       "id": "2d7ac842-e452-4e00-8750-ebe83e8a0b1d",
       "name": "Set Text Payload For Chunker"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Extract Message Fields').first().json.chat_id }}",
+        "text": "=🟡 <b>Лимит запросов на сегодня исчерпан</b>\n\nНа тарифе <b>Free</b> использовано <b>3 из 3</b> запросов.\n\nВы можете:\n• подождать 24 часа до обновления лимита;\n• перейти на тариф <b>Pro</b>.\n\nВыберите дальнейшее действие:",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "Перейти на тариф Pro (в разработке)",
+                    "additionalFields": {
+                      "callback_data": "btn_transition_pro"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "❓ Помощь",
+                    "additionalFields": {
+                      "callback_data": "btn_help"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "📝 Ввести текст",
+                    "additionalFields": {
+                      "callback_data": "btn_add_text"
+                    }
+                  },
+                  {
+                    "text": "📎 Прикрепить файл",
+                    "additionalFields": {
+                      "callback_data": "btn_add_file"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        9856,
+        512
+      ],
+      "id": "7ae9a8fd-0ab4-4287-adea-9369b82776a9",
+      "name": "Telegram Send Post-Analysis Finish Free Tariff",
+      "webhookId": "acace746-a6b8-4325-aecb-cb2c03aac5d3",
+      "credentials": {
+        "telegramApi": {
+          "id": "ofJWfQOJnrvkEwK1",
+          "name": "redFlags"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b8dc1ee7-0204-49a0-a2e7-551c42cedb32",
+              "leftValue": "={{ $json.used }}",
+              "rightValue": 2,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        9568,
+        592
+      ],
+      "id": "25c512df-958f-428c-bfab-b650e79137cd",
+      "name": "Free Rate Limit has been reached?"
     }
   ],
   "pinData": {},
@@ -3942,7 +4047,7 @@
       "main": [
         [
           {
-            "node": "Telegram Send Post-Analysis Menu",
+            "node": "Free Rate Limit has been reached?",
             "type": "main",
             "index": 0
           }
@@ -4167,6 +4272,24 @@
           }
         ]
       ]
+    },
+    "Free Rate Limit has been reached?": {
+      "main": [
+        [
+          {
+            "node": "Telegram Send Post-Analysis Finish Free Tariff",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram Send Post-Analysis Menu",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
@@ -4174,7 +4297,7 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "a78bdc0c-be21-486a-a8fe-cd1990260ab3",
+  "versionId": "b2256ada-16b9-447e-bfec-0dce1693018d",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "f4300700b5a89163b88ad6a908ff9e3076c705e8b03a3f40f03ff2f29f7e4289"
