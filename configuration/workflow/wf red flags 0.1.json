@@ -36,10 +36,10 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Проанализируй фрагмент документа на наличие красных флажков. Используй инструмент поиска по векторной базе красных флажков ru_documents_embeddings.\n\nДля каждого найденного риска укажи: название из базы, уровень серьёзности (HIGH/MEDIUM/LOW), уверенность (0.0–1.0), цитату из документа, рекомендацию.\n\nОпредели тип документа и юрисдикцию.\n\nВ поле summary_html сформируй читаемое HTML-резюме на русском языке.\n\n====\n{{ $json.chunk_text }}\n====\n",
+        "text": "=Шаг 1: Прочитай фрагмент документа ниже.\nШаг 2: Выдели из него все фразы, которые могут указывать на юридические риски.\nШаг 3: Для каждой такой фразы ОБЯЗАТЕЛЬНО выполни поиск по базе ru_documents_embeddings, используя инструмент.\nШаг 4: На основании ТОЛЬКО результатов поиска сформируй ответ.\n\nЕсли ты не вызвал инструмент — твой ответ будет считаться ошибкой.\n\n====\n{{ $json.chunk_text }}\n====",
         "hasOutputParser": true,
         "options": {
-          "systemMessage": "Ты — специализированный юридический аналитик по выявлению рисков в договорах и пользовательских соглашениях.\n\nТвои задачи:\n1. Анализировать переданные фрагменты документов\n2. Искать совпадения с базой «красных флажков» ru_documents_embeddings через инструмент поиска\n3. Для каждого найденного риска фиксировать: название из базы, severity, confidence_score, цитату, рекомендацию\n4. Определять тип документа и юрисдикцию\n5. Формировать краткое HTML-резюме для Telegram\n\nСтрогие правила:\n— Все текстовые поля для пользователя — только на русском языке\n— Ориентируйся исключительно на базу красных флажков, не придумывай риски самостоятельно\n— Если риски не найдены — верни пустой массив risks: [] и укажи это в summary_html\n— severity: строго одно из HIGH, MEDIUM, LOW\n— confidence_score: число от 0.0 до 1.0 (не строка, не процент)\n— В summary_html допустимы только теги: <b>, <i>, <u>, <code>"
+          "systemMessage": "Ты — специализированный юридический аналитик по выявлению рисков в договорах и пользовательских соглашениях.\n\nКРИТИЧЕСКИ ВАЖНО: Ты ОБЯЗАН для КАЖДОГО фрагмента документа вызвать инструмент поиска по базе ru_documents_embeddings. Без вызова инструмента ты НЕ МОЖЕШЬ выдать результат анализа. Это не рекомендация, а обязательное требование.\n\nАлгоритм работы (строго по шагам):\n1. Получи фрагмент документа\n2. Выдели из него 2-4 ключевые фразы, описывающие потенциальные риски (например: \"одностороннее изменение условий\", \"отказ от ответственности\", \"прекращение услуг без уведомления\")\n3. Для КАЖДОЙ ключевой фразы вызови инструмент поиска по ru_documents_embeddings\n4. Сопоставь результаты поиска с текстом документа\n5. Для каждого совпадения зафиксируй: название риска из базы, severity, confidence_score, цитату из документа, рекомендацию\n6. Определи тип документа и юрисдикцию\n7. Сформируй HTML-резюме\n\nСтрогие правила:\n— ЗАПРЕЩЕНО отвечать без предварительного вызова инструмента поиска\n— ЗАПРЕЩЕНО придумывать риски, которых нет в базе\n— Все текстовые поля — только на русском языке\n— Если после поиска по базе совпадений не найдено — верни пустой массив risks: [] и укажи это в summary_html\n— severity: строго одно из HIGH, MEDIUM, LOW\n— confidence_score: число от 0.0 до 1.0\n— В summary_html формируй ответ СТРОГО по следующему шаблону:\n\n<b>📋 Тип документа:</b> {document_type}\n<b>⚖️ Юрисдикция:</b> {jurisdiction}\n<b>⚠️ Найдено рисков: {count}</b>\n\n<b>🔴 Высокий риск</b>\n• {название риска}: {краткое объяснение}\n• {название риска}: {краткое объяснение}\n\n<b>🟡 Средний риск</b>\n• {название риска}: {краткое объяснение}\n\n<b>🟢 Низкий риск</b>\n• {название риска}: {краткое объяснение}\n\nСекция выводится ТОЛЬКО если в ней есть хотя бы один риск.\nКаждый пункт — ровно один риск с одной маркировкой.\nЕсли рисков не найдено, выводи: \"✅ Риски не выявлены. Документ содержит стандартные условия, характерные для данного типа сервиса.\""
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -170,7 +170,7 @@
     {
       "parameters": {
         "content": "### 🔑 Session & Rate Limit Service\n\nУправление состоянием через `Redis`",
-        "height": 640,
+        "height": 576,
         "width": 2192,
         "color": 7
       },
@@ -735,6 +735,7 @@
     {
       "parameters": {
         "mode": "retrieve-as-tool",
+        "toolDescription": "=Обязательный инструмент для поиска красных флажков. Содержит базу юридических рисков (ru_documents_embeddings). Используй этот инструмент для КАЖДОГО анализируемого фрагмента — передай ключевую фразу о потенциальном риске и получи совпадения из базы. Без вызова этого инструмента анализ невозможен.",
         "qdrantCollection": {
           "__rl": true,
           "value": "ru_documents_embeddings",
@@ -2234,7 +2235,7 @@
     },
     {
       "parameters": {
-        "jsonSchemaExample": "{\n  \"document_type\": \"Пользовательское соглашение\",\n  \"jurisdiction\": \"РФ\",\n  \"risks\": [\n    {\n      \"risk_name\": \"Одностороннее изменение условий без уведомления\",\n      \"severity\": \"HIGH\",\n      \"confidence_score\": 0.92,\n      \"evidence_text\": \"Компания вправе в одностороннем порядке изменять условия...\",\n      \"recommendation\": \"Требовать письменного уведомления за 30 дней до вступления изменений в силу\"\n    }\n  ],\n  \"summary_html\": \"<b>📋 Тип документа:</b> Пользовательское соглашение\\n<b>⚠️ Найдено рисков: 1</b>\\n\\n<b>🔴 HIGH — Одностороннее изменение условий</b>\\n<i>Цитата:</i> <code>Компания вправе...</code>\\n<b>Рекомендация:</b> Требовать уведомления за 30 дней\"\n}"
+        "jsonSchemaExample": "{\n  \"document_type\": \"Пользовательское соглашение\",\n  \"jurisdiction\": \"РФ\",\n  \"risks\": [\n    {\n      \"risk_name\": \"Одностороннее изменение условий без уведомления\",\n      \"severity\": \"HIGH\",\n      \"confidence_score\": 0.92,\n      \"evidence_text\": \"Компания вправе в одностороннем порядке изменять условия...\",\n      \"recommendation\": \"Требовать письменного уведомления за 30 дней до вступления изменений в силу\"\n    }\n  ],\n  \"summary_html\": \"<b>📋 Тип документа:</b> Пользовательское соглашение\\n<b>⚖️ Юрисдикция:</b> РФ\\n<b>⚠️ Найдено рисков: 1</b>\\n\\n<b>🔴 Высокий риск</b>\\n• 🔴 Одностороннее изменение условий: Компания может менять условия без уведомления, что создаёт риск потери прав пользователя\"\n}"
       },
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
@@ -2535,7 +2536,7 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        7328,
+        7312,
         -128
       ],
       "typeVersion": 1,
@@ -2962,7 +2963,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const items = $input.all();\nconst results = [];\n\nconst CHUNK_SIZE = 1000;\nconst OVERLAP   = 150;\n\nfor (const item of items) {\n  let text = item.json.text || '';\n\n  // Чистка\n  text = text\n    .replace(/\\r\\n/g, '\\n')\n    .replace(/\\n{3,}/g, '\\n\\n')\n    .replace(/[ \\t]+/g, ' ')\n    .trim();\n\n  if (!text) throw new Error('Extracted text is empty');\n\n  // Нарезка с перекрытием\n  let start = 0;\n  let chunkIndex = 0;\n\n  while (start < text.length) {\n    const end = Math.min(start + CHUNK_SIZE, text.length);\n    const chunkText = text.slice(start, end).trim();\n\n    if (chunkText.length > 0) {\n      results.push({\n        json: {\n          ...item.json,\n          chunk_text:  chunkText,\n          chunk_index: chunkIndex\n        }\n      });\n      chunkIndex++;\n    }\n\n    if (end === text.length) break;\n    start = end - OVERLAP;\n  }\n}\n\nreturn results;"
+        "jsCode": "const items = $input.all();\nconst results = [];\n\nconst CHUNK_SIZE = 2000;\nconst OVERLAP   = 300;\n\nfor (const item of items) {\n  let text = item.json.text || '';\n\n  // Чистка\n  text = text\n    .replace(/\\r\\n/g, '\\n')\n    .replace(/\\n{3,}/g, '\\n\\n')\n    .replace(/[ \\t]+/g, ' ')\n    .trim();\n\n  if (!text) throw new Error('Extracted text is empty');\n\n  // Нарезка с перекрытием\n  let start = 0;\n  let chunkIndex = 0;\n\n  while (start < text.length) {\n    const end = Math.min(start + CHUNK_SIZE, text.length);\n    const chunkText = text.slice(start, end).trim();\n\n    if (chunkText.length > 0) {\n      results.push({\n        json: {\n          ...item.json,\n          chunk_text:  chunkText,\n          chunk_index: chunkIndex\n        }\n      });\n      chunkIndex++;\n    }\n\n    if (end === text.length) break;\n    start = end - OVERLAP;\n  }\n}\n\nreturn results;"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -3344,7 +3345,7 @@
     {
       "parameters": {
         "chatId": "={{ $('Extract Message Fields').first().json.chat_id }}",
-        "text": "=🟡 <b>Лимит запросов на сегодня исчерпан</b>\n\nНа тарифе <b>Free</b> использовано <b>3 из 3</b> запросов.\n\nВы можете:\n• подождать 24 часа до обновления лимита;\n• перейти на тариф <b>Pro</b>.\n\nВыберите дальнейшее действие:",
+        "text": "=🟡 <b>Лимит запросов на сегодня исчерпан</b>\n\nНа тарифе <b>Free</b> использовано <b>3 из 3</b> запросов.\n\nВы можете:\n• подождать до <b>{{ $now.setZone('Europe/Moscow').plus({ days: 1 }).toFormat('dd.MM HH:mm') }}</b> для обновления лимита;\n• перейти на тариф <b>Pro</b>.\n\nВыберите дальнейшее действие:",
         "replyMarkup": "inlineKeyboard",
         "inlineKeyboard": {
           "rows": [
@@ -3426,7 +3427,7 @@
             {
               "id": "b8dc1ee7-0204-49a0-a2e7-551c42cedb32",
               "leftValue": "={{ $json.used }}",
-              "rightValue": 2,
+              "rightValue": 3,
               "operator": {
                 "type": "number",
                 "operation": "gte"
@@ -4297,7 +4298,7 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "b2256ada-16b9-447e-bfec-0dce1693018d",
+  "versionId": "df3c6d7d-fee4-48bb-adc0-706d2759b0d4",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "f4300700b5a89163b88ad6a908ff9e3076c705e8b03a3f40f03ff2f29f7e4289"
