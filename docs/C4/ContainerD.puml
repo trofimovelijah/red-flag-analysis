@@ -1,29 +1,70 @@
-@startuml C4_Context
-!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+@startuml C4_Container
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
-hide method
-hide circle
-
+hide stereotype
+SHOW_PERSON_OUTLINE()
 left to right direction
 
-!define PERSON_COLOR #LightGreen
-!define EXTERNAL_SYSTEM_COLOR #LightPink
-!define MAIN_SYSTEM_COLOR #FFFF00
+title Диаграмма контейнеров — Система «Красные флажки»
 
-AddElementTag("person", $bgColor=PERSON_COLOR, $fontColor="black")
-AddElementTag("external", $bgColor=EXTERNAL_SYSTEM_COLOR, $fontColor="black")
-AddElementTag("system", $bgColor=MAIN_SYSTEM_COLOR, $fontColor="black")
+Person(user, "Пользователь", "Физическое лицо, проверяющее юридический документ на риски.")
+Person(admin, "Администратор", "Сотрудник, загружающий и актуализирующий шаблоны «красных флажков».")
 
-Person(users, "Пользователи", "Отправляют документы на анализ")
-Person(admin, "Администратор", "Управляет системой и анализирует результаты")
+System_Ext(payment_system, "Внешний платёжный сервис", "Российская платёжная система, обрабатывающая транзакции пользователей.")
 
-System_Boundary(red_flags_boundary, "Система 'Красные флажки'", "Анализ документов на риски")
+System_Boundary(red_flags, "Красные флажки") {
 
-System_Ext(payment_system, "Платёжная система", "Внешняя платёжная система")
+    Container(tg_bot, "Telegram Bot", "Python / python-telegram-bot", "Точка входа для пользователей. Принимает текст или файл документа, возвращает отчёт об анализе. Является единственным публичным интерфейсом системы.")
 
-' Взаимодействия
-Rel(users, red_flags_boundary, "Отправляет документы", "REST API")
-Rel(red_flags_boundary, payment_system, "Выполняет платежи", "API")
-Rel(admin, red_flags_boundary, "Добавляет красные флажки", "Web UI")
+    Container(orchestrator, "Оркестратор", "n8n (текущая реализация; возможна замена)", "Связывает все контейнеры платформы в единый рабочий процесс: маршрутизирует запросы, управляет очерёдностью вызовов сервисов и обрабатывает бизнес-логику взаимодействия.")
+
+    Container(doc_parser, "Client Document Parser", "Python / FastAPI", "Принимает загруженный документ (.pdf, .txt или текст). Очищает его от артефактов (колонтитулы, оглавление), выполняет чанкинг и формирует эмбеддинги для дальнейшего анализа.")
+
+    Container(flags_parser, "Flags Parser Service", "Python / FastAPI", "Принимает шаблоны «красных флажков», формирует из них эмбеддинги и записывает в векторное хранилище. Обеспечивает актуальность базы знаний для RAG-анализа.")
+
+    Container(payment_service, "Payment Service", "Python / FastAPI", "Обрабатывает запросы на оплату от оркестратора. Взаимодействует с внешним платёжным сервисом, принимает вебхуки о статусе транзакции и обновляет тарифный план пользователя.")
+
+    ContainerDb(postgres, "PostgreSQL", "PostgreSQL 15", "Реляционная СУБД. Хранит данные пользователей, историю запросов, статусы тарифных планов и результаты анализа документов.")
+
+    ContainerDb(vector_db, "Векторное хранилище", "Qdrant", "Хранит векторные представления (эмбеддинги) чанков документов пользователей и шаблонов «красных флажков». Используется при семантическом поиске в ходе RAG-анализа.")
+
+    ContainerDb(minio, "MinIO", "MinIO (S3-совместимое)", "Объектное хранилище для исходных файлов документов, загруженных пользователями. Обеспечивает доступ к оригиналам в соответствии с требованием ФТ-24.")
+
+    Container(jupyter, "Jupyter Notebook", "JupyterHub / Python", "Интерфейс администратора, развёрнутый на выделенном сервере. Позволяет загружать, проверять и обновлять шаблоны «красных флажков» через скрипты.")
+
+    Container(llm, "LLM-сервис", "OpenAI API / локальная LLM", "Языковая модель, формирующая итоговый отчёт на понятном пользователю языке на основе результатов семантического сравнения эмбеддингов.")
+}
+
+' Внешние акторы → контейнеры
+Rel(user, tg_bot, "Выполняет проверку документа, используя", "Telegram MTProto")
+Rel(admin, jupyter, "Выполняет загрузку шаблонов «красных флажков», используя", "HTTPS / Web UI")
+
+' Telegram Bot → Оркестратор
+Rel(tg_bot, orchestrator, "Передаёт информацию о запросе пользователя в", "HTTP / Webhook")
+
+' Оркестратор → сервисы
+Rel(orchestrator, doc_parser, "Передаёт информацию о загруженном документе в", "HTTP / REST")
+Rel(orchestrator, payment_service, "Передаёт информацию о платёжном запросе в", "HTTP / REST")
+Rel(orchestrator, llm, "Передаёт информацию о сопоставленных фрагментах в", "HTTP / REST")
+Rel(orchestrator, postgres, "Выполняет запись и чтение данных пользователей, используя", "SQL / JDBC")
+
+' Оркестратор ← Doc Parser (результат)
+Rel(doc_parser, orchestrator, "Передаёт информацию об эмбеддингах документа в", "HTTP / REST")
+
+' Сервисы → БД
+Rel(doc_parser, vector_db, "Передаёт информацию об эмбеддингах чанков документа в", "gRPC / REST")
+Rel(doc_parser, minio, "Передаёт информацию об исходном файле документа в", "S3 API")
+Rel(flags_parser, vector_db, "Передаёт информацию об эмбеддингах «красных флажков» в", "gRPC / REST")
+
+' Векторная БД → Оркестратор (результат поиска)
+Rel(vector_db, orchestrator, "Передаёт информацию о релевантных фрагментах в", "gRPC / REST")
+
+' Flags Parser ← Jupyter
+Rel(jupyter, flags_parser, "Передаёт информацию о новых шаблонах «красных флажков» в", "HTTP / REST")
+
+' Платёжный сервис ↔ внешняя система
+Rel(payment_service, payment_system, "Передаёт информацию о платёжной транзакции в", "HTTPS / API")
+Rel(payment_system, payment_service, "Передаёт информацию о результате оплаты в", "HTTPS / Webhook")
+Rel(payment_service, postgres, "Выполняет обновление тарифного плана пользователя, используя", "SQL / JDBC")
 
 @enduml
