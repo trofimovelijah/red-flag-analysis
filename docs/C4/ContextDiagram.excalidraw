@@ -7,9 +7,9 @@
       "id": "e-srkX0VSg71B1buYiQNj",
       "type": "arrow",
       "x": 525.2210653926192,
-      "y": 479.65379254315394,
-      "width": 292.26855619840126,
-      "height": 196.44344341402802,
+      "y": 479.65379254315405,
+      "width": 292.2685561984015,
+      "height": 196.4434434140278,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -25,8 +25,8 @@
         "type": 2
       },
       "seed": 297533410,
-      "version": 650,
-      "versionNonce": 1712267622,
+      "version": 651,
+      "versionNonce": 1209853370,
       "isDeleted": false,
       "boundElements": [
         {
@@ -34,7 +34,7 @@
           "id": "_uoKJe5ZD0qh4oTKXEpUy"
         }
       ],
-      "updated": 1778746032877,
+      "updated": 1778752403809,
       "link": null,
       "locked": false,
       "points": [
@@ -43,8 +43,8 @@
           0
         ],
         [
-          292.26855619840126,
-          196.44344341402802
+          292.2685561984015,
+          196.4434434140278
         ]
       ],
       "lastCommittedPoint": null,
@@ -102,10 +102,10 @@
     {
       "id": "R74lUmM_w6GLHx2NO87wR",
       "type": "arrow",
-      "x": 531.7489892585587,
-      "y": 970.6950119169408,
-      "width": 286.2755026730159,
-      "height": 181.08769986812774,
+      "x": 531.7142826108794,
+      "y": 970.7169661077105,
+      "width": 286.3102093206951,
+      "height": 181.1096540588975,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -121,8 +121,8 @@
         "type": 2
       },
       "seed": 1392072766,
-      "version": 868,
-      "versionNonce": 940415398,
+      "version": 869,
+      "versionNonce": 680700794,
       "isDeleted": false,
       "boundElements": [
         {
@@ -130,7 +130,7 @@
           "id": "4424QUXeS7HgmIf9tbI25"
         }
       ],
-      "updated": 1778746029476,
+      "updated": 1778752403807,
       "link": null,
       "locked": false,
       "points": [
@@ -139,8 +139,8 @@
           0
         ],
         [
-          286.2755026730159,
-          -181.08769986812774
+          286.3102093206951,
+          -181.1096540588975
         ]
       ],
       "lastCommittedPoint": null,
@@ -538,7 +538,7 @@
       "type": "arrow",
       "x": 1156.8398851682205,
       "y": 686.8392218084197,
-      "width": 337.94851313636855,
+      "width": 337.9485131363688,
       "height": 1.3349991853074243,
       "angle": 0,
       "strokeColor": "#1e1e1e",
@@ -555,8 +555,8 @@
         "type": 2
       },
       "seed": 571118590,
-      "version": 394,
-      "versionNonce": 895429030,
+      "version": 395,
+      "versionNonce": 820352250,
       "isDeleted": false,
       "boundElements": [
         {
@@ -564,7 +564,7 @@
           "id": "uSvD47EgUn74x-ccXoI9l"
         }
       ],
-      "updated": 1778746106427,
+      "updated": 1778752403809,
       "link": null,
       "locked": false,
       "points": [
@@ -573,7 +573,7 @@
           0
         ],
         [
-          337.94851313636855,
+          337.9485131363688,
           -1.3349991853074243
         ]
       ],
@@ -632,10 +632,10 @@
     {
       "id": "pqXssjw7jYUxREWNag1Pq",
       "type": "arrow",
-      "x": 1494.2130938578803,
+      "x": 1494.21309385788,
       "y": 770.6629462536914,
-      "width": 334.1951905256792,
-      "height": 2.8277736027779383,
+      "width": 334.195190525679,
+      "height": 2.8277736027781657,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "#1971c2",
@@ -651,8 +651,8 @@
         "type": 2
       },
       "seed": 584258082,
-      "version": 358,
-      "versionNonce": 263140006,
+      "version": 359,
+      "versionNonce": 652422202,
       "isDeleted": false,
       "boundElements": [
         {
@@ -660,7 +660,7 @@
           "id": "cPHgzPU2kR6CEUuuOklyX"
         }
       ],
-      "updated": 1778746103443,
+      "updated": 1778752403808,
       "link": null,
       "locked": false,
       "points": [
@@ -669,8 +669,8 @@
           0
         ],
         [
-          -334.1951905256792,
-          2.8277736027779383
+          -334.195190525679,
+          2.8277736027781657
         ]
       ],
       "lastCommittedPoint": null,
@@ -747,8 +747,8 @@
       "index": "aXd",
       "roundness": null,
       "seed": 377781538,
-      "version": 549,
-      "versionNonce": 586230138,
+      "version": 553,
+      "versionNonce": 924541434,
       "isDeleted": false,
       "boundElements": [
         {
@@ -780,7 +780,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1778747420335,
+      "updated": 1778752403804,
       "link": null,
       "locked": false
     },
@@ -806,11 +806,11 @@
       "index": "aXl",
       "roundness": null,
       "seed": 486312162,
-      "version": 479,
-      "versionNonce": 42312358,
+      "version": 481,
+      "versionNonce": 1118906,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1778746025902,
+      "updated": 1778752403805,
       "link": null,
       "locked": false,
       "text": "Красные флажки",
@@ -1260,8 +1260,8 @@
       "index": "au",
       "roundness": null,
       "seed": 1884097146,
-      "version": 2518,
-      "versionNonce": 452845434,
+      "version": 2522,
+      "versionNonce": 1705914214,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1273,7 +1273,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1778747605906,
+      "updated": 1778752403804,
       "link": null,
       "locked": false,
       "text": "Запуск или поддержка языковых моделей,\nформирующих итоговый ответ на понятном\nпользователю языке на основе результатов\nсемантического сравнения эмбеддингов,",
@@ -1329,10 +1329,10 @@
     {
       "id": "4Qs2kM_Af6J66J5B5APWQ",
       "type": "arrow",
-      "x": 893.357655869349,
-      "y": 617.6692250969469,
-      "width": 1.515881937481936,
-      "height": 236.52001342403202,
+      "x": 893.3656077032261,
+      "y": 617.6692250969468,
+      "width": 1.6413656516076571,
+      "height": 236.5200134240319,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -1346,8 +1346,8 @@
       "index": "aw",
       "roundness": null,
       "seed": 445627386,
-      "version": 544,
-      "versionNonce": 215140026,
+      "version": 545,
+      "versionNonce": 1168907898,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1355,7 +1355,7 @@
           "id": "PyPIv0DwE6G1ipH4wo-6o"
         }
       ],
-      "updated": 1778747605905,
+      "updated": 1778752403810,
       "link": null,
       "locked": false,
       "points": [
@@ -1364,8 +1364,8 @@
           0
         ],
         [
-          -1.515881937481936,
-          -236.52001342403202
+          -1.6413656516076571,
+          -236.5200134240319
         ]
       ],
       "lastCommittedPoint": null,
@@ -1423,10 +1423,10 @@
     {
       "id": "AmByXmUt8i4l9O7GHdIU6",
       "type": "arrow",
-      "x": 1075.294332573152,
-      "y": 377.71909059186817,
-      "width": 3.223110108985793,
-      "height": 241.19388930130788,
+      "x": 1075.231208539981,
+      "y": 377.7190905918682,
+      "width": 3.2787612977058416,
+      "height": 241.19388930130782,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -1440,8 +1440,8 @@
       "index": "ay",
       "roundness": null,
       "seed": 295874406,
-      "version": 391,
-      "versionNonce": 231202874,
+      "version": 395,
+      "versionNonce": 10217830,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1449,7 +1449,7 @@
           "id": "PitggwpTBoAZfjgn2FnPg"
         }
       ],
-      "updated": 1778747605906,
+      "updated": 1778752403811,
       "link": null,
       "locked": false,
       "points": [
@@ -1458,8 +1458,8 @@
           0
         ],
         [
-          3.223110108985793,
-          241.19388930130788
+          3.2787612977058416,
+          241.19388930130782
         ]
       ],
       "lastCommittedPoint": null,
@@ -1480,8 +1480,8 @@
     {
       "id": "PitggwpTBoAZfjgn2FnPg",
       "type": "text",
-      "x": 1004.2747927291384,
-      "y": 457.24430551911996,
+      "x": 1003.3697548151449,
+      "y": 448.3160352425221,
       "width": 147.072265625,
       "height": 100,
       "angle": 0,
@@ -1497,11 +1497,11 @@
       "index": "az",
       "roundness": null,
       "seed": 1975890342,
-      "version": 92,
-      "versionNonce": 1320869222,
+      "version": 95,
+      "versionNonce": 323620326,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1778747513275,
+      "updated": 1778752403806,
       "link": null,
       "locked": false,
       "text": "Возвращает\nструктурированный\nответ о наличии\n\"красных флажков\"\n[JSON]",
